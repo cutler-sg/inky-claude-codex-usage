@@ -1,0 +1,3 @@
+# Pillow, NumPy, spidev, and gpiod come from Raspberry Pi OS.
+inky==2.6.0
+gpiodevice==0.1.0

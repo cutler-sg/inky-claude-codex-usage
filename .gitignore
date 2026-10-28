@@ -1,0 +1,12 @@
+.DS_Store
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.env*
+secrets/
+state/
+dist/
+*.egg-info/
+# Optional local vendor reference checkout; use the pinned installed driver.
+python-library-inky/
