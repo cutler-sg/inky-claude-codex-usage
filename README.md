@@ -24,10 +24,10 @@ plates. Physical e-ink colours differ from these RGB previews.*
   limits, reset times, and Codex reset-credit availability.
 - **Six artworks to cycle through.** Original ImageGen compositions with live text
   drawn into the artwork's own shapes and surfaces.
-- **A slower kind of screen.** Usage syncs every ten minutes. A full refresh takes
+- **A slower kind of screen.** The Pi polls usage every ten minutes. A full refresh takes
   about 34 seconds, and the image stays visible when the display loses power.
 - **Honest about freshness.** Old observations are marked stale; missing data stays
-  missing. Buttons keep working from the latest snapshot while the Mac is offline.
+  missing. Collection and button controls run on the Pi, independently of the Mac.
 
 The four buttons on the side of the display choose the artwork:
 
@@ -44,10 +44,10 @@ The tested hardware is a **Raspberry Pi Zero 2 W** and the original **Pimoroni I
 Impression 5.7-inch, seven-colour, 600 × 448** display. This particular panel is
 discontinued; the code checks its identity before driving it.
 
-The Pi renders the artwork locally. A Mac collects usage and sends a small,
-credential-free snapshot over SSH; account credentials stay off the Pi. The frame,
-gallery, renderer, and data format are included. Live account collection uses a
-compatible external collector module, supplied separately.
+The Pi collects usage directly from CLIProxyAPI over HTTPS, renders the artwork,
+and drives the display. A systemd timer runs every ten minutes; the Mac is only
+needed for initial setup. Vendor OAuth tokens stay on the proxy. The Pi stores
+its management credential in protected configuration outside the repository.
 
 **[Hardware, installation, and operations →](docs/hardware-and-operations.md)**
 

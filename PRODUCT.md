@@ -16,7 +16,7 @@ Make remaining allowance and the next reset readable at a glance, while keeping 
 
 ## Operating Context
 
-The Pi at `pi@inky.local` runs `inky-gallery.service` and renders locally from its latest credential-free usage snapshot. The Mac reuses the existing `claude_usage.py` collector functions, CLIProxyAPI, and Keychain access; launchd job `com.cotdp.inky-usage` collects and sends a sanitized snapshot every 600 seconds and at login. Button navigation works without the Mac being awake. All display times use Asia/Singapore.
+The Pi at `pi@inky.local` collects directly from CLIProxyAPI over verified HTTPS through `inky-usage.service`, scheduled every ten minutes by `inky-usage.timer`. `inky-gallery.service` renders locally from its sanitized snapshot and handles the buttons. Collection and navigation are independent of the Mac. The previous Mac launch job is superseded. All display times use Asia/Singapore.
 
 A full panel refresh takes about 34 seconds. A/B select previous/next artwork, C selects another random artwork, and D returns to Budget Kraken. Selection persists across restarts. The listener debounces presses for 200ms, settles changes for 0.8 seconds, runs one display child at a time, and retains the latest pending selection. Refresh starts are at least 40 seconds apart.
 
@@ -29,13 +29,19 @@ A full panel refresh takes about 34 seconds. A/B select previous/next artwork, C
 - Subscription usage percentages are not token counts or currency budgets.
 - Missing windows stay missing. Each provider becomes stale after 20 minutes or a collection error, and unavailable after 24 hours; stale state appears in that provider's header. The shared observation time uses the oldest provider observation.
 - Passed reset deadlines show `UPDATE PENDING`; the renderer never assumes replenishment without a new observation.
-- Keep credentials and API tokens away from the Pi.
+- Vendor OAuth tokens remain on CLIProxyAPI. Only its management credential is
+  installed on the Pi, in root-owned mode-0600 configuration outside the repository.
 - Static artwork and labels must survive the panel's seven-colour palette and small physical dimensions.
 - MC rejected the first study's understated artwork and separated data/illustration treatment. The approved direction integrates numbers into balloons, tentacle coils, instruments, signs, wing markings, and pinball inserts, inspired by the supplied full-screen comic and engraved octopus photographs.
 
 ## Evidence on Hand
 
-`claude_usage.py` in MC's scripts workspace supplies the trusted collector functions; its authentication code is unchanged and its unrelated OpenRouter path is not invoked. `inky_frame/collect.py` exports only validated usage fields; the Pi receives no credentials.
+The existing SwiftBar `claude_usage.py` supplied the request and normalization
+contract. `inky_frame/proxy.py` now implements that contract without Keychain or
+an external source module at runtime. It discovers enabled provider accounts and
+requests usage through CLIProxyAPI with literal `$TOKEN$` substitution. It does
+not redeem credits or fetch unrelated OpenRouter data. `inky_frame/collect.py`
+retains independent provider failure handling and emits only validated usage fields.
 
 The first live Budget Kraken refresh completed on 2026-10-28 at 20:48:44 +08:00 in 34.18 seconds. This confirms the hardware refresh completed; optical verification of live text and colour remains MC's task. The earlier sample image was optically verified separately.
 

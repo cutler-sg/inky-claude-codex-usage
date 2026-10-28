@@ -1,4 +1,4 @@
-"""Reuse the existing collector's auth path; export only validated usage fields."""
+"""Collect through the built-in proxy adapter or a compatible external collector."""
 
 import importlib.util
 import time
@@ -8,15 +8,22 @@ from pathlib import Path
 from .usage import PROVIDERS, validate_snapshot
 
 
-def collect(collector_path: Path, previous: dict | None = None) -> dict:
-    spec = importlib.util.spec_from_file_location("existing_usage_collector", collector_path)
-    if spec is None or spec.loader is None:
-        raise ValueError(f"Cannot load collector: {collector_path}")
-    collector = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(collector)
+def collect(collector_path: Path | None = None, previous: dict | None = None) -> dict:
+    if collector_path is None:
+        from . import proxy as collector
+    else:
+        spec = importlib.util.spec_from_file_location("existing_usage_collector", collector_path)
+        if spec is None or spec.loader is None:
+            raise ValueError(f"Cannot load collector: {collector_path}")
+        collector = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(collector)
     # Never call main(): it also accesses unrelated OpenRouter credentials.
     key = collector.get_management_key()
-    indexes, index_error = collector.list_auth_indexes(key) if key else ({}, "Keychain unavailable")
+    indexes, index_error = (
+        collector.list_auth_indexes(key)
+        if key
+        else ({}, getattr(collector, "MISSING_KEY_ERROR", "Keychain unavailable"))
+    )
 
     def fetch(name):
         prior = (previous or {}).get("providers", {}).get(name, {})
@@ -66,7 +73,7 @@ def collect(collector_path: Path, previous: dict | None = None) -> dict:
                 }
             )
             return name, checked["providers"][name]
-        except (ValueError, TypeError, KeyError, OSError) as error:
+        except (ValueError, TypeError, KeyError, AttributeError, OSError) as error:
             # Error text comes only from the collector's fixed messages or our validator.
             result["error"] = str(error)[:200] or type(error).__name__
             return name, result

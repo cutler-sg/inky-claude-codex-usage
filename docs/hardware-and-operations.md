@@ -112,29 +112,69 @@ All six approved compositions are installed: Pop Comic, Budget Kraken, Reactor R
 
 A complete panel refresh takes about 34 seconds. Presses settle for 0.8 seconds, and switch bounce is filtered for 200 ms. During a refresh, buttons select what appears next; only the latest selection is kept. Refresh starts are at least 40 seconds apart. Selection survives a service restart or reboot. No slideshow runs automatically.
 
-**Live data:** the optional external collector fetches through CLIProxyAPI using its existing macOS Keychain path. Supply its location with `--collector`; the account-specific module is not bundled in this repository. Neither credentials nor raw provider responses are sent to the Pi. Collection does not invoke the collector's unrelated OpenRouter code or redeem reset credits. A failed provider keeps its last successful values and observation time while the other provider can update normally.
+**Live data:** the built-in Pi collector calls CLIProxyAPI directly over verified
+HTTPS. It discovers enabled Claude/Codex accounts through the management API and
+requests vendor usage with literal `$TOKEN$` substitution. Vendor OAuth tokens
+remain on the proxy; the Pi needs its management credential. Raw provider responses
+are reduced to validated usage fields before writing the local snapshot. A failed
+provider retains its last successful values and observation time while the other
+provider can update normally. No reset credits are redeemed.
 
-The timestamp is the oldest provider observation in the snapshot, in Singapore time. A provider header says `STALE` after a fetch error or 20 minutes without a new observation. After 24 hours, its values become unavailable. Passed reset deadlines say `UPDATE PENDING`; they never imply replenishment. The Pi checks freshness locally even when the Mac is asleep, but new usage collection requires this Mac to be awake, logged in, and able to reach the collector’s upstream service and the Pi. Scoped limits retain their reported model names; missing windows and credit counts stay missing.
+The timestamp is the oldest provider observation in the snapshot, in Singapore time. A provider header says `STALE` after a fetch error or 20 minutes without a new observation. After 24 hours, its values become unavailable. Passed reset deadlines say `UPDATE PENDING`; they never imply replenishment. Collection and freshness checks run independently on the Pi; new usage requires the Pi to reach CLIProxyAPI. Scoped limits retain their reported model names; missing windows and credit counts stay missing.
+
+### Configure direct Pi collection
+
+First ensure the Pi can reach your proxy's HTTPS URL. If the proxy is served only
+on a Tailscale hostname, install Tailscale on the Pi using its [Linux guide](https://tailscale.com/docs/install/linux)
+and authenticate the device. Keep TLS verification enabled.
+
+The configuration file is `/etc/inky/usage.env`, owned by root with mode `0600`,
+inside a root-owned mode-`0700` directory. It contains these two variables:
+
+| Variable | Purpose |
+| --- | --- |
+| `CLI_PROXY_API_BASE_URL` | Your CLIProxyAPI HTTPS base URL |
+| `CLI_PROXY_API_MANAGEMENT_KEY` | Your existing proxy management credential |
+
+If the credential is already in macOS Keychain, the helper transfers it over SSH
+directly into that protected file. It never prints the credential, puts it in
+process arguments, or writes a local copy. On another setup, provision the same
+root-owned configuration using your own secret-management process.
 
 ```sh
 # Reinstall the Pi gallery and boot service
 bash scripts/install-gallery.sh
 
-# Install/update the Mac login job (runs immediately, then every 600 seconds)
-uv run python scripts/install-usage-agent.py --collector /absolute/path/to/claude_usage.py
+# One-time configuration from the Mac's existing Keychain entry
+uv run python scripts/configure-pi-usage.py --proxy-url https://proxy.example.net:9443
 
-# Fetch and send usage immediately
-uv run python scripts/sync-usage.py --collector /absolute/path/to/claude_usage.py
+# Install the Pi collection service and ten-minute timer; fetch immediately
+bash scripts/install-pi-usage.sh
+
+# Fetch again and inspect the timer/logs
+ssh -4 pi@inky.local 'sudo systemctl start inky-usage.service'
+ssh -4 pi@inky.local 'systemctl list-timers inky-usage.timer --all --no-pager'
+ssh -4 pi@inky.local 'journalctl -u inky-usage.service -n 20 --no-pager'
 
 # The same actions used by the physical buttons
 ssh -4 pi@inky.local 'cd /home/pi/inky && .venv/bin/python -m inky_frame.gallery select next'
 ssh -4 pi@inky.local 'cd /home/pi/inky && .venv/bin/python -m inky_frame.gallery select home'
 ssh -4 pi@inky.local 'cd /home/pi/inky && .venv/bin/python -m inky_frame.gallery status'
 ssh -4 pi@inky.local 'journalctl -u inky-gallery.service -n 30 --no-pager'
-launchctl print gui/$(id -u)/com.cotdp.inky-usage
 ```
 
-Pi service: `inky-gallery.service`, running as `pi`, enabled for boot. Mac launch agent: `~/Library/LaunchAgents/com.cotdp.inky-usage.plist`; logs are `state/usage-sync.log` and `state/usage-sync-error.log`. The latest sanitized data is `state/usage.json` on both machines. Pi selection/runtime status lives in `state/gallery/`; successful physical refresh state remains `state/status.json` and `state/current.png`.
+Pi collection: `inky-usage.timer` is enabled for boot, triggers after 30 seconds,
+and schedules `inky-usage.service` every ten minutes. The one-shot collector runs
+as `pi`; systemd reads its protected environment as root. A provider error writes
+last-good data with its error state and causes a nonzero service exit; the next
+timer run retries. HTTP requests have timeouts and size limits, and authenticated
+management requests do not follow redirects.
+
+Pi gallery: `inky-gallery.service`, running as `pi`, enabled for boot. The latest
+sanitized data is `state/usage.json`. Selection/runtime status lives in
+`state/gallery/`; successful display state is `state/status.json` and
+`state/current.png`. Configuration is outside the deployed directory and survives
+deployments. Do not put its values in Git or paste them into logs or issues.
 
 Indexed gallery frames pass colour slots 0–6 directly to the UC8159 driver, preserving the proof's palette instead of quantizing it twice. Each refresh runs in a separate child process through the existing hardware lock. The listener owns only the four button pins, so the original one-shot SSH pushes below remain available. Stop the gallery before using a separate persistent GPIO button program.
 
@@ -161,6 +201,21 @@ The supplied Mac adapter expects an external Python module with these functions:
 The adapter imports functions without calling the external module's `main()`.
 Its authentication code and credentials remain outside this repository. A fresh
 checkout can prepare images and run tests without this integration or any account.
+
+The external Mac adapter remains an optional alternative to direct Pi collection:
+
+```sh
+uv run python scripts/sync-usage.py --collector /absolute/path/to/claude_usage.py
+```
+
+Use one scheduled writer. When migrating an existing Mac installation, stop its
+old launch job after verifying the Pi collector, so an older Mac snapshot cannot
+overwrite newer on-device data:
+
+```sh
+launchctl bootout gui/$(id -u)/com.cotdp.inky-usage
+launchctl disable gui/$(id -u)/com.cotdp.inky-usage
+```
 
 ## Update the image
 
