@@ -1,0 +1,52 @@
+{
+  "source": "Existing non-secret SwiftBar cache; frozen design snapshot, not live polling",
+  "as_of": "2026-10-28T17:43:14.321298+08:00",
+  "timezone": "Asia/Singapore",
+  "providers": {
+    "claude": {
+      "observed_at": "2026-10-28T17:43:14.321298+08:00",
+      "windows": [
+        {
+          "label": "5-Hour Window",
+          "percent": 0.0,
+          "reset_epoch": 1793181000.432942,
+          "remaining_percent": 100.0,
+          "resets_local": "2026-10-28T17:50:00.432942+08:00"
+        },
+        {
+          "label": "7-Day \u00b7 All models",
+          "percent": 80.0,
+          "reset_epoch": 1793354400.432962,
+          "remaining_percent": 20.0,
+          "resets_local": "2026-10-30T18:00:00.432962+08:00"
+        },
+        {
+          "label": "7-Day \u00b7 Fable",
+          "percent": 42.0,
+          "reset_epoch": 1793354400.433114,
+          "remaining_percent": 58.0,
+          "resets_local": "2026-10-30T18:00:00.433114+08:00"
+        }
+      ]
+    },
+    "codex": {
+      "observed_at": "2026-10-28T17:43:14.321314+08:00",
+      "windows": [
+        {
+          "label": "7-Day",
+          "percent": 5.0,
+          "reset_epoch": 1793774969,
+          "remaining_percent": 95.0,
+          "resets_local": "2026-11-04T14:49:29+08:00"
+        }
+      ],
+      "reset_credits": {
+        "available_count": 2,
+        "applicable_available_count": 0
+      },
+      "plan": "pro",
+      "allowed": true,
+      "limit_reached": false
+    }
+  }
+}
