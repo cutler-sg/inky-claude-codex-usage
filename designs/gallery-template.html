@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inky · six desk companions</title>
+<style>
+@font-face{font-family:Barlow;src:url(data:font/ttf;base64,__FONT__) format('truetype');font-display:swap}
+*{box-sizing:border-box}body{margin:0;color:var(--foreground,#25252b);font-family:Barlow,sans-serif;font-size:17px;line-height:1.4}
+button,select{font:inherit}button{cursor:pointer}h1{font-size:30px;line-height:1.15;margin:0 0 10px;font-weight:500}
+p{margin:0 0 16px}.intro{max-width:65ch;color:var(--muted-foreground,#626269)}
+.chooser{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 14px;margin:22px 0 24px}
+.choice{border:0;border-bottom:2px solid var(--border,#d9d9dc);padding:0 0 9px;background:transparent;text-align:left;color:inherit;line-height:1.15}
+.choice img{width:100%;height:auto;display:block;margin-bottom:8px}.choice span{font-size:16px;display:block}
+.choice[aria-pressed=true]{border-bottom-color:var(--foreground,#25252b)}.choice:hover{opacity:.8}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--ring,#3759a0);outline-offset:4px}
+.tools{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:end;margin:0 0 16px}.tools label{font-size:14px;color:var(--muted-foreground,#626269)}
+select{display:block;margin-top:4px;padding:6px 24px 6px 8px;color:var(--foreground,#25252b);background:var(--background,#fff);border:1px solid var(--border,#ccc);border-radius:5px;max-width:100%}
+.screen-shell{background:#e9e5dd;padding:20px;border-radius:var(--radius,12px);width:fit-content;max-width:100%;overflow:auto}
+.screen-shell img{display:block;width:600px;max-width:100%;height:auto;image-rendering:pixelated}
+.screen-shell.exact img{max-width:none}.screen-shell.exact{width:100%}
+.caption{font-size:13px;color:var(--muted-foreground,#626269);margin:9px 0 18px}
+h2{font-size:24px;font-weight:500;line-height:1.2;margin:27px 0 9px}
+#selected-name{margin:0 0 7px;font-size:24px}.description{max-width:65ch}.tradeoff{color:var(--muted-foreground,#626269)}
+.details{border-top:1px solid var(--border,#ddd);padding-top:21px;margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.details h2{margin:0 0 8px;font-size:21px}.details p{font-size:16px}.art-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+figure{margin:0}figure img{width:100%;height:auto;display:block}figcaption{font-size:13px;margin-top:5px;color:var(--muted-foreground,#626269)}
+details{margin-top:23px;border-top:1px solid var(--border,#ddd);padding-top:17px}summary{cursor:pointer;font-size:18px}details p{margin-top:12px}
+a{color:inherit;text-underline-offset:3px}::selection{background:#d0be47;color:#25252b}
+@media(max-width:480px){h1{font-size:27px}.chooser{gap:13px 10px}.choice span{font-size:14px}.details{grid-template-columns:1fr;gap:10px}.art-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.screen-shell{padding:16px}.tools{gap:12px}.tools label{font-size:13px}select{font-size:14px;padding-right:8px}}
+</style></head><body>
+<h1>Six desk companions.</h1>
+<p class="intro">One real usage snapshot, six different ways to live with it. Every screen is exactly 600 × 448 pixels. Select a composition, swap its artwork, and compare the two colour proofs.</p>
+<nav class="chooser" id="chooser" aria-label="Choose a display design"></nav>
+<section aria-labelledby="selected-name">
+<h2 id="selected-name"></h2><p class="description" id="description"></p>
+<div class="tools">
+<label>Artwork edition<select id="edition"><option value="0">First print</option><option value="1">Second print</option></select></label>
+<label>Colour proof<select id="palette"><option value="paper">Paper approximation</option><option value="inks">Seven digital inks</option></select></label>
+<label>Display size<select id="scale"><option value="fit">Fit this view</option><option value="exact">1:1 pixels · scroll if needed</option></select></label>
+</div>
+<div class="screen-shell" id="shell"><img id="screen" src="__INITIAL_SCREEN__" width="600" height="448" alt="Harbour Almanac usage display"></div>
+<p class="caption">Frozen cache snapshot · 28 Oct 2026, 17:43 SGT · All percentages mean allowance remaining. Colours are an approximation; these are design proofs, not photographs of the glass.</p>
+<p class="tradeoff" id="tradeoff"></p>
+</section>
+<div class="details"><section><h2>The useful distinction</h2><p>Claude has 100% of its session left, but only 20% of its weekly allowance. Fable’s scoped weekly limit is 58% remaining. The weekly limit stays visible in every composition.</p></section>
+<section><h2>The honest reset</h2><p>Codex has 95% weekly remaining and two reset credits banked; zero apply right now. Its payload reports no separate 5-hour window. A scheduled reset is a deadline to check, not proof that allowance has returned.</p></section></div>
+<h2>Twelve prints. A slower rhythm.</h2>
+<p class="intro">Two original ImageGen artworks per design. Daily rotation gives a twelve-day collection while the information refreshes every ten minutes. Any layout can later use any artwork.</p>
+<div class="art-grid">__THUMBNAILS__</div>
+<details><summary>How the ten-minute refresh would work</summary><p>Reuse the current proxy-backed collector on a trusted host, normalize a small credential-free snapshot, render the image, then push it over SSH. Keep OAuth and management credentials off the Pi. Use a daily art change, per-provider observation times, a clear stale state, and no automatic credit redemption.</p><p>The inspected SwiftBar code uses macOS Keychain; the scheduler’s always-on host and supported credential route still need to be resolved before deployment. The Pi currently keeps its verified sample image. No periodic usage job has been installed.</p></details>
+<script>
+const designs=__DATA__;
+let selected=0;
+const chooser=document.getElementById('chooser');
+designs.forEach((design,index)=>{
+ const button=document.createElement('button');button.className='choice';button.type='button';
+ const image=document.createElement('img');image.src=design.editions[0].paper;image.alt='';image.width=600;image.height=448;
+ const label=document.createElement('span');label.textContent=design.name;button.append(image,label);
+ button.setAttribute('aria-pressed','false');button.addEventListener('click',()=>{selected=index;render()});chooser.append(button);
+});
+function render(){
+ const design=designs[selected],edition=Number(document.getElementById('edition').value),palette=document.getElementById('palette').value;
+ document.getElementById('selected-name').textContent=design.name;document.getElementById('description').textContent=design.note;
+ document.getElementById('tradeoff').textContent=design.tradeoff;
+ const screen=document.getElementById('screen');screen.src=design.editions[edition][palette];screen.alt=design.name+', artwork edition '+(edition+1)+', 600 by 448 pixel usage display';
+ document.getElementById('shell').classList.toggle('exact',document.getElementById('scale').value==='exact');
+ [...chooser.children].forEach((button,index)=>button.setAttribute('aria-pressed',String(index===selected)));
+}
+['edition','palette','scale'].forEach(id=>document.getElementById(id).addEventListener('change',render));
+render();
+window.addEventListener('load',()=>console.log(JSON.stringify({designs:designs.length,artworkEditions:designs.reduce((n,d)=>n+d.editions.length,0),screen:[document.getElementById('screen').naturalWidth,document.getElementById('screen').naturalHeight],overflow:document.documentElement.scrollWidth>window.innerWidth})));
+</script></body></html>

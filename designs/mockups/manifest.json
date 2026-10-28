@@ -1,0 +1,104 @@
+[
+  {
+    "id": "harbour-almanac",
+    "name": "Harbour Almanac",
+    "description": "A journal spread for the long view.",
+    "editions": [
+      {
+        "artwork": 1,
+        "inks": "mockups/harbour-almanac-1-inks.png",
+        "paper": "mockups/harbour-almanac-1-paper.png"
+      },
+      {
+        "artwork": 2,
+        "inks": "mockups/harbour-almanac-2-inks.png",
+        "paper": "mockups/harbour-almanac-2-paper.png"
+      }
+    ]
+  },
+  {
+    "id": "mission-control",
+    "name": "Mission Control",
+    "description": "An instrument rail for the next expedition.",
+    "editions": [
+      {
+        "artwork": 3,
+        "inks": "mockups/mission-control-1-inks.png",
+        "paper": "mockups/mission-control-1-paper.png"
+      },
+      {
+        "artwork": 4,
+        "inks": "mockups/mission-control-2-inks.png",
+        "paper": "mockups/mission-control-2-paper.png"
+      }
+    ]
+  },
+  {
+    "id": "conservatory",
+    "name": "The Conservatory",
+    "description": "A botanical plate with room to breathe.",
+    "editions": [
+      {
+        "artwork": 5,
+        "inks": "mockups/conservatory-1-inks.png",
+        "paper": "mockups/conservatory-1-paper.png"
+      },
+      {
+        "artwork": 6,
+        "inks": "mockups/conservatory-2-inks.png",
+        "paper": "mockups/conservatory-2-paper.png"
+      }
+    ]
+  },
+  {
+    "id": "departure-board",
+    "name": "Departure Board",
+    "description": "Every allowance has a departure time.",
+    "editions": [
+      {
+        "artwork": 7,
+        "inks": "mockups/departure-board-1-inks.png",
+        "paper": "mockups/departure-board-1-paper.png"
+      },
+      {
+        "artwork": 8,
+        "inks": "mockups/departure-board-2-inks.png",
+        "paper": "mockups/departure-board-2-paper.png"
+      }
+    ]
+  },
+  {
+    "id": "balance",
+    "name": "The Balance",
+    "description": "An abstract print built around two clear balances.",
+    "editions": [
+      {
+        "artwork": 9,
+        "inks": "mockups/balance-1-inks.png",
+        "paper": "mockups/balance-1-paper.png"
+      },
+      {
+        "artwork": 10,
+        "inks": "mockups/balance-2-inks.png",
+        "paper": "mockups/balance-2-paper.png"
+      }
+    ]
+  },
+  {
+    "id": "studio-companion",
+    "name": "Studio Companion",
+    "description": "A small companion for the working day.",
+    "editions": [
+      {
+        "artwork": 11,
+        "inks": "mockups/studio-companion-1-inks.png",
+        "paper": "mockups/studio-companion-1-paper.png"
+      },
+      {
+        "artwork": 12,
+        "inks": "mockups/studio-companion-2-inks.png",
+        "paper": "mockups/studio-companion-2-paper.png"
+      }
+    ]
+  }
+]

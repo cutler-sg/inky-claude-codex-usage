@@ -17,8 +17,8 @@ Updated: 2026-10-28. Branch: `feat/usage-designs`, based on the verified initial
 - [x] Write requirements, data mapping, refresh proposal, and explicit open decisions.
 - [x] Generate twelve artwork assets using the built-in image tool; preserve originals and embedded prompts.
 - [x] Render six exact-size, seven-colour mockups with deterministic text: two art editions and two palette proofs per design.
-- [ ] Inspect all variants, verify dimensions/palette, and publish comparison gallery.
-- [ ] Commit artifacts and leave deployment deferred until the mockups are reviewed.
+- [x] Inspect all variants, verify dimensions/palette, and publish comparison gallery.
+- [x] Commit artifacts and leave deployment deferred until the mockups are reviewed.
 
 ## Constraints and decisions
 

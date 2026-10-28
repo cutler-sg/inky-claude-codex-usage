@@ -4,6 +4,22 @@ An SSH-controlled e-ink frame: Raspberry Pi Zero 2 W + discontinued **Pimoroni I
 
 Images are streamed over the existing SSH connection, fitted with Pillow, quantized by Pimoroni's driver, and sent to the panel. No daemon or HTTP endpoint is needed. E-ink retains the last image without power or a running process.
 
+## Usage display design study
+
+[Open the comparison gallery](designs/usage-gallery.html) for six 600×448 screen layouts, each with two original artwork editions. It is self-contained and works directly from disk. Controls compare both editions, seven digital inks versus a muted paper approximation, and fit versus 1:1 pixel viewing.
+
+[Research and refresh proposal](designs/ANALYSIS.md) traces the existing Claude/Codex collector, defines remaining/reset/credit/freshness semantics, and proposes a ten-minute collection/render/SSH-push job. The mockups use a clearly dated frozen cache snapshot. No periodic usage job is installed yet; the Pi still shows the verified sample.
+
+All twelve artwork originals are in `designs/artwork/`; [exact prompts and provenance](designs/prompts/artwork.json) record built-in ImageGen generation. Fonts are bundled with their OFL licenses. Final screen PNGs are in `designs/mockups/` (600×448, indexed, exactly seven colour slots).
+
+```sh
+uv run python designs/render.py
+uv run python designs/gallery.py
+open designs/usage-gallery.html
+```
+
+The design renderer intentionally targets this frozen study snapshot. It is not the live collector or a generalized dashboard renderer. `usage-gallery-preview.html` is the T3 preview variant that references local PNG paths; use the self-contained `usage-gallery.html` when sharing or opening independently.
+
 ## Update the image
 
 From this directory on your Mac:
