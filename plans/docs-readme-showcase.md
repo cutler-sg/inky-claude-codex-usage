@@ -23,7 +23,7 @@ Branch: `docs/readme-showcase`. Updated: 2026-10-28.
 
 - README reduced from 248 to 74 lines, with all six original concept PNGs linked
   near the top in a two-column gallery; each opens the full 600×448 image.
-- All nine original technical sections are preserved in the new 240-line guide,
+- All nine original technical sections are preserved in the new technical guide,
   with relative links relocated and the incoming study README anchor repaired.
 - GitHub Markdown API render inspected at 728px and 360px: six images loaded at
   the correct native size, no page overflow and no table overflow.
