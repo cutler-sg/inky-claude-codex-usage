@@ -31,6 +31,12 @@ typography:
 
 # Design System: Inky desk companion
 
+## Integrated artwork revision — current direction
+
+MC rejected the first study's understated illustration and the separation between artwork and statistics. The current study is [integrated-v2](designs/integrated-v2/index.html): six complete ImageGen compositions with their numbers baked into the image, using the project's pop-comic and engraved octopus product photos as direct style references. Speech balloons, tentacle coils, reactor housings, shop signs, moth wing markings, and pinball inserts carry the information. No one composition is selected yet.
+
+The sections below document the **earlier study** and its deterministic renderer, retained as history. Its sidebar/plate layouts and font restrictions are not the authority for the revised generated lettering. The revised study retains the exact 600×448 output, seven-slot print proof, allowance semantics, and frozen data. Masters, exact prompts, export scripts, and the dynamic-overlay proposal live in `designs/integrated-v2/`.
+
 <!-- STUDY STAGE: six alternative compositions, deliberately unselected. Re-run this document once one is chosen for the live Pi build; at that point collapse this file to the single chosen identity. -->
 
 ## Overview

@@ -27,6 +27,8 @@ Existing passwordless SSH at `pi@inky.local`; a full screen refresh takes about 
 - Missing windows stay missing; stale readings cannot be presented as fresh.
 - Keep credentials and API tokens away from the Pi.
 - Static artwork and labels must survive the panel's seven-colour palette and small physical dimensions.
+- MC rejected the first study's understated artwork and separated data/illustration treatment. The revised direction integrates the numbers into the picture itself, inspired by the supplied full-screen comic and engraved octopus photographs.
+- ImageGen may render the numbers and labels directly in exploratory mockups. Dynamic text is a later implementation concern, not a reason to weaken the composition now.
 
 ## Evidence on Hand
 
@@ -37,7 +39,7 @@ Existing passwordless SSH at `pi@inky.local`; a full screen refresh takes about 
 - Lead with allowance remaining and the next reset (confirmed by MC).
 - Keep the most restrictive relevant quota visible.
 - Separate observed facts from scheduling advice.
-- Change artwork independently of data, with stable information positions.
+- Integrate information into the artwork's own balloons, signs, markings, or instruments; preserve those positions when live values change.
 - Never show stale or absent data as newly replenished allowance.
 
 ## Open Decisions

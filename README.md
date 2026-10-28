@@ -6,6 +6,8 @@ Images are streamed over the existing SSH connection, fitted with Pillow, quanti
 
 ## Usage display design study
 
+[Open the revised integrated artwork gallery](designs/integrated-v2/index.html): six full-screen ImageGen compositions with numbers built into the artwork itself—comic balloons, tentacle coils, reactor housings, street signs, moth wings, and pinball inserts. This is the current direction after review of the initial study. Each has a higher-resolution master, an exact 600×448 colour concept, and an indexed seven-colour proof. [Prompts](designs/integrated-v2/prompts.json) and [implementation notes](designs/integrated-v2/README.md) are preserved alongside the files.
+
 [Open the comparison gallery](designs/usage-gallery.html) for six 600×448 screen layouts, each with two original artwork editions. It is self-contained and works directly from disk. Controls compare both editions, seven digital inks versus a muted paper approximation, and fit versus 1:1 pixel viewing.
 
 [Research and refresh proposal](designs/ANALYSIS.md) traces the existing Claude/Codex collector, defines remaining/reset/credit/freshness semantics, and proposes a ten-minute collection/render/SSH-push job. The mockups use a clearly dated frozen cache snapshot. No periodic usage job is installed yet; the Pi still shows the verified sample.
@@ -16,6 +18,10 @@ All twelve artwork originals are in `designs/artwork/`; [exact prompts and prove
 uv run python designs/render.py
 uv run python designs/gallery.py
 open designs/usage-gallery.html
+
+# Revised integrated artwork study
+uv run python designs/integrated-v2/build.py
+open designs/integrated-v2/index.html
 ```
 
 The design renderer intentionally targets this frozen study snapshot. It is not the live collector or a generalized dashboard renderer. `usage-gallery-preview.html` is the T3 preview variant that references local PNG paths; use the self-contained `usage-gallery.html` when sharing or opening independently.

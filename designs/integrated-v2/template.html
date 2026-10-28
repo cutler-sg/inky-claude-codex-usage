@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inky · integrated artwork</title>
+<style>
+@font-face{font-family:'Barlow Medium';src:url('__FONT__') format('truetype');font-display:swap}
+*{box-sizing:border-box}
+body{margin:0;color:var(--foreground,#000000);font:17px/1.4 'Barlow Medium',sans-serif}
+h1{font-size:30px;font-weight:500;line-height:1.12;margin:0 0 12px}
+p{margin:0 0 16px;max-width:65ch}
+.intro,.note{color:var(--muted-foreground,#000000)}
+.choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 14px;margin:22px 0 28px}
+.choice{cursor:pointer;border:0;border-bottom:2px solid var(--border,#000000);background:none;color:inherit;padding:0 0 8px;text-align:left;font:inherit;line-height:1.2}
+.choice[aria-pressed=true]{border-color:var(--foreground,#000000)}
+.choice img{display:block;width:100%;height:auto;margin-bottom:7px}
+.choice:hover{opacity:.82}
+button:focus-visible,select:focus-visible{outline:2px solid var(--ring,#174992);outline-offset:4px}
+h2{font-size:25px;font-weight:500;margin:0 0 7px;line-height:1.15}
+.toolbar{display:flex;gap:18px;align-items:end;flex-wrap:wrap;margin:17px 0}
+label{font-size:14px;color:var(--muted-foreground,#000000)}
+select{font:inherit;color:var(--foreground,#000000);background:var(--background,#ffffff);display:block;margin-top:4px;padding:7px;border:1px solid var(--border,#000000);border-radius:5px;max-width:100%}
+.screen{background:var(--card,#ffffff);padding:16px;border-radius:var(--radius,12px);width:fit-content;max-width:100%;overflow:auto}
+.screen img{display:block;width:600px;max-width:100%;height:auto}
+.screen.exact{width:100%}.screen.exact img{max-width:none}
+.note{font-size:14px;margin:12px 0 22px}
+.implementation{border-top:1px solid var(--border,#000000);padding-top:21px;margin-top:28px}
+.implementation h2{font-size:22px}
+::selection{background:#f2cb19;color:#000000}
+@media(max-width:480px){h1{font-size:27px}.choices{gap:14px 10px}.choice{font-size:14px}.toolbar{gap:12px}}
+</style>
+</head>
+<body>
+<h1>The numbers belong to the picture.</h1>
+<p class="intro">Six complete compositions, generated with their lettering in place.
+The product photographs supplied the direction: comic impact, engraved linework,
+strong black, and a screen filled with art.</p>
+<nav class="choices" id="choices" aria-label="Choose an integrated composition"></nav>
+<h2 id="title">Budget Kraken</h2>
+<p id="description">Tentacles shape the numbers; the engraving carries the rest.</p>
+<div class="toolbar">
+<label>Image treatment
+<select id="treatment">
+<option value="concept">Generated colour concept</option>
+<option value="inks">Seven digital inks · print proof</option>
+</select></label>
+<label>Display scale
+<select id="scale">
+<option value="fit">Fit this view</option>
+<option value="exact">1:1 pixels · scroll if needed</option>
+</select></label>
+</div>
+<div class="screen" id="shell">
+<img id="screen" src="__INITIAL__" width="600" height="448" alt="Budget Kraken integrated usage artwork">
+</div>
+<p class="note">Every exported screen is exactly 600 × 448. These are visual concepts
+with baked-in, illustrative numbers from the frozen 28 Oct snapshot—not live readings.
+The seven-ink view is a digital palette proof, not a photograph or calibration of the panel.</p>
+<section class="implementation">
+<h2>Keep the integration when the numbers change.</h2>
+<p>The selected composition becomes a clean artwork plate, with its information-bearing
+surfaces left blank. Live numbers are then drawn into those same balloons, coils,
+painted tanks, signs, wing markings, or playfield inserts, matching their lettering and perspective.
+The composition stays intact.</p>
+<p class="note">The 17:50 reset is Claude’s already-full session. The binding weekly
+allowance resets Friday at 18:00. No screen update or scheduled job has been installed on the Pi.</p>
+</section>
+<script>
+const views=__VIEWS__;
+let active=1;
+const choices=document.getElementById('choices');
+views.forEach((item,index)=>{
+ const button=document.createElement('button');
+ button.type='button';button.className='choice';button.setAttribute('aria-pressed','false');
+ const img=document.createElement('img');
+ img.src=item.concept;img.alt='';img.width=600;img.height=448;
+ const text=document.createElement('span');text.textContent=item.title;
+ button.append(img,text);button.addEventListener('click',()=>{active=index;render()});
+ choices.append(button);
+});
+function render(){
+ const item=views[active];
+ const treatment=document.getElementById('treatment').value;
+ document.getElementById('title').textContent=item.title;
+ document.getElementById('description').textContent=item.description;
+ document.getElementById('screen').src=item[treatment];
+ document.getElementById('screen').alt=item.title+' integrated usage artwork, 600 by 448';
+ document.getElementById('shell').classList.toggle('exact',document.getElementById('scale').value==='exact');
+ [...choices.children].forEach((button,index)=>button.setAttribute('aria-pressed',String(index===active)));
+}
+document.getElementById('treatment').addEventListener('change',render);
+document.getElementById('scale').addEventListener('change',render);
+render();
+window.addEventListener('load',()=>console.log(JSON.stringify({
+ designs:views.length,
+ nativePixels:[document.getElementById('screen').naturalWidth,document.getElementById('screen').naturalHeight],
+ pageOverflow:document.documentElement.scrollWidth>window.innerWidth
+})));
+</script>
+</body>
+</html>
