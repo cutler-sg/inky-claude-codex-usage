@@ -4,6 +4,11 @@ An SSH-controlled e-ink frame: Raspberry Pi Zero 2 W + discontinued **Pimoroni I
 
 Six full-screen artworks now show real Claude/Codex subscription usage, with the display's four buttons selecting the artwork. A small Pi service handles buttons and renders locally; the Mac sends credential-free usage snapshots over SSH every ten minutes. E-ink retains the last image without power.
 
+This is a personal hardware experiment. The frame, gallery, renderer, and sanitized
+usage format are included. Account collection is an **optional external integration**:
+bring a compatible collector module as described below. No credentials, environment
+files, or live account snapshots are bundled.
+
 ## Live gallery and buttons
 
 All six approved compositions are installed: Pop Comic, Budget Kraken, Reactor Room, Night Market, Quota Moth, and Cosmic Pinball. The [clean plates and exact ImageGen prompts](assets/live/) preserve their original illustrations; `inky_frame/live.py` draws changing values into their balloons, ribbons, tanks, signs, wings and playfield. These live images replace every frozen usage value. Original concept studies remain below as history.
@@ -17,7 +22,7 @@ All six approved compositions are installed: Pop Comic, Budget Kraken, Reactor R
 
 A complete panel refresh takes about 34 seconds. Presses settle for 0.8 seconds, and switch bounce is filtered for 200 ms. During a refresh, buttons select what appears next; only the latest selection is kept. Refresh starts are at least 40 seconds apart. Selection survives a service restart or reboot. No slideshow runs automatically.
 
-**Live data:** the existing collector at `~/workspaces/scripts/claude/claude_usage.py` fetches through CLIProxyAPI using its existing macOS Keychain path. Neither credentials nor raw provider responses are sent to the Pi. Collection does not invoke the collector's unrelated OpenRouter code or redeem reset credits. A failed provider keeps its last successful values and observation time while the other provider can update normally.
+**Live data:** the optional external collector fetches through CLIProxyAPI using its existing macOS Keychain path. Supply its location with `--collector`; the account-specific module is not bundled in this repository. Neither credentials nor raw provider responses are sent to the Pi. Collection does not invoke the collector's unrelated OpenRouter code or redeem reset credits. A failed provider keeps its last successful values and observation time while the other provider can update normally.
 
 The timestamp is the oldest provider observation in the snapshot, in Singapore time. A provider header says `STALE` after a fetch error or 20 minutes without a new observation. After 24 hours, its values become unavailable. Passed reset deadlines say `UPDATE PENDING`; they never imply replenishment. The Pi checks freshness locally even when the Mac is asleep, but new usage collection requires this Mac to be awake, logged in, and able to reach hwi and the Pi. Scoped limits retain their reported model names; missing windows and credit counts stay missing.
 
@@ -26,10 +31,10 @@ The timestamp is the oldest provider observation in the snapshot, in Singapore t
 bash scripts/install-gallery.sh
 
 # Install/update the Mac login job (runs immediately, then every 600 seconds)
-uv run python scripts/install-usage-agent.py
+uv run python scripts/install-usage-agent.py --collector /absolute/path/to/claude_usage.py
 
 # Fetch and send usage immediately
-uv run python scripts/sync-usage.py
+uv run python scripts/sync-usage.py --collector /absolute/path/to/claude_usage.py
 
 # The same actions used by the physical buttons
 ssh -4 pi@inky.local 'cd /home/pi/inky && .venv/bin/python -m inky_frame.gallery select next'
@@ -44,6 +49,28 @@ Pi service: `inky-gallery.service`, running as `pi`, enabled for boot. Mac launc
 Indexed gallery frames pass colour slots 0–6 directly to the UC8159 driver, preserving the proof's palette instead of quantizing it twice. Each refresh runs in a separate child process through the existing hardware lock. The listener owns only the four button pins, so the original one-shot SSH pushes below remain available. Stop the gallery before using a separate persistent GPIO button program.
 
 The first live Budget Kraken refresh completed at **2026-10-28 20:48:44 +08** in **34.18 seconds**, with both provider fetches successful. Software completion does not optically verify the new screen; MC can now inspect it and test physical button presses.
+
+### Bring your own usage data
+
+The renderer only needs the credential-free contract in `inky_frame/usage.py`.
+[An empty example](docs/usage-snapshot.example.json) documents the accepted JSON
+shape without publishing a live account snapshot. A compatible producer can send
+validated JSON over SSH to `.venv/bin/python -m inky_frame.gallery receive` from
+`/home/pi/inky`; collection does not have to run on the Pi.
+
+The supplied Mac adapter expects an external Python module with these functions:
+
+- `get_management_key()` returns an in-memory credential or `None`.
+- `list_auth_indexes(key)` returns `(provider_indexes, error_or_none)`.
+- `fetch_usage(key, indexes, provider, url, headers)` returns `(payload, error_or_none)`.
+- `normalize_claude(payload)` and `normalize_codex(payload)` return windows with
+  `label`, `percent` (used), and `reset_epoch` fields.
+- `CLAUDE_USAGE_URL`, `CODEX_USAGE_URL`, `CLAUDE_HEADERS`, and `CODEX_HEADERS` provide
+  the existing collector's request configuration.
+
+The adapter imports functions without calling the external module's `main()`.
+Its authentication code and credentials remain outside this repository. A fresh
+checkout can prepare images and run tests without this integration or any account.
 
 ## Usage display design study
 
@@ -65,7 +92,7 @@ uv run python designs/integrated-v2/build.py
 open designs/integrated-v2/index.html
 ```
 
-The design renderer intentionally targets this frozen study snapshot. It is not the live collector or a generalized dashboard renderer. `usage-gallery-preview.html` is the T3 preview variant that references local PNG paths; use the self-contained `usage-gallery.html` when sharing or opening independently.
+The design renderer intentionally targets this frozen study snapshot. It is not the live collector or a generalized dashboard renderer. `usage-gallery-preview.html` is a generated, ignored T3 preview with local PNG paths; use the committed self-contained `usage-gallery.html` when sharing or opening independently.
 
 ## Update the image
 
@@ -106,7 +133,7 @@ Observed over SSH on **2026-10-28**, unless marked as a specification:
 | Storage | User-supplied 64 GB microSD; kernel reports 59.5 GiB; 512 MiB boot partition, ~59 GiB root partition |
 | Root filesystem | `df -h`: 58 GiB total, 5.1 GiB used, 51 GiB available at initial inspection |
 | Memory | OS exposes ~415 MiB RAM; ~414 MiB zram swap at initial inspection |
-| Host / user | `inky.local` / `pi`; IPv4 was `192.168.1.80` (DHCP address can change) |
+| Host / user | `inky.local` / `pi`; address assigned by DHCP |
 | Access | Existing passwordless SSH; user enabled passwordless sudo during setup (verified with `sudo -n true`) |
 | Permissions | `pi` already belongs to `gpio`, `i2c`, `spi`, and `sudo` |
 | Time | `Asia/Singapore` (UTC+8), NTP synchronized; no hardware RTC reported |
@@ -201,7 +228,13 @@ uv run ruff check .
 uv run ruff format --check .
 ```
 
-The Python package is `inky_frame` to avoid shadowing the vendor's `inky` package. Hardware modules are imported only for `info` / `show`, so image preparation and tests work on macOS. JSON refresh events go to stdout; driver diagnostics go to stderr. Original reference files are preserved in the repository root. The optional `python-library-inky/` vendor checkout is ignored by git and excluded from project checks; runtime code uses the installed pinned package.
+The Python package is `inky_frame` to avoid shadowing the vendor's `inky` package. Hardware modules are imported only for hardware operations, so image preparation and tests work on macOS. JSON refresh events go to stdout; driver diagnostics go to stderr. Original reference files are preserved in `pimoroni-inky-impression/`. The optional `python-library-inky/` vendor checkout is ignored by git and excluded from project checks; runtime code uses the installed pinned package.
+
+Project code uses the [MIT license](LICENSE). Bundled fonts keep their OFL licenses;
+manufacturer references retain their original rights. See [third-party notices](THIRD_PARTY.md).
+Keep credentials and local account state out of commits; `state/`, environment
+files, keys, and generated previews are ignored. Before publication, run
+`gitleaks git --redact=100 --log-opts=--all .` to check the full local history.
 
 ## References
 
@@ -211,5 +244,5 @@ The Python package is `inky_frame` to avoid shadowing the vendor's `inky` packag
 - [EEPROM-to-driver mapping](https://github.com/pimoroni/inky/blob/v2.6.0/inky/auto.py)
 - [Inky 2.6.0 package](https://pypi.org/project/inky/2.6.0/)
 - [Raspberry Pi Zero 2 W specification](https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/)
-- [GPIO pinout](https://pinout.xyz/pinout/inky_impression); local copies: [HTML](inky_impression_pinout.html), [PNG](inky_impression_pinout.png)
-- Supplied vendor references: [schematic](inky_impression_5_7_schematic.pdf), [dimensional drawing](inky-impression-5.7-drawing.png), and archived product page `inky_impression_5_7_product.pdf`; product photos are preserved alongside them.
+- [GPIO pinout](https://pinout.xyz/pinout/inky_impression); local copies: [HTML](pimoroni-inky-impression/inky_impression_pinout.html), [PNG](pimoroni-inky-impression/inky_impression_pinout.png)
+- Supplied vendor references: [schematic](pimoroni-inky-impression/inky_impression_5_7_schematic.pdf), [dimensional drawing](pimoroni-inky-impression/inky-impression-5.7-drawing.png), and [archived product page](pimoroni-inky-impression/inky_impression_5_7_product.pdf); product photos are preserved alongside them.

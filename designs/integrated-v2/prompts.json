@@ -2,61 +2,67 @@
   {
     "id": "01-pop-comic",
     "prompt": "Use case: ui-mockup\nAsset type: integrated e-ink artwork and usage lettering, full-screen final concept.\nDesign a COMPLETE final artwork with the live-looking usage typography already integrated into the illustration, not an illustration next to a dashboard. The output is a flat landscape image for a 600 x 448 pixel e-ink screen (4:3-ish). No photograph, screen bezel, desk, mockup device or outer border.\nImage 1 is a STYLE REFERENCE ONLY: large expressive pop-comic close-up, bold black contours, halftone fields, strong saturated colour. Image 2 is a STYLE REFERENCE ONLY: expressive engraving and swirling cephalopod linework. Do not copy either composition or any Pimoroni/inky branding.\nUse black and white as strong structural inks, with red, yellow, cobalt blue, green and orange. Broad colour separation, intentional visible halftone/stipple where tonal. This should be striking as a small art object. All numerals must be very legible after reduction to 600 x 448.\nExact data to integrate naturally into the artwork, with these strings:\n\"CLAUDE\" paired with \"20%\" and \"WEEK LEFT\"\n\"CODEX\" paired with \"95%\" and \"WEEK LEFT\"\n\"CLAUDE 5H 100% · RESET 17:50\"\n\"FABLE 58% · FRI 18:00\"\n\"CLAUDE WEEK · FRI 18:00\"\n\"CODEX WEEK · 4 NOV 14:49\"\n\"CODEX RESETS: 2 BANKED / 0 APPLICABLE\"\n\"AS OF 17:43 SGT\"\nThe big 20% and 95% are the two dominant text forms. Supporting labels are short, bold and deliberate, with a hierarchy. Treat everything as hand-lettered composition with correct typography. No random or extra text. Do not turn this into boxed data cards, a web UI, a dashboard grid, or an art thumbnail beside numbers.\nPrimary composition: An original tightly cropped 1960s pop-comic scene: one expressive woman's face dominates the frame, her sweeping yellow hair becomes the compositional flow. Two dramatically placed white speech/thought balloons grow organically around her face and contain the Claude20 and Codex95 weekly balances. Thick expressive black contour, red Ben-Day halftone skin, blue and green graphic background fragments, orange accents. Supporting stats are comic narration captions and small hand-lettered sound-stage placards physically integrated into the comic composition. It should feel like a collectible comic panel with budget dialogue, not a dashboard decorated with a face. Redraw a wholly original face, pose and narrative from the reference's graphic grammar.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-e359593b-d6ae-4139-a7fb-0a9f05b26338.png",
+    "source": "designs/integrated-v2/01-pop-comic-master.png",
     "generation_mode": "built-in ImageGen",
     "reference_images": [
-      "inky-7-colour-main-1.jpg.webp",
-      "inky-7-colour-on-white-2.jpg.webp"
-    ]
+      "pimoroni-inky-impression/inky-7-colour-main-1.jpg.webp",
+      "pimoroni-inky-impression/inky-7-colour-on-white-2.jpg.webp"
+    ],
+    "generation_artifact": "exec-e359593b-d6ae-4139-a7fb-0a9f05b26338.png"
   },
   {
     "id": "02-budget-kraken",
     "prompt": "Use case: ui-mockup\nAsset type: integrated e-ink artwork and usage lettering, full-screen final concept.\nDesign a COMPLETE final artwork with the live-looking usage typography already integrated into the illustration, not an illustration next to a dashboard. The output is a flat landscape image for a 600 x 448 pixel e-ink screen (4:3-ish). No photograph, screen bezel, desk, mockup device or outer border.\nImage 1 is a STYLE REFERENCE ONLY: large expressive pop-comic close-up, bold black contours, halftone fields, strong saturated colour. Image 2 is a STYLE REFERENCE ONLY: expressive engraving and swirling cephalopod linework. Do not copy either composition or any Pimoroni/inky branding.\nUse black and white as strong structural inks, with red, yellow, cobalt blue, green and orange. Broad colour separation, intentional visible halftone/stipple where tonal. This should be striking as a small art object. All numerals must be very legible after reduction to 600 x 448.\nExact data to integrate naturally into the artwork, with these strings:\n\"CLAUDE\" paired with \"20%\" and \"WEEK LEFT\"\n\"CODEX\" paired with \"95%\" and \"WEEK LEFT\"\n\"CLAUDE 5H 100% · RESET 17:50\"\n\"FABLE 58% · FRI 18:00\"\n\"CLAUDE WEEK · FRI 18:00\"\n\"CODEX WEEK · 4 NOV 14:49\"\n\"CODEX RESETS: 2 BANKED / 0 APPLICABLE\"\n\"AS OF 17:43 SGT\"\nThe big 20% and 95% are the two dominant text forms. Supporting labels are short, bold and deliberate, with a hierarchy. Treat everything as hand-lettered composition with correct typography. No random or extra text. Do not turn this into boxed data cards, a web UI, a dashboard grid, or an art thumbnail beside numbers.\nPrimary composition: An original maximalist copperplate-engraved octopus seen close-up, its eye and mantle giving the image personality, eight detailed arms spiralling across the entire frame. Two great coils of tentacle form irregular organic white cartouches containing Claude20 and Codex95 as part of an antique maritime engraving. Other arms weave around lettered ribbons carrying the smaller reset and scope statistics. Primarily deep black and paper white with saturated red, yellow, green, cobalt and orange anatomical highlights and fine controlled halftone in selected fields. Rich, weird, exquisite linework like the actual illustrated Inky circuit board. No rectangular dashboard panels; the numbers belong inside the living engraving.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-07f26d9f-3c9a-4548-9c5c-7a1a48e282aa.png",
+    "source": "designs/integrated-v2/02-budget-kraken-master.png",
     "generation_mode": "built-in ImageGen",
     "reference_images": [
-      "inky-7-colour-main-1.jpg.webp",
-      "inky-7-colour-on-white-2.jpg.webp"
-    ]
+      "pimoroni-inky-impression/inky-7-colour-main-1.jpg.webp",
+      "pimoroni-inky-impression/inky-7-colour-on-white-2.jpg.webp"
+    ],
+    "generation_artifact": "exec-07f26d9f-3c9a-4548-9c5c-7a1a48e282aa.png"
   },
   {
     "id": "03-reactor-room",
     "prompt": "Use case: ui-mockup\nAsset type: integrated e-ink artwork and usage lettering, full-screen final concept.\nDesign a COMPLETE final artwork with the live-looking usage typography already integrated into the illustration, not an illustration next to a dashboard. The output is a flat landscape image for a 600 x 448 pixel e-ink screen (4:3-ish). No photograph, screen bezel, desk, mockup device or outer border.\nImage 1 is a STYLE REFERENCE ONLY: large expressive pop-comic close-up, bold black contours, halftone fields, strong saturated colour. Image 2 is a STYLE REFERENCE ONLY: expressive engraving and swirling cephalopod linework. Do not copy either composition or any Pimoroni/inky branding.\nUse black and white as strong structural inks, with red, yellow, cobalt blue, green and orange. Broad colour separation, intentional visible halftone/stipple where tonal. This should be striking as a small art object. All numerals must be very legible after reduction to 600 x 448.\nExact data to integrate naturally into the artwork, with these strings:\n\"CLAUDE\" paired with \"20%\" and \"WEEK LEFT\"\n\"CODEX\" paired with \"95%\" and \"WEEK LEFT\"\n\"CLAUDE 5H 100% · RESET 17:50\"\n\"FABLE 58% · FRI 18:00\"\n\"CLAUDE WEEK · FRI 18:00\"\n\"CODEX WEEK · 4 NOV 14:49\"\n\"CODEX RESETS: 2 BANKED / 0 APPLICABLE\"\n\"AS OF 17:43 SGT\"\nThe big 20% and 95% are the two dominant text forms. Supporting labels are short, bold and deliberate, with a hierarchy. Treat everything as hand-lettered composition with correct typography. No random or extra text. Do not turn this into boxed data cards, a web UI, a dashboard grid, or an art thumbnail beside numbers.\nPrimary composition: An original dramatic cutaway of a retro-futurist reactor room drawn as a dense pulp science-fiction comic. Two enormous cylindrical power cores dominate the image, with CLAUDE20% WEEK LEFT and CODEX95% WEEK LEFT painted directly onto their curved housings in giant typography. Their yellow/orange and cobalt/green cores glow through graphic cross-hatching; black pipes, ladders and bundled wires connect the full scene. The supporting reset and model figures are lettering printed on real pressure gauges, pipe bands and enamel warning plaques within the machinery. A tiny mechanic gives scale. Bold black comic lines, paper-white highlights, halftone colour plates, energetic diagonal construction, dramatic close crop. The picture itself is the instrument.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-d9f54cff-90e2-447d-ae84-ef6277ce3264.png",
+    "source": "designs/integrated-v2/03-reactor-room-master.png",
     "generation_mode": "built-in ImageGen",
     "reference_images": [
-      "inky-7-colour-main-1.jpg.webp",
-      "inky-7-colour-on-white-2.jpg.webp"
-    ]
+      "pimoroni-inky-impression/inky-7-colour-main-1.jpg.webp",
+      "pimoroni-inky-impression/inky-7-colour-on-white-2.jpg.webp"
+    ],
+    "generation_artifact": "exec-d9f54cff-90e2-447d-ae84-ef6277ce3264.png"
   },
   {
     "id": "04-night-market",
     "prompt": "Use case: ui-mockup\nAsset type: COMPLETE integrated illustration-and-lettering for a landscape 600 x 448 pixel e-ink desk screen.\nThe two supplied photographs are STYLE REFERENCES ONLY: Image1 pop-comic portrait with bold black contours and saturated halftone; Image2 dense engraved linework. Do not copy their composition or any brand wording. Return a FLAT full-frame artwork, never a photo of a screen, room, bezel, web app, dashboard, cards, or a poster framed on a wall.\nThe usage information must be physically part of the artwork: lettering on objects, carved into shapes, woven into the composition. Every part of the image belongs to the same world. Use all seven black/white/red/yellow/cobalt/green/orange inks, with broad strong colour planes and intentional halftone. Dramatic, authored, dense with personality. Keep text legible when scaled to 600 x 448, so the 20% and 95% are enormous and supporting statistics are clear bold lettering.\nText to render accurately:\n\"CLAUDE\" with \"20%\" and \"WEEK LEFT\"\n\"CODEX\" with \"95%\" and \"WEEK LEFT\"\n\"CLAUDE 5H 100% · RESET 17:50\"\n\"FABLE 58% · FRI 18:00\"\n\"CLAUDE WEEK · FRI 18:00\"\n\"CODEX WEEK · 4 NOV 14:49\"\n\"CODEX RESETS: 2 BANKED / 0 APPLICABLE\"\n\"AS OF 17:43 SGT\"\nNo other words or decorative fake lettering. The data is the picture's own typography, never an adjacent table.\nPrimary composition: An original vivid nocturnal Southeast Asian street comic, steep perspective looking up a dense rainy alley, hanging cables and red lanterns, an orange scooter and tiny umbrella-carrying pedestrians below. Two enormous hand-painted illuminated shop signs fixed to the actual buildings carry CLAUDE20%WEEKLEFT and CODEX95%WEEKLEFT as the dominant shapes. Supporting reset/model stats are the lettering on hanging awnings, vertical lantern signs and a street-level shop shutter. Cobalt night, golden windows, vermilion signs, white reflected wet pavement. Black etched comic contour and screenprinted halftone rather than photoreal neon blur. The text is the city's signage. Make a powerful immersive place, not a diagram of buildings.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-d54e9dad-ea5c-4a60-a1b8-704af63f5021.png",
+    "source": "designs/integrated-v2/04-night-market-master.png",
     "generation_mode": "built-in ImageGen",
     "reference_images": [
-      "inky-7-colour-main-1.jpg.webp",
-      "inky-7-colour-on-white-2.jpg.webp"
-    ]
+      "pimoroni-inky-impression/inky-7-colour-main-1.jpg.webp",
+      "pimoroni-inky-impression/inky-7-colour-on-white-2.jpg.webp"
+    ],
+    "generation_artifact": "exec-d54e9dad-ea5c-4a60-a1b8-704af63f5021.png"
   },
   {
     "id": "05-quota-moth",
     "prompt": "Use case: ui-mockup\nAsset type: COMPLETE integrated illustration-and-lettering for a landscape 600 x 448 pixel e-ink desk screen.\nThe two supplied photographs are STYLE REFERENCES ONLY: Image1 pop-comic portrait with bold black contours and saturated halftone; Image2 dense engraved linework. Do not copy their composition or any brand wording. Return a FLAT full-frame artwork, never a photo of a screen, room, bezel, web app, dashboard, cards, or a poster framed on a wall.\nThe usage information must be physically part of the artwork: lettering on objects, carved into shapes, woven into the composition. Every part of the image belongs to the same world. Use all seven black/white/red/yellow/cobalt/green/orange inks, with broad strong colour planes and intentional halftone. Dramatic, authored, dense with personality. Keep text legible when scaled to 600 x 448, so the 20% and 95% are enormous and supporting statistics are clear bold lettering.\nText to render accurately:\n\"CLAUDE\" with \"20%\" and \"WEEK LEFT\"\n\"CODEX\" with \"95%\" and \"WEEK LEFT\"\n\"CLAUDE 5H 100% · RESET 17:50\"\n\"FABLE 58% · FRI 18:00\"\n\"CLAUDE WEEK · FRI 18:00\"\n\"CODEX WEEK · 4 NOV 14:49\"\n\"CODEX RESETS: 2 BANKED / 0 APPLICABLE\"\n\"AS OF 17:43 SGT\"\nNo other words or decorative fake lettering. The data is the picture's own typography, never an adjacent table.\nPrimary composition: An original extravagant natural-history engraving of a giant moth with its wings spread across the entire frame, surrounded by curling fern fronds, orange flowers, red berries and small cobalt beetles. The two wing eye-spots become organic typographic emblems: the left wing's cream/yellow shape bears CLAUDE20%WEEKLEFT; the right wing's cream/blue shape bears CODEX95%WEEKLEFT. Letters follow each wing's gentle contour while the numerals remain straight, huge, beautifully readable. Supporting statistics are curved engraved botanical ribbons and specimen labels woven between the ferns, not separate panels. Black engraving, extraordinary symmetrical-but-living ornament, bold seven-ink colour separation, fine halftone in supporting areas, white text fields integrated into anatomy. Eerie, beautiful and collectible.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-79829ef1-6d8d-425c-b1bc-884e767e3cde.png",
+    "source": "designs/integrated-v2/05-quota-moth-master.png",
     "generation_mode": "built-in ImageGen",
     "reference_images": [
-      "inky-7-colour-main-1.jpg.webp",
-      "inky-7-colour-on-white-2.jpg.webp"
-    ]
+      "pimoroni-inky-impression/inky-7-colour-main-1.jpg.webp",
+      "pimoroni-inky-impression/inky-7-colour-on-white-2.jpg.webp"
+    ],
+    "generation_artifact": "exec-79829ef1-6d8d-425c-b1bc-884e767e3cde.png"
   },
   {
     "id": "06-cosmic-pinball",
     "prompt": "Use case: ui-mockup\nAsset type: COMPLETE integrated illustration-and-lettering for a landscape 600 x 448 pixel e-ink desk screen.\nThe two supplied photographs are STYLE REFERENCES ONLY: Image1 pop-comic portrait with bold black contours and saturated halftone; Image2 dense engraved linework. Do not copy their composition or any brand wording. Return a FLAT full-frame artwork, never a photo of a screen, room, bezel, web app, dashboard, cards, or a poster framed on a wall.\nThe usage information must be physically part of the artwork: lettering on objects, carved into shapes, woven into the composition. Every part of the image belongs to the same world. Use all seven black/white/red/yellow/cobalt/green/orange inks, with broad strong colour planes and intentional halftone. Dramatic, authored, dense with personality. Keep text legible when scaled to 600 x 448, so the 20% and 95% are enormous and supporting statistics are clear bold lettering.\nText to render accurately:\n\"CLAUDE\" with \"20%\" and \"WEEK LEFT\"\n\"CODEX\" with \"95%\" and \"WEEK LEFT\"\n\"CLAUDE 5H 100% · RESET 17:50\"\n\"FABLE 58% · FRI 18:00\"\n\"CLAUDE WEEK · FRI 18:00\"\n\"CODEX WEEK · 4 NOV 14:49\"\n\"CODEX RESETS: 2 BANKED / 0 APPLICABLE\"\n\"AS OF 17:43 SGT\"\nNo other words or decorative fake lettering. The data is the picture's own typography, never an adjacent table.\nPrimary composition: An original 1970s cosmic pinball playfield seen straight overhead, filling the frame with interlocking orange/yellow ramps, cobalt orbital lanes, green bumpers, red stars, black high-contrast machinery and white lettered inserts. Two enormous score/energy islands integrated into the playfield read CLAUDE20%WEEKLEFT and CODEX95%WEEKLEFT. The reset times and remaining model statistics are lettered along real ramps, bumper rings, inlaid instruction ribbons and the ball-return apron. Dense psychedelic space-age mechanical illustration, crisp screenprint with large purposeful forms and halftone, not 3D/rendered. The numbers and the artwork must feel inseparable, a real authored pinball graphic, not a dashboard laid over a background.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-82064b56-0313-44ea-94b8-fabb32290847.png",
+    "source": "designs/integrated-v2/06-cosmic-pinball-master.png",
     "generation_mode": "built-in ImageGen",
     "reference_images": [
-      "inky-7-colour-main-1.jpg.webp",
-      "inky-7-colour-on-white-2.jpg.webp"
-    ]
+      "pimoroni-inky-impression/inky-7-colour-main-1.jpg.webp",
+      "pimoroni-inky-impression/inky-7-colour-on-white-2.jpg.webp"
+    ],
+    "generation_artifact": "exec-82064b56-0313-44ea-94b8-fabb32290847.png"
   }
 ]

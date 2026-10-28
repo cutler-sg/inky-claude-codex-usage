@@ -2,85 +2,97 @@
   {
     "id": 1,
     "prompt": "Use case: illustration-story\nAsset type: original artwork for a 600 x 448 seven-colour e-ink desk display.\nPrimary request: A striking mid-century Japanese woodblock-inspired print of a small orange cargo boat passing a tropical island lighthouse at dusk, with sweeping blue waves, black carved contours, green palms, a red sun, and small yellow light.\nComposition: landscape 4:3 artwork, bold legible silhouettes, generous white sky, artwork fills the image. No frame, no dashboard and no typography; usage information will be typeset separately.\nColour palette: strictly flat black, paper white, forest green, cobalt blue, vermilion red, golden yellow, and burnt orange. Seven solid inks only. No gradients or photographic shading.\nMood: quiet purposeful journey, sophisticated collectible print that stays interesting on a desk.\nConstraints: no words, letters, numerals, logos, watermark, tiny detail, or simulated device.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-4b175848-7edb-486a-b37f-f2d7f91a7b82.png",
+    "source": "designs/artwork/01-original.png",
     "workspace_asset": "designs/artwork/01-original.png",
-    "generation_mode": "built-in image_gen"
+    "generation_mode": "built-in image_gen",
+    "generation_artifact": "exec-4b175848-7edb-486a-b37f-f2d7f91a7b82.png"
   },
   {
     "id": 2,
     "prompt": "Use case: illustration-story\nAsset type: original collectible artwork for a 600 by 448 seven-colour e-ink desk screen. Landscape 4:3.\nStyle: sophisticated graphic print, bold silhouettes, economical carved contours. Strict seven ink palette: black, white, forest green, cobalt blue, vermilion red, yellow, orange. No gradients. Details must survive reduction to a small screen.\nConstraints: artwork only. No words, letters, numerals, logos, watermark, frames, interface, graphs or device.\nPrimary request: A sailing ship navigating between two green tropical islands under an enormous yellow moon. Sweeping cobalt water, orange sails, a tiny vermilion lighthouse. Woodblock print, rich white negative space, beautiful asymmetrical composition.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-e87e70e7-2376-4467-9cb2-1de11482211d.png",
+    "source": "designs/artwork/02-original.png",
     "workspace_asset": "designs/artwork/02-original.png",
-    "generation_mode": "built-in image_gen"
+    "generation_mode": "built-in image_gen",
+    "generation_artifact": "exec-e87e70e7-2376-4467-9cb2-1de11482211d.png"
   },
   {
     "id": 3,
     "prompt": "Use case: illustration-story\nAsset type: original collectible artwork for a 600 by 448 seven-colour e-ink desk screen. Landscape 4:3.\nStyle: sophisticated graphic print, bold silhouettes, economical carved contours. Strict seven ink palette: black, white, forest green, cobalt blue, vermilion red, yellow, orange. No gradients. Details must survive reduction to a small screen.\nConstraints: artwork only. No words, letters, numerals, logos, watermark, frames, interface, graphs or device.\nPrimary request: A lone tiny astronaut tending a red-orange exploration rover on a white lunar ridge, an immense blue-green ringed planet rising above. Retro 1960s science fiction book-cover screenprint. Optimistic expedition, clean large shapes, white sky.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-e5de4aa0-776c-45cb-8841-6ae4b6569420.png",
+    "source": "designs/artwork/03-original.png",
     "workspace_asset": "designs/artwork/03-original.png",
-    "generation_mode": "built-in image_gen"
+    "generation_mode": "built-in image_gen",
+    "generation_artifact": "exec-e5de4aa0-776c-45cb-8841-6ae4b6569420.png"
   },
   {
     "id": 4,
     "prompt": "Use case: illustration-story\nAsset type: original collectible artwork for a 600 by 448 seven-colour e-ink desk screen. Landscape 4:3.\nStyle: sophisticated graphic print, bold silhouettes, economical carved contours. Strict seven ink palette: black, white, forest green, cobalt blue, vermilion red, yellow, orange. No gradients. Details must survive reduction to a small screen.\nConstraints: artwork only. No words, letters, numerals, logos, watermark, frames, interface, graphs or device.\nPrimary request: A small orange spacecraft parked beside a cobalt observatory dome on a green alien plateau. Red sun, yellow crescent moon, black star forms. Retro 1960s science fiction print, bold graphic composition, large areas of white negative space.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-fefa8335-de1f-4fdd-b5b1-0a10ad95dac1.png",
+    "source": "designs/artwork/04-original.png",
     "workspace_asset": "designs/artwork/04-original.png",
-    "generation_mode": "built-in image_gen"
+    "generation_mode": "built-in image_gen",
+    "generation_artifact": "exec-fefa8335-de1f-4fdd-b5b1-0a10ad95dac1.png"
   },
   {
     "id": 5,
     "prompt": "Use case: illustration-story\nAsset type: original collectible artwork for a 600 by 448 seven-colour e-ink desk screen. Landscape 4:3.\nStyle: sophisticated graphic print, bold silhouettes, economical carved contours. Strict seven ink palette: black, white, forest green, cobalt blue, vermilion red, yellow, orange. No gradients. Details must survive reduction to a small screen.\nConstraints: artwork only. No words, letters, numerals, logos, watermark, frames, interface, graphs or device.\nPrimary request: An exuberant tropical greenhouse with a red songbird, orange heliconia flowers, green monstera leaves, blue ceramic planter and yellow butterflies. Botanical linocut / naturalist print, broad crisp silhouettes, white background, elegant rather than cute.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-190ad1de-91a4-4717-a475-2b3a2604dcf7.png",
+    "source": "designs/artwork/05-original.png",
     "workspace_asset": "designs/artwork/05-original.png",
-    "generation_mode": "built-in image_gen"
+    "generation_mode": "built-in image_gen",
+    "generation_artifact": "exec-190ad1de-91a4-4717-a475-2b3a2604dcf7.png"
   },
   {
     "id": 6,
     "prompt": "Use case: illustration-story\nAsset type: collectible artwork for a 600 x 448 seven-colour e-ink desk display, landscape 4:3. Flat graphic print with bold silhouettes, expressive economical shapes and ample white negative space.\nColour palette: seven inks only: black, white, dark green, cobalt blue, vermilion red, yellow, orange. No gradients.\nConstraints: no words, numerals, lettering, logos, watermarks, frame, interface or simulated device. Artwork only.\nPrimary request: A curving orange koi and a cobalt koi circling beneath a single red lotus blossom, green lily pads, yellow dragonfly, white water with a few black ripple marks. Elegant Japanese stencil print, large clear forms.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-a6216bb6-01c7-4732-b4ad-4535ca4b5af1.png",
+    "source": "designs/artwork/06-original.png",
     "workspace_asset": "designs/artwork/06-original.png",
-    "generation_mode": "built-in image_gen"
+    "generation_mode": "built-in image_gen",
+    "generation_artifact": "exec-a6216bb6-01c7-4732-b4ad-4535ca4b5af1.png"
   },
   {
     "id": 7,
     "prompt": "Use case: illustration-story\nAsset type: collectible artwork for a 600 x 448 seven-colour e-ink desk display, landscape 4:3. Flat graphic print with bold silhouettes, expressive economical shapes and ample white negative space.\nColour palette: seven inks only: black, white, dark green, cobalt blue, vermilion red, yellow, orange. No gradients.\nConstraints: no words, numerals, lettering, logos, watermarks, frame, interface or simulated device. Artwork only.\nPrimary request: A tiny red mountain railway crossing an elegant black viaduct between green alpine slopes beneath a cobalt peak and an enormous orange setting sun. Vintage Swiss tourism lithograph, white clouds and yellow wildflowers, strong diagonal composition.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-ed9ee9af-e059-4b3f-b251-05bcd57e0dd7.png",
+    "source": "designs/artwork/07-original.png",
     "workspace_asset": "designs/artwork/07-original.png",
-    "generation_mode": "built-in image_gen"
+    "generation_mode": "built-in image_gen",
+    "generation_artifact": "exec-ed9ee9af-e059-4b3f-b251-05bcd57e0dd7.png"
   },
   {
     "id": 8,
     "prompt": "Use case: illustration-story\nAsset type: collectible artwork for a 600 x 448 seven-colour e-ink desk display, landscape 4:3. Flat graphic print with bold silhouettes, expressive economical shapes and ample white negative space.\nColour palette: seven inks only: black, white, dark green, cobalt blue, vermilion red, yellow, orange. No gradients.\nConstraints: no words, numerals, lettering, logos, watermarks, frame, interface or simulated device. Artwork only.\nPrimary request: A cobalt cable car suspended over a white alpine valley, orange larches, green mountain slope, red sun and yellow light. Vintage Swiss travel print, strong large silhouettes and airy landscape.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-11beee21-c642-4f38-8168-aea20a826d85.png",
+    "source": "designs/artwork/08-original.png",
     "workspace_asset": "designs/artwork/08-original.png",
-    "generation_mode": "built-in image_gen"
+    "generation_mode": "built-in image_gen",
+    "generation_artifact": "exec-11beee21-c642-4f38-8168-aea20a826d85.png"
   },
   {
     "id": 9,
     "prompt": "Use case: illustration-story\nAsset type: collectible artwork for a 600 x 448 seven-colour e-ink desk display, landscape 4:3. Flat graphic print with bold silhouettes, expressive economical shapes and ample white negative space.\nColour palette: seven inks only: black, white, dark green, cobalt blue, vermilion red, yellow, orange. No gradients.\nConstraints: no words, numerals, lettering, logos, watermarks, frame, interface or simulated device. Artwork only.\nPrimary request: A poetic mid-century abstract kinetic sculpture: a black mobile balances one enormous cobalt circle, a small orange sun, red crescent, green leaf shape and yellow rectangle in white space. Sophisticated museum screenprint, asymmetric editorial composition, clean solid geometric planes.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-c4837287-ce26-479e-ad96-4f7a9106d55f.png",
+    "source": "designs/artwork/09-original.png",
     "workspace_asset": "designs/artwork/09-original.png",
-    "generation_mode": "built-in image_gen"
+    "generation_mode": "built-in image_gen",
+    "generation_artifact": "exec-c4837287-ce26-479e-ad96-4f7a9106d55f.png"
   },
   {
     "id": 10,
     "prompt": "Use case: illustration-story\nAsset type: original artwork for a 600 x 448 seven-colour e-ink desk display. Landscape 4:3, sophisticated graphic print, broad clear silhouettes, clean white negative space.\nSeven ink palette: black, white, dark green, cobalt blue, vermilion red, yellow, orange. No gradients.\nConstraints: no lettering, numbers, words, logos, watermarks, borders, charts, interface or device mockup.\nPrimary request: A spare Bauhaus-inspired print of an orange-red sunrise balanced against cobalt blue architectural arches, green semicircle garden, black fine structural lines, yellow rectangle. Asymmetric museum poster, elegant simple forms with no texture.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-ab807e0b-5f1b-49e5-bd01-0c9c665a71da.png",
+    "source": "designs/artwork/10-original.png",
     "workspace_asset": "designs/artwork/10-original.png",
-    "generation_mode": "built-in image_gen"
+    "generation_mode": "built-in image_gen",
+    "generation_artifact": "exec-ab807e0b-5f1b-49e5-bd01-0c9c665a71da.png"
   },
   {
     "id": 11,
     "prompt": "Use case: illustration-story\nAsset type: original artwork for a 600 x 448 seven-colour e-ink desk display. Landscape 4:3, sophisticated graphic print, broad clear silhouettes, clean white negative space.\nSeven ink palette: black, white, dark green, cobalt blue, vermilion red, yellow, orange. No gradients.\nConstraints: no lettering, numbers, words, logos, watermarks, borders, charts, interface or device mockup.\nPrimary request: An orange cat sits beside a cobalt blue coffee cup on a black windowsill, green leafy plant, red book with blank spine, yellow morning sun beyond. Wry sophisticated French linocut, angular feline silhouette, quiet studio mood, big simple shapes.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-ee6740b9-5895-4378-9e08-c8a9f838e998.png",
+    "source": "designs/artwork/11-original.png",
     "workspace_asset": "designs/artwork/11-original.png",
-    "generation_mode": "built-in image_gen"
+    "generation_mode": "built-in image_gen",
+    "generation_artifact": "exec-ee6740b9-5895-4378-9e08-c8a9f838e998.png"
   },
   {
     "id": 12,
     "prompt": "Use case: illustration-story\nAsset type: original artwork for a 600 x 448 seven-colour e-ink desk display. Landscape 4:3, sophisticated graphic print, broad clear silhouettes, clean white negative space.\nSeven ink palette: black, white, dark green, cobalt blue, vermilion red, yellow, orange. No gradients.\nConstraints: no lettering, numbers, words, logos, watermarks, borders, charts, interface or device mockup.\nPrimary request: A black-and-white cat curled asleep beneath a green monstera leaf beside an orange teapot and a cobalt blue book with blank spine, red flower in a yellow vase. Sophisticated editorial linocut, white backdrop, lovely broad silhouettes.",
-    "source": "/Users/mcutler/.codex/generated_images/01a181d0-3bf2-7203-b644-f14d9de03a8c/exec-0ec97554-6c8f-4e3a-966d-8b03e5c8ce41.png",
+    "source": "designs/artwork/12-original.png",
     "workspace_asset": "designs/artwork/12-original.png",
-    "generation_mode": "built-in image_gen"
+    "generation_mode": "built-in image_gen",
+    "generation_artifact": "exec-0ec97554-6c8f-4e3a-966d-8b03e5c8ce41.png"
   }
 ]

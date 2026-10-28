@@ -1,6 +1,6 @@
 ## Verdict: **ship** — all four findings resolved
 
-Verified from `/Users/mcutler/workspaces/inky` (paths confirmed). All 24 mockup PNGs re-rendered in one batch today 18:02:22–24; each inks file is mode P, 600×448, and uses exactly the seven palette indexes. No files were modified in this pass.
+Verified from the project root (paths confirmed). All 24 mockup PNGs re-rendered in one batch today 18:02:22–24; each inks file is mode P, 600×448, and uses exactly the seven palette indexes. No files were modified in this pass.
 
 ### Finding scores
 

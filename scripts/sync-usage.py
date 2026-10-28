@@ -19,7 +19,8 @@ def main():
     parser.add_argument(
         "--collector",
         type=Path,
-        default=Path.home() / "workspaces/scripts/claude/claude_usage.py",
+        required=True,
+        help="Path to the external usage collector module (see README)",
     )
     parser.add_argument("--local-only", action="store_true")
     args = parser.parse_args()

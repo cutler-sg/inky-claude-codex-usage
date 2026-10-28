@@ -3,7 +3,7 @@
 Six non-destructive ImageGen edits of `designs/integrated-v2/*-concept.png` remove
 all frozen lettering while preserving each scene and its information surfaces.
 `*-master.png` preserves the generated output; `*-plate.png` is the 1200×896
-reusable RGB plate. Exact prompts and source paths are in `prompts.json` and the
+reusable RGB plate. Exact prompts and repository-relative source paths are in `prompts.json` and the
 PNG `impeccable:prompt` metadata. Generated with the built-in ImageGen tool.
 
 `inky_frame/live.py` projects deterministic current text into these surfaces and

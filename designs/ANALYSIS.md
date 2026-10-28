@@ -8,7 +8,7 @@ The first deliverable is six complete alternatives, not a deployment selected wi
 
 ## How the existing scripts actually work
 
-Source: `/Users/mcutler/workspaces/scripts/claude/claude_usage.py`, read in full. It is a SwiftBar presentation script plus collector; it does not export a clean JSON document from its CLI.
+Source: the external `claude_usage.py` collector module (not bundled), read in full. It is a SwiftBar presentation script plus collector; it does not export a clean JSON document from its CLI.
 
 1. `get_management_key()` (line 53) asks macOS Keychain for service `cliproxyapi-management`. This is a management credential, not either vendor's OAuth token.
 2. `list_auth_indexes()` (line 78) calls the proxy's `/v0/management/auth-files`, choosing the first enabled auth entry per provider. Multiple enabled accounts are therefore not aggregated; account identity needs an explicit choice if that changes.

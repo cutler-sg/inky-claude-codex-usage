@@ -16,7 +16,7 @@ Six complete ImageGen compositions inspired directly by the project product phot
 - **Quota Moth:** balances are wing markings; smaller figures follow botanical specimen ribbons.
 - **Cosmic Pinball:** balances occupy the playfield's scoring islands; rails, inserts, and the apron hold the reset details.
 
-Each `*-master.png` is the original generated image. `*-concept.png` is an exact 600×448 export in the generated colours. `*-inks.png` is an indexed seven-slot print proof. `index.html` is a self-contained comparison page; `preview.html` uses absolute local image paths for T3's automatic image inlining. Exact prompts and reference paths are in `prompts.json`; prompts are also embedded in PNG metadata.
+Each `*-master.png` is the original generated image. `*-concept.png` is an exact 600×448 export in the generated colours. `*-inks.png` is an indexed seven-slot print proof. `index.html` is a self-contained comparison page; the generated, ignored `preview.html` uses absolute local image paths for T3's automatic image inlining. Exact prompts and repository-relative reference paths are in `prompts.json`; prompts are also embedded in PNG metadata.
 
 These are **concept mockups with baked-in numbers**, deliberately authorized for the artwork exploration. They use the earlier frozen snapshot, not current usage. At this study stage, no image had been displayed on the Pi and no scheduler installed. Digital colours are not a calibration of the physical display.
 

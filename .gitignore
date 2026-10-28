@@ -5,8 +5,20 @@ __pycache__/
 .ruff_cache/
 .env*
 secrets/
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+credentials*.json
+service-account*.json
 state/
 dist/
 *.egg-info/
 # Optional local vendor reference checkout; use the pinned installed driver.
 python-library-inky/
+# Machine-specific generated previews and design-tool cache.
+designs/usage-gallery-preview.html
+designs/integrated-v2/preview.html
+.impeccable/hook.cache.json

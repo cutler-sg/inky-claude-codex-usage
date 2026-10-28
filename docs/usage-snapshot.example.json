@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "collected_at": 0,
+  "providers": {
+    "claude": {
+      "observed_at": null,
+      "error": "Collector not configured",
+      "windows": [],
+      "credits": null
+    },
+    "codex": {
+      "observed_at": null,
+      "error": "Collector not configured",
+      "windows": [],
+      "credits": null
+    }
+  }
+}

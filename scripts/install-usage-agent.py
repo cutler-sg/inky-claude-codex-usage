@@ -14,7 +14,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--host", default="pi@inky.local")
     parser.add_argument(
-        "--collector", type=Path, default=Path.home() / "workspaces/scripts/claude/claude_usage.py"
+        "--collector",
+        type=Path,
+        required=True,
+        help="Path to the external usage collector module (see README)",
     )
     args = parser.parse_args()
     agent = Path.home() / "Library/LaunchAgents" / f"{LABEL}.plist"
