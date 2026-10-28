@@ -2,7 +2,7 @@
 
 **Historical composition study.** All six are now implemented in the live button
 gallery using clean plates and real usage overlays. See the [current controls and
-installation](../../README.md#live-gallery-and-buttons) and [live assets](../../assets/live/).
+installation](../../docs/hardware-and-operations.md#live-gallery-and-buttons) and [live assets](../../assets/live/).
 The concept/proof files here intentionally preserve the original frozen numbers.
 
 Six complete ImageGen compositions inspired directly by the project product photographs: the full-screen pop-comic portrait and the engraved octopus circuit-board illustration. The numbers are part of the illustration, as requested, rather than an adjacent dashboard.
