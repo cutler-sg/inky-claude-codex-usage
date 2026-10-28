@@ -18,7 +18,7 @@ Updated: 2026-10-28. Branch: `feat/initial-setup`.
 - [x] Enable SPI/I²C and SPI chip-select overlay; user rebooted, device nodes verified (completed: 2026-10-28).
 - [x] Deploy, read EEPROM, refresh sample, and record measured results: PCB 1.2, variant 14, 34.4-second command (completed: 2026-10-28).
 - [x] Confirm optical image on physical display: MC confirmed the sample displayed correctly, including with the driver's held-high busy fallback (completed: 2026-10-28).
-- [ ] Finish README and commit verified setup.
+- [x] Finish README and commit verified setup (completed: 2026-10-28).
 
 ## Verification
 
