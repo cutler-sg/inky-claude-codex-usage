@@ -1,5 +1,10 @@
 # Integrated artwork revision
 
+**Historical composition study.** All six are now implemented in the live button
+gallery using clean plates and real usage overlays. See the [current controls and
+installation](../../README.md#live-gallery-and-buttons) and [live assets](../../assets/live/).
+The concept/proof files here intentionally preserve the original frozen numbers.
+
 Six complete ImageGen compositions inspired directly by the project product photographs: the full-screen pop-comic portrait and the engraved octopus circuit-board illustration. The numbers are part of the illustration, as requested, rather than an adjacent dashboard.
 
 ## Concepts
@@ -13,7 +18,7 @@ Six complete ImageGen compositions inspired directly by the project product phot
 
 Each `*-master.png` is the original generated image. `*-concept.png` is an exact 600×448 export in the generated colours. `*-inks.png` is an indexed seven-slot print proof. `index.html` is a self-contained comparison page; `preview.html` uses absolute local image paths for T3's automatic image inlining. Exact prompts and reference paths are in `prompts.json`; prompts are also embedded in PNG metadata.
 
-These are **concept mockups with baked-in numbers**, deliberately authorized for the artwork exploration. They use the earlier frozen snapshot, not current usage. No image has been displayed on the Pi and no scheduler installed. Digital colours are not a calibration of the physical display.
+These are **concept mockups with baked-in numbers**, deliberately authorized for the artwork exploration. They use the earlier frozen snapshot, not current usage. At this study stage, no image had been displayed on the Pi and no scheduler installed. Digital colours are not a calibration of the physical display.
 
 ## Dynamic rendering after selection
 

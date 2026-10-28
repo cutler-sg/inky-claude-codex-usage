@@ -5,7 +5,8 @@ host=${1:-pi@inky.local}
 case "$host" in -*) echo 'Invalid SSH host' >&2; exit 1 ;; esac
 ssh -4 -o BatchMode=yes -o ConnectTimeout=15 "$host" 'mkdir -p /home/pi/inky'
 COPYFILE_DISABLE=1 tar --no-xattrs --exclude=__pycache__ -czf - \
-    inky_frame scripts assets pyproject.toml requirements-pi.txt README.md uv.lock |
+    --exclude='*-master.png' \
+    inky_frame scripts assets designs/fonts pyproject.toml requirements-pi.txt README.md uv.lock |
     ssh -4 -o BatchMode=yes "$host" 'cd /home/pi/inky && tar -xzf -'
 ssh -4 -o BatchMode=yes "$host" '
     cd /home/pi/inky &&

@@ -2,7 +2,48 @@
 
 An SSH-controlled e-ink frame: Raspberry Pi Zero 2 W + discontinued **Pimoroni Inky Impression 5.7-inch, seven-colour, 600 × 448** display.
 
-Images are streamed over the existing SSH connection, fitted with Pillow, quantized by Pimoroni's driver, and sent to the panel. No daemon or HTTP endpoint is needed. E-ink retains the last image without power or a running process.
+Six full-screen artworks now show real Claude/Codex subscription usage, with the display's four buttons selecting the artwork. A small Pi service handles buttons and renders locally; the Mac sends credential-free usage snapshots over SSH every ten minutes. E-ink retains the last image without power.
+
+## Live gallery and buttons
+
+All six approved compositions are installed: Pop Comic, Budget Kraken, Reactor Room, Night Market, Quota Moth, and Cosmic Pinball. The [clean plates and exact ImageGen prompts](assets/live/) preserve their original illustrations; `inky_frame/live.py` draws changing values into their balloons, ribbons, tanks, signs, wings and playfield. These live images replace every frozen usage value. Original concept studies remain below as history.
+
+| Button | Action |
+| --- | --- |
+| A (GPIO 5) | Previous artwork, wrapping at the beginning |
+| B (GPIO 6) | Next artwork, wrapping at the end |
+| C (GPIO 16) | Another random artwork |
+| D (GPIO 24) | Budget Kraken |
+
+A complete panel refresh takes about 34 seconds. Presses settle for 0.8 seconds, and switch bounce is filtered for 200 ms. During a refresh, buttons select what appears next; only the latest selection is kept. Refresh starts are at least 40 seconds apart. Selection survives a service restart or reboot. No slideshow runs automatically.
+
+**Live data:** the existing collector at `~/workspaces/scripts/claude/claude_usage.py` fetches through CLIProxyAPI using its existing macOS Keychain path. Neither credentials nor raw provider responses are sent to the Pi. Collection does not invoke the collector's unrelated OpenRouter code or redeem reset credits. A failed provider keeps its last successful values and observation time while the other provider can update normally.
+
+The timestamp is the oldest provider observation in the snapshot, in Singapore time. A provider header says `STALE` after a fetch error or 20 minutes without a new observation. After 24 hours, its values become unavailable. Passed reset deadlines say `UPDATE PENDING`; they never imply replenishment. The Pi checks freshness locally even when the Mac is asleep, but new usage collection requires this Mac to be awake, logged in, and able to reach hwi and the Pi. Scoped limits retain their reported model names; missing windows and credit counts stay missing.
+
+```sh
+# Reinstall the Pi gallery and boot service
+bash scripts/install-gallery.sh
+
+# Install/update the Mac login job (runs immediately, then every 600 seconds)
+uv run python scripts/install-usage-agent.py
+
+# Fetch and send usage immediately
+uv run python scripts/sync-usage.py
+
+# The same actions used by the physical buttons
+ssh -4 pi@inky.local 'cd /home/pi/inky && .venv/bin/python -m inky_frame.gallery select next'
+ssh -4 pi@inky.local 'cd /home/pi/inky && .venv/bin/python -m inky_frame.gallery select home'
+ssh -4 pi@inky.local 'cd /home/pi/inky && .venv/bin/python -m inky_frame.gallery status'
+ssh -4 pi@inky.local 'journalctl -u inky-gallery.service -n 30 --no-pager'
+launchctl print gui/$(id -u)/com.cotdp.inky-usage
+```
+
+Pi service: `inky-gallery.service`, running as `pi`, enabled for boot. Mac launch agent: `~/Library/LaunchAgents/com.cotdp.inky-usage.plist`; logs are `state/usage-sync.log` and `state/usage-sync-error.log`. The latest sanitized data is `state/usage.json` on both machines. Pi selection/runtime status lives in `state/gallery/`; successful physical refresh state remains `state/status.json` and `state/current.png`.
+
+Indexed gallery frames pass colour slots 0–6 directly to the UC8159 driver, preserving the proof's palette instead of quantizing it twice. Each refresh runs in a separate child process through the existing hardware lock. The listener owns only the four button pins, so the original one-shot SSH pushes below remain available. Stop the gallery before using a separate persistent GPIO button program.
+
+The first live Budget Kraken refresh completed at **2026-10-28 20:48:44 +08** in **34.18 seconds**, with both provider fetches successful. Software completion does not optically verify the new screen; MC can now inspect it and test physical button presses.
 
 ## Usage display design study
 
@@ -10,7 +51,7 @@ Images are streamed over the existing SSH connection, fitted with Pillow, quanti
 
 [Open the comparison gallery](designs/usage-gallery.html) for six 600×448 screen layouts, each with two original artwork editions. It is self-contained and works directly from disk. Controls compare both editions, seven digital inks versus a muted paper approximation, and fit versus 1:1 pixel viewing.
 
-[Research and refresh proposal](designs/ANALYSIS.md) traces the existing Claude/Codex collector, defines remaining/reset/credit/freshness semantics, and proposes a ten-minute collection/render/SSH-push job. The mockups use a clearly dated frozen cache snapshot. No periodic usage job is installed yet; the Pi still shows the verified sample.
+[Research and refresh proposal](designs/ANALYSIS.md) records the original collector investigation and remaining/reset/credit/freshness semantics. Its frozen-snapshot studies and proposed deployment are historical; the live gallery above is now installed.
 
 All twelve artwork originals are in `designs/artwork/`; [exact prompts and provenance](designs/prompts/artwork.json) record built-in ImageGen generation. Fonts are bundled with their OFL licenses. Final screen PNGs are in `designs/mockups/` (600×448, indexed, exactly seven colour slots).
 
@@ -84,7 +125,7 @@ This is the original **5.7-inch ACeP seven-colour panel**, not a newer Spectra 6
 - Reflective E Ink Gallery Palette 4000; no backlight. Readable in sunlight, with a >170° viewing angle.
 - Approximate refresh: 30 seconds. Best colour at room temperature.
 - Board: 125.4 × 99.5 × 9 mm including display/header; visible area: 114.9 × 85.8 mm; pixel pitch: 0.1915 mm.
-- Four side-mounted buttons, available for future controls; no button behaviour is installed.
+- Four side-mounted buttons, now used by the live gallery as documented above.
 - Glass panel: handle the PCB edges; do not press the glass or use overlong mounting screws. Power down before changing the header connection.
 
 ### GPIO wiring
@@ -138,7 +179,7 @@ Verified Pi Python dependencies: Pillow 11.1.0, NumPy 2.2.4, gpiod 2.2.0, spidev
 
 The first sample command returned successfully at **2026-10-28 17:29:52 +08**, taking **34.4 seconds**, and **MC confirmed the sample displayed correctly**. The vendor driver reported the busy line held high and used its timed waits, including the full 32-second refresh wait; this fallback worked on this particular unit. Sending the same image again returned `unchanged` without refreshing.
 
-For scheduling or generated dashboards, render a PNG locally and invoke `scripts/push.py` from the generating job. Alternatively, run `.venv/bin/python -m inky_frame show /path/to/image.png` on the Pi. No refresh-on-boot service is necessary: the panel retains its image.
+For independent generated images, invoke `scripts/push.py` or run `.venv/bin/python -m inky_frame show /path/to/image.png` on the Pi. These share the gallery's refresh lock. A one-shot image remains until the next gallery selection, usage update, or freshness transition; stop `inky-gallery.service` if the independent image should remain indefinitely. The gallery service starts on boot to restore button control; it skips an identical prepared frame.
 
 ## Troubleshooting
 

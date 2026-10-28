@@ -1,0 +1,18 @@
+[Unit]
+Description=Inky live usage artwork and button controls
+After=local-fs.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/inky
+ExecStart=/home/pi/inky/.venv/bin/python -m inky_frame.gallery run
+Restart=on-failure
+RestartSec=10
+KillMode=mixed
+TimeoutStopSec=120
+Environment=PYTHONUNBUFFERED=1
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

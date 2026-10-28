@@ -1,6 +1,6 @@
 ---
 name: Inky desk companion
-description: Six exact-resolution usage-display studies on one seven-colour e-ink panel; no composition selected yet
+description: Six approved illustrated usage displays with live text integrated into the artwork
 colors:
   ink-black: "#000000"
   ink-white: "#ffffff"
@@ -17,109 +17,113 @@ colors:
   work-yellow: "#f2cb19"
   work-orange: "#eb821b"
 typography:
-  display:
+  display-comic:
+    fontFamily: "Bangers"
+  display-engraved:
     fontFamily: "DM Serif Display"
-  headline-condensed:
+  label:
     fontFamily: "Barlow Condensed SemiBold"
-  bold:
-    fontFamily: "Barlow SemiBold"
-  body:
-    fontFamily: "Barlow Medium"
-  mono:
-    fontFamily: "Space Mono"
 ---
 
 # Design System: Inky desk companion
 
-## Integrated artwork revision — current direction
-
-MC rejected the first study's understated illustration and the separation between artwork and statistics. The current study is [integrated-v2](designs/integrated-v2/index.html): six complete ImageGen compositions with their numbers baked into the image, using the project's pop-comic and engraved octopus product photos as direct style references. Speech balloons, tentacle coils, reactor housings, shop signs, moth wing markings, and pinball inserts carry the information. No one composition is selected yet.
-
-The sections below document the **earlier study** and its deterministic renderer, retained as history. Its sidebar/plate layouts and font restrictions are not the authority for the revised generated lettering. The revised study retains the exact 600×448 output, seven-slot print proof, allowance semantics, and frozen data. Masters, exact prompts, export scripts, and the dynamic-overlay proposal live in `designs/integrated-v2/`.
-
-<!-- STUDY STAGE: six alternative compositions, deliberately unselected. Re-run this document once one is chosen for the live Pi build; at that point collapse this file to the single chosen identity. -->
-
 ## Overview
 
-This is not a settled visual identity. MC asked for six materially different exact-resolution screen designs before any is chosen for the 600×448, seven-colour Inky Impression 5.7 on a Raspberry Pi Zero 2 W. All six share one fixed canvas, one physical palette, one data snapshot, and one semantic contract; what varies is composition, type voice, and how much of the frame goes to artwork versus numbers. Nothing here should be read as a brand decision — it is a controlled comparison.
+MC approved all six [integrated-v2 compositions](designs/integrated-v2/index.html) and authorized unattended live implementation. The screen is a full-frame illustration whose own balloons, tentacle coils, machinery, signs, wing markings, or pinball inserts carry usage information. MC rejected the first study's understated artwork and separation between picture and statistics.
 
-**Key characteristics shared by all six:**
-- Canvas is exactly 600×448px, rendered at 2× internally (`SCALE = 2` in `designs/render.py`) then quantized down — never drawn at native size.
-- Every pixel reduces to one of seven fixed palette indexes (0–6); there is no eighth colour or alpha blending at render time.
-- All six use the same frozen snapshot (`designs/data/snapshot.json`, `as_of` 2026-10-28T17:43:14+08:00) and the same stable data positions concept: a layout's number regions keep their job even if the artwork behind them changes.
-- Each composition ships with two original artwork editions (12 originals total, one per `designs/artwork/NN-original.png`) and two palette proofs per edition: a "seven digital inks" proof and a muted "paper approximation" proof. The paper proof approximates the vendor's printed reference colours; it is not a calibrated photograph of the glass, and no composition has been visually confirmed under the desk's actual lighting.
+The live system preserves these compositions using six clean, text-free ImageGen plates in `assets/live/`. The edit prompts and original source paths are recorded in [prompts.json](assets/live/prompts.json). `inky_frame/live.py` renders deterministic typography into the original surfaces using projective transforms; no generated frozen numbers remain in the live text layer.
+
+**Key characteristics:**
+
+- Exactly 600×448 pixels with seven physical palette indexes (0–6).
+- Full-frame artwork with fixed information-bearing surfaces; text adapts within each surface.
+- Large provider allowance figures, supporting quota/reset information, and visible observation time.
+- Six approved identities in one button-controlled gallery; Budget Kraken is home.
+
+**Historical provenance.** The earlier twelve-artwork comparison remains in `designs/artwork/`, `designs/mockups/`, [ANALYSIS.md](designs/ANALYSIS.md), and `designs/review/`; its deterministic sidebar/plate renderer is `designs/render.py`. It used the frozen snapshot `designs/data/snapshot.json` (2026-10-28T17:43:14+08:00), DM Serif Display/Barlow/Space Mono, and seven-ink plus approximate-paper proofs. Its six layouts were Harbour Almanac, Mission Control, The Conservatory, Departure Board, The Balance, and Studio Companion. The later `designs/integrated-v2/` masters, prompts, proofs, and overlay proposal record the approved composition study. Both studies remain historical references; the live renderer and `assets/live/` define current output.
 
 ## Colors
 
-The palette is not six different palettes — it is one seven-slot indexed palette rendered two ways. `INKS` supplies the nominal RGB representation of each panel colour. `WORK` is a chosen reference palette used during quantization, so dark green artwork maps to the green slot rather than black. `PAPER` supplies the vendor's muted reference colours for the approximate paper proof. No table is a calibration of this particular physical display.
+One seven-slot indexed palette serves every composition. The `ink-*` tokens are the exact vendor RGB palette in index order: black, white, green, blue, red, yellow, orange. The `work-*` tokens are the quantization references used to map artwork to those physical slots. They do not describe calibrated physical colour under desk lighting.
 
 ### Primary
-- **Ink Black** (`#000000` ink / `#000000` on-screen): primary text, rules, and the dominant structural colour in every composition — Mission Control's instrument rail fills the full black at index 0.
-- **Ink White** (`#ffffff` ink / `#ffffff` on-screen): the paper ground. Every layout starts from a full-white canvas (`Sheet.__init__`) and treats white as the resting state, not a colour choice per layout.
 
-### Secondary
-- **Ink Orange** (`#ff8c00` ink / `#eb821b` on-screen): the warmest accent, used sparingly as a single highlight element (e.g. Mission Control's reset-marker bar).
-- **Ink Yellow** (`#ffff00` ink / `#f2cb19` working reference): used for emphasis against black (Mission Control's "WEEKLY ALLOWANCE LEFT"), artwork, and registration marks.
+- **Ink Red** and **Ink Blue** distinguish large allowance figures in most compositions. Night Market uses yellow and red against dark signs; Cosmic Pinball uses red for both allowance figures and blue for reset details. Provider names always supply identification independently of colour.
+- **Ink Yellow** and **Ink Orange** carry the illustrated print character, signs, and highlights.
 
-### Tertiary
-- **Ink Red** (`#ff0000` ink / `#df3322` working reference): appears in artwork and registration marks, not body copy. A later live status system could give it an explicit warning role; none is installed now.
-- **Ink Blue** (`#0000ff` ink / `#174992` on-screen) and **Ink Green** (`#00ff00` ink / `#16603d` on-screen): secondary row/marker accents in the same indicator role as red; none of the six compositions currently uses blue or green as a primary identity colour.
+### Neutral
+
+- **Ink Black** supplies the engraving, outlines, and most text.
+- **Ink White** supplies balloons, ribbons, labels, and other light text-bearing surfaces. Night Market and Cosmic Pinball also use white lettering on dark surfaces.
 
 ### Named Rules
-**The Neutral-Text Rule.** Before quantization, any pixel whose RGB channels differ by ≤28 is snapped to pure black or pure white (`Sheet.finish()`, `designs/render.py:87-93`). Anti-aliased text and rules would otherwise pick up stray colour fringes at the seven-colour quantization boundary; this one function is what keeps body text and hairlines clean black/white across all twelve rendered mockups. It cannot neutralize text that is deliberately set in a colour ink (see Do's and Don'ts).
 
-**The Seven-Slot Rule.** A render that doesn't use all seven palette indexes is treated as a bug, not a style choice (`assert used == set(range(7))` in `render.py:main`) — every composition must prove the full panel actually receives every ink, including via the footer's seven-chip registration mark (`footer()`, `render.py:130-136`).
+**The Seven-Slot Rule.** Final output is a 600×448 `P` image using only indexes 0–6 and the exact vendor palette; `gallery.show_frame()` validates dimensions, indexes, and palette before display. Do not re-quantize an indexed proof on the Pi.
+
+**The Neutral-Text Rule.** Before quantization, pixels whose RGB channels differ by at most 28 snap to black or white. This prevents neutral anti-aliasing from becoming coloured fringes. Coloured text has a black stroke before the final palette conversion.
 
 ## Typography
 
-**Display font:** DM Serif Display — the editorial voice, used for headline numbers and titles in the warmer compositions (Harbour Almanac, Studio Companion, The Conservatory).
-**Headline/condensed font:** Barlow Condensed SemiBold — the instrument voice, used for large tight numerals and all-caps labels in the colder compositions (Mission Control, Departure Board, The Balance).
-**Body font:** Barlow Medium, with Barlow SemiBold for bold emphasis (section labels like "CLAUDE"/"CODEX").
-**Label/mono font:** Space Mono — used for the `AS OF … SGT` footer timestamp in five layouts. Mission Control uses its condensed instrument font for that line instead.
+**Comic display:** Bangers for Pop Comic, Reactor Room, Night Market, and Cosmic Pinball. Its compact, emphatic lettering belongs to the illustrated signs and instruments.
 
-**Character:** Headline numbers follow one axis per composition: serif-editorial (DM Serif Display + Barlow) or condensed-instrument (Barlow Condensed + Barlow). The observation timestamp remains a distinct, small data line in every layout.
+**Engraved display:** DM Serif Display for Budget Kraken and Quota Moth, matching their engraved character.
+
+**Supporting labels:** Barlow Condensed SemiBold for session, scope, reset, credit, and observation text across all six.
+
+`Canvas.panel()` renders each text patch at 2×, fits each line to its allocated surface, then projects it into the composition's quadrilateral. Font sizes are fitted per surface rather than governed by a global size scale. The final frame is downsampled and quantized without dithering.
 
 ### Hierarchy
-- **Display** (DM Serif Display, 25–68px depending on role): provider names, remaining-percentage numbers, and editorial titles.
-- **Headline-condensed** (Barlow Condensed SemiBold, 28–95px): the condensed alternative to Display for the colder compositions' headline numbers and all-caps section titles.
-- **Bold** (Barlow SemiBold, 21–23px): capitalized provider labels in the numeral-led layouts. Conservatory uses serif title case; Departure Board uses condensed title case.
-- **Body** (Barlow Medium, 13–20px): supporting facts — weekly-left captions, reset lines, scope and credit notes.
-- **Mono** (Space Mono, 13px): the `AS OF {time} SGT  /  {date}` footer line only. Never reused for any other purpose — its presence is the freshness signal.
 
-### Timestamp treatment
-Keep observation time visible and separate from reset deadlines. The current study uses a 13px footer; the final live layout still needs an explicit stale-state treatment.
+- Provider name, remaining percentage, and window label form each main information surface.
+- Weekly remaining leads when reported; otherwise the most-used reported window supplies the headline.
+- Claude session and scoped-model allowance, provider reset deadlines, and Codex reset credits occupy supporting surfaces.
+- Observation time remains distinct from reset time. All six compositions use the oldest provider observation; Pop Comic splits its date, time, and SGT label across the starburst.
 
 ## Layout
 
-There is no shared grid — each of the six studies is a distinct spatial argument for the same four facts (Claude weekly remaining, Codex weekly remaining, next reset, supporting session/scope/credit notes), tested against the same 600×448 frame:
+The panel has one fixed canvas with no responsive breakpoints. Preserve each approved plate's artwork and surface positions. `render()` in `inky_frame/live.py` owns the exact quadrilaterals:
 
-1. **Harbour Almanac** (`harbour()`) — left artwork plate (20,73,300,224) beside a right-hand two-provider numeral column; supporting facts in a lower ledger strip; full-width footer rule.
-2. **Mission Control** (`mission()`) — a full-height black instrument rail (0,0,238,448) against a right-hand artwork plate and numeral stack; the one composition with a filled black field rather than a white ground.
-3. **The Conservatory** (`conservatory()`) — tall vertical artwork plate (20,83,200,294) with a wide right-hand typographic ledger split top/bottom by provider.
-4. **Departure Board** (`departures()`) — full-width artwork banner (0,0,600,180) above a four-row ruled table, the only composition that lists every window (session, weekly, scoped, Codex weekly) as explicit rows rather than grouping by provider.
-5. **The Balance** (`balance()`) — the boldest reduction: two very large numerals left, one artwork plate right (225,15,355,275), minimal supporting text.
-6. **Studio Companion** (`studio()`) — artwork plate (20,82,277,235) beside a warm serif numeral column, closest in tone to Harbour Almanac but with session/scope notes folded into the lower-left instead of a ledger.
+| Composition | Information surfaces |
+| --- | --- |
+| Pop Comic | Thought balloons, caption ribbons, bottom strip, and timestamp starburst |
+| Budget Kraken | Two tentacle-enclosed ovals and ribbons woven through the arms |
+| Reactor Room | Curved tank labels, gauge faces, lower plaques, and metal placards |
+| Night Market | Shop signs, awnings, lantern, shutter, and lower sign |
+| Quota Moth | Pale wing markings and botanical ribbons |
+| Cosmic Pinball | Planet scoring islands, name headers, inserts, plaques, and apron strips |
 
-All six enforce hard canvas bounds: `Sheet.text()` raises if a string would print outside 600×448 or past a caller-declared `max_width`, so layout overflow is a render-time error, not a silent clip.
+The original surfaces establish the layout; adding a detached statistics rail would repeat the treatment MC rejected. No automatic slideshow is installed.
 
 ## Elevation & Depth
 
-Not applicable. This is a reflective e-ink panel with seven flat indexed colours; there is no shadow, blur, or transparency primitive available to any composition, and none is simulated.
+Depth comes from the artwork's engraving, perspective, halftone, and overlapping forms. Dynamic text conforms to those surfaces. The physical output has seven flat colours; the renderer adds no interface shadows, blur, or translucent panels.
 
 ## Shapes
 
-Every shape is an axis-aligned rectangle, line, or glyph — `Sheet.box()` and `Sheet.line()` are the only drawing primitives besides text and the artwork paste. No rounded corners, no diagonals, no decorative strokes beyond flat rules and solid colour chips (used as list markers in Departure Board and as a legend/registration strip in the footer).
+Preserve the plate's organic coils, curved labels, ribbons, signs, and illustrated borders. Text patches are transparent during composition and project into four-point surfaces; their patch rectangles must not become visible containers. Do not replace the original surfaces with generic cards.
+
+## Components
+
+### Allowance and source state
+
+Each provider has an independent observation and health state. Its header gains `/ STALE` after 20 minutes or a collection error, and `/ UNAVAILABLE` after 24 hours without a valid observation. Unavailable values display `--` or `NOT REPORTED`; missing windows never become zero usage or full allowance. Passed reset deadlines display `UPDATE PENDING` until a new observation arrives.
+
+### Physical navigation
+
+A selects previous, B next, C another random composition, and D Budget Kraken. Selection persists. The Pi's `inky-gallery.service` debounces presses for 200ms and settles changes for 0.8 seconds. One child performs each refresh; presses during a refresh coalesce into the latest pending selection. Refresh starts remain at least 40 seconds apart, so visible selection changes wait for the panel's slow refresh.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep every layout's data region fixed and swap only the artwork behind/beside it — the point of the twelve-original collection is daily rotation without redesigning the screen (`designs/ANALYSIS.md`).
-- **Do** run the Neutral-Text Rule's ΔRGB≤28 snap on any new text or rule before quantization; it is what keeps black text from fringing orange/green at the seven-colour boundary.
-- **Do** treat the paper-approximation PNGs as vendor-reference proofs for comparing compositions on a laptop screen, not as a stand-in for the physical panel under desk lighting.
-- **Do** calculate remaining allowance as `100 - used_percent` (or Claude's equivalent used percentage), label the limiting window explicitly, and keep session/weekly/scoped figures distinct (`PRODUCT.md`, `designs/ANALYSIS.md`).
+
+- **Do** preserve the approved artwork and draw live values within its original surfaces.
+- **Do** keep session, weekly, scoped-model, credits, source health, observation time, and reset deadlines semantically distinct.
+- **Do** retain the exact seven-index vendor palette through the display path.
+- **Do** treat digital and approximate-paper proofs as references rather than calibrated photographs of the panel.
 
 ### Don't:
-- **Don't** treat any one of the six as the chosen production identity. MC has not picked one; round-2 review recommends Mission Control as a tentative default pending an on-device black-field contrast check, with Harbour Almanac as the light alternate — that is a recommendation on record, not a decision.
-- **Don't** claim this file encodes verified physical colour or optical behaviour. All colour statements here are digital pixel values and vendor-reference approximations (`WORK`/`PAPER` tables in `designs/render.py`); the independent review's F1–F4 findings were resolved against pixel data, not glass. No composition has an optical/hardware claim attached.
-- **Don't** set body or rule colour in anything but ink-black or ink-white. Only labels deliberately chosen as a colour accent (e.g. Mission Control's yellow "WEEKLY ALLOWANCE LEFT") should carry a non-neutral ink, and only with the understanding that the Neutral-Text Rule cannot clean up that label's own anti-aliased edges.
-- **Don't** infer a workflow-default renderer, a scheduled push, or any live-refresh behaviour from this file. No periodic collection or render job is installed on the Pi; these are static study renders from a single frozen snapshot (`designs/data/snapshot.json`), not a running display.
+
+- **Don't** use frozen ImageGen lettering as live usage, or infer replenishment from a passed reset deadline.
+- **Don't** hide a provider failure behind the other provider's fresh timestamp.
+- **Don't** treat historical first-study fonts, sidebar layouts, or Mission Control recommendations as current authority.
+- **Don't** claim optical verification of the live compositions. The first live Budget Kraken refresh completed at 20:48:44 +08:00 on 2026-10-28 (34.18 seconds); MC's visual check under desk lighting remains outstanding.
