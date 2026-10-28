@@ -1,4 +1,4 @@
-# Inky
+# Inky Claude/Codex Usage Display
 
 Claude and Codex usage, turned into a little desk artwork.
 
