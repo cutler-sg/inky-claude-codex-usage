@@ -22,8 +22,8 @@ plates. Physical e-ink colours differ from these RGB previews.*
 
 - **Real usage at a glance.** Claude and Codex remaining allowance, session and scoped
   limits, reset times, and Codex reset-credit availability.
-- **Six artworks to cycle through.** Original ImageGen compositions with live text
-  drawn into the artwork's own shapes and surfaces.
+- **Six artworks that rotate automatically.** Each usage refresh advances to the
+  next composition, with live text drawn into the artwork's own shapes and surfaces.
 - **A slower kind of screen.** The Pi polls usage every ten minutes. A full refresh takes
   about 34 seconds, and the image stays visible when the display loses power.
 - **Honest about freshness.** Old observations are marked stale; missing data stays
@@ -33,10 +33,12 @@ The display's four buttons choose the artwork:
 
 | A | B | C | D |
 | --- | --- | --- | --- |
-| Previous | Next | Random | Budget Kraken |
+| Previous + lock | Next + lock | Random + resume rotation | Budget Kraken + lock |
 
-Presses during a refresh select what appears next. The latest selection is kept,
-and the chosen artwork survives a restart.
+Rotation is enabled by default and follows usage updates or freshness changes.
+A/B lock the artwork while its usage figures continue updating; C picks another
+random artwork and resumes rotation. Presses during a refresh select what appears
+next. The latest selection and rotation/lock mode survive a restart.
 
 ## Make one
 

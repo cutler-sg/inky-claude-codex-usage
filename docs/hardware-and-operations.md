@@ -146,12 +146,27 @@ All six approved compositions are installed: Pop Comic, Budget Kraken, Reactor R
 
 | Button | Action |
 | --- | --- |
-| A (GPIO 5) | Previous artwork, wrapping at the beginning |
-| B (GPIO 6) | Next artwork, wrapping at the end |
-| C (GPIO 16) | Another random artwork |
-| D (GPIO 24) | Budget Kraken |
+| A (GPIO 5) | Previous artwork and lock, wrapping at the beginning |
+| B (GPIO 6) | Next artwork and lock, wrapping at the end |
+| C (GPIO 16) | Another random artwork and resume rotation |
+| D (GPIO 24) | Budget Kraken and lock |
 
-A complete panel refresh takes about 34 seconds. Presses settle for 0.8 seconds, and switch bounce is filtered for 200 ms. During a refresh, buttons select what appears next; only the latest selection is kept. Refresh starts are at least 40 seconds apart. Selection survives a service restart or reboot. No slideshow runs automatically.
+A complete panel refresh takes about 34 seconds. Rotation is enabled by default:
+each new usage collection or visible freshness change advances one artwork in
+sequence. A/B lock the selection while usage figures continue updating; C chooses
+a different random artwork immediately and resumes rotation on subsequent updates.
+There is no separate fast slideshow timer. Presses settle for 0.8 seconds, and
+switch bounce is filtered for 200 ms. During a refresh, only the latest pending
+button/data request is kept. Busy updates coalesce into one automatic advance;
+unchanged polls and same-update retries do not rotate again. Refresh starts remain
+at least 40 seconds apart.
+
+`state/gallery/selection.json` persists the artwork, `mode` (`rotate` or `locked`),
+and last scheduled update hash. Existing artwork-only files default to rotating
+and keep their current selection until the next update. An unchanged restart
+restores the same artwork. `gallery status` reports the mode alongside selection
+and refresh status; `gallery select random` resumes rotation through the same
+path as button C.
 
 **Live data:** the built-in Pi collector calls CLIProxyAPI directly over verified
 HTTPS. It discovers enabled Claude/Codex accounts through the management API and
@@ -362,8 +377,9 @@ golden hashes specify their Pillow version; when another Pillow version is used,
 compare before/after in that environment separately. The initial multi-profile
 rollout also did this on the actual Pi's Pillow 11.1.0. Successful-frame
 hashes now include profile, dimensions, mode, and palette, so the migration causes
-one refresh even if the image has not otherwise changed. Selection and snapshots
-retain their existing formats.
+one refresh even if the image has not otherwise changed. Usage snapshots retain
+their existing format; gallery selections also record the rotation mode and
+update hash, with automatic migration of older artwork-only selections.
 
 ## Development
 

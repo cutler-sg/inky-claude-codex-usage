@@ -1,6 +1,7 @@
-"""Button-controlled live artwork, with one serialized refresh and one pending selection."""
+"""Refresh-driven artwork rotation with persistent button selection and locking."""
 
 import argparse
+import hashlib
 import json
 import math
 import random
@@ -27,12 +28,25 @@ def log(event: str, **values):
     print(json.dumps({"event": event, **values}), flush=True)
 
 
-def selection() -> str:
+def selection_state() -> dict:
     path = GALLERY_STATE / "selection.json"
-    chosen = json.loads(path.read_text())["artwork"] if path.exists() else HOME
-    if chosen not in ARTWORKS:
+    data = json.loads(path.read_text()) if path.exists() else {"artwork": HOME}
+    if not isinstance(data, dict):
+        raise ValueError("Artwork selection must be an object")
+    chosen, mode, key = data.get("artwork"), data.get("mode", "rotate"), data.get("refresh_key")
+    if not isinstance(chosen, str) or chosen not in ARTWORKS:
         raise ValueError(f"Unknown artwork selection: {chosen}")
-    return chosen
+    if mode not in ("rotate", "locked"):
+        raise ValueError(f"Unknown artwork mode: {mode}")
+    if key is not None and (
+        not isinstance(key, str) or len(key) != 64 or any(c not in "0123456789abcdef" for c in key)
+    ):
+        raise ValueError("Invalid artwork refresh key")
+    return {"artwork": chosen, "mode": mode, "refresh_key": key}
+
+
+def selection() -> str:
+    return selection_state()["artwork"]
 
 
 def choose(action: str) -> str:
@@ -49,9 +63,23 @@ def choose(action: str) -> str:
             chosen = action
         else:
             raise ValueError(f"Unknown gallery action: {action}")
-        atomic_json(GALLERY_STATE / "selection.json", {"artwork": chosen})
-    log("artwork_selected", artwork=chosen, action=action)
+        mode = "rotate" if action == "random" else "locked"
+        # Forget the prior update so resuming rotation displays this choice first.
+        atomic_json(GALLERY_STATE / "selection.json", {"artwork": chosen, "mode": mode})
+    log("artwork_selected", artwork=chosen, action=action, mode=mode)
     return chosen
+
+
+def commit_selection(expected: dict, artwork: str, update_key: str) -> bool:
+    with display_cli.display_lock(GALLERY_STATE / "selection-lock"):
+        # A concurrent CLI/button selection takes precedence over this tick.
+        if selection_state() != expected:
+            return False
+        atomic_json(
+            GALLERY_STATE / "selection.json",
+            {"artwork": artwork, "mode": expected["mode"], "refresh_key": update_key},
+        )
+    return True
 
 
 def show_frame(path: Path, profile: DisplayProfile | None = None):
@@ -76,12 +104,15 @@ class Player:
         self.next_refresh = 0.0
         self.displayed = None
         self.error = None
+        self.control = None
 
     def status(self):
+        selected = selection_state()
         atomic_json(
             GALLERY_STATE / "status.json",
             {
-                "selected": selection(),
+                "selected": selected["artwork"],
+                "mode": selected["mode"],
                 "displayed": self.displayed,
                 "refreshing": self.running_artwork if self.process else None,
                 "error": self.error,
@@ -90,13 +121,25 @@ class Player:
             },
         )
 
-    def tick(self, chosen: str, snapshot: dict, now: float, monotonic: float):
+    def tick(self, snapshot: dict, now: float, monotonic: float):
         view = build_view(snapshot, now)
+        update_key = hashlib.sha256(
+            json.dumps([snapshot["collected_at"], view], sort_keys=True).encode()
+        ).hexdigest()
+        selected = selection_state()
+        control = (selected["artwork"], selected["mode"])
+        chosen = selected["artwork"]
+        if selected["mode"] == "rotate" and selected["refresh_key"] not in (None, update_key):
+            ids = list(ARTWORKS)
+            chosen = ids[(ids.index(chosen) + 1) % len(ids)]
         wanted = json.dumps([self.profile.name, chosen, view], sort_keys=True)
         if wanted != self.wanted:
             self.wanted = wanted
             self.wanted_at = monotonic
             self.status()
+        elif control != self.control:
+            self.status()
+        self.control = control
         if self.process is not None:
             result = self.process.poll()
             if result is None:
@@ -111,11 +154,15 @@ class Player:
             log("gallery_refresh_finished", artwork=self.running_artwork, exit_code=result)
             self.process = None
             self.status()
-        if (
-            wanted == self.completed
-            or monotonic < self.next_refresh
-            or monotonic - self.wanted_at < 0.8
-        ):
+        if wanted == self.completed:
+            if selected["refresh_key"] != update_key and commit_selection(
+                selected, chosen, update_key
+            ):
+                self.status()
+            return
+        if monotonic < self.next_refresh or monotonic - self.wanted_at < 0.8:
+            return
+        if not commit_selection(selected, chosen, update_key):
             return
         frame = GALLERY_STATE / "frame.png"
         render(chosen, view, self.profile).save(frame)
@@ -134,7 +181,7 @@ class Player:
             cwd=ROOT,
         )
         self.next_refresh = monotonic + 40
-        log("gallery_refresh_started", artwork=chosen)
+        log("gallery_refresh_started", artwork=chosen, mode=selected["mode"])
         self.status()
 
 
@@ -162,7 +209,14 @@ def run():
         with chip.request_lines(
             consumer="inky-gallery-buttons", config=dict.fromkeys(offsets, settings)
         ) as buttons:
-            log("gallery_ready", buttons=profile.buttons, artwork=selection(), profile=profile.name)
+            selected = selection_state()
+            log(
+                "gallery_ready",
+                buttons=profile.buttons,
+                artwork=selected["artwork"],
+                mode=selected["mode"],
+                profile=profile.name,
+            )
             last_press = {}
             last_error = None
             try:
@@ -178,9 +232,9 @@ def run():
                             choose(action)
                     try:
                         data = load_snapshot(STATE / "usage.json")
-                        player.tick(selection(), data, time.time(), time.monotonic())
+                        player.tick(data, time.time(), time.monotonic())
                         last_error = None
-                    except (OSError, ValueError, KeyError) as error:
+                    except (OSError, ValueError, KeyError, display_cli.DisplayError) as error:
                         message = str(error)
                         if message != last_error:
                             log("gallery_error", error=message)
@@ -237,7 +291,10 @@ def main():
             print(json.dumps(ARTWORKS, indent=2))
         else:
             path = GALLERY_STATE / "status.json"
-            print(path.read_text() if path.exists() else json.dumps({"selected": selection()}))
+            status = json.loads(path.read_text()) if path.exists() else {}
+            selected = selection_state()
+            status.update(selected=selected["artwork"], mode=selected["mode"])
+            print(json.dumps(status, indent=2))
     except (OSError, ValueError, RuntimeError, ImportError, KeyError) as error:
         parser.exit(1, f"inky gallery: {error}\n")
 

@@ -18,7 +18,7 @@ Make remaining allowance and the next reset readable at a glance, while keeping 
 
 The Pi at `pi@inky.local` collects directly from CLIProxyAPI over verified HTTPS through `inky-usage.service`, scheduled every ten minutes by `inky-usage.timer`. `inky-gallery.service` renders locally from its sanitized snapshot and handles the buttons. Collection and navigation are independent of the Mac. The previous Mac launch job is superseded. All display times use Asia/Singapore.
 
-A full panel refresh takes about 34 seconds. A/B select previous/next artwork, C selects another random artwork, and D returns to Budget Kraken. Selection persists across restarts. The listener debounces presses for 200ms, settles changes for 0.8 seconds, runs one display child at a time, and retains the latest pending selection. Refresh starts are at least 40 seconds apart.
+A full panel refresh takes about 34 seconds. Artwork rotates sequentially by default on usage updates or freshness changes. A/B select previous/next artwork and lock it while usage keeps updating. C selects another random artwork and resumes rotation; D selects and locks Budget Kraken. Selection and mode persist across restarts. The listener debounces presses for 200ms, settles changes for 0.8 seconds, runs one display child at a time, and retains the latest pending selection. Refresh starts are at least 40 seconds apart. Busy updates coalesce into one advance; unchanged polls and retries do not keep advancing.
 
 ## Capabilities and Constraints
 
