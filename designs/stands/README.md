@@ -1,0 +1,60 @@
+# Minimal desk stand concepts
+
+Four editable OpenSCAD studies for MC's original **5.7-inch Inky Impression** and
+rear-mounted Pi Zero 2 W. Open `stand-concepts.scad` in OpenSCAD and select
+`concept` 1–4 in the Customizer. `index.html` compares all twelve rendered views.
+
+| Concept | Footprint (W × D) | Character |
+|---|---|---|
+| 1. Wedge | 112 × 72 mm | Broad, solid base; most material and visual weight. |
+| 2. Twin fins | 100 × 76 mm | Two triangular feet joined at the rear; best starting point. |
+| 3. Open triangle | 94 × 76 mm | Slim triangular frames; lighter visual profile, thinner members. |
+| 4. Pebble cradle | 116 × 66 mm | Rounded low plinth; shallowest footprint and lowest rear support. |
+
+All lean back 12 degrees, seat the board approximately 9 mm above the desk, and
+leave its side buttons exposed. A provisional 36 mm centre relief avoids the
+bottom ribbon area. The cable illustration drops into a top opening, then follows
+an 8 mm wide, 4 mm high underside channel to the back. These are routing spaces,
+not a strain-relief clamp. Add non-slip feet when developing a printable version.
+
+## Verified references and assumptions
+
+The [vendor dimensional drawing](../../pimoroni-inky-impression/inky-impression-5.7-drawing.png)
+gives a **125.4 × 99.5 mm** outline. The
+[original product page](https://shop.pimoroni.com/products/inky-impression-5-7)
+gives **114.9 × 85.8 mm** active area and **9 mm** total depth including display
+and header. That 9 mm is neither the lower edge thickness nor the assembled
+Pi-plus-display depth. The saved rear product photo shows the central flex ribbon,
+rear electronics and downward-facing Pi USB sockets.
+
+**Concepts, not print-ready fit models.** The following remain illustrative:
+
+- 5.2 mm slot width, board/display thickness and active-area placement.
+- Pi/header/USB placement and cable bend radius; the green board is a clearance proxy.
+- Ribbon relief, lower breakout-header clearance and all contact points.
+- Stability under button presses and cable pull; no physical load testing performed.
+
+Before printing a complete stand, measure the assembled unit's lower edge,
+rear protrusions, USB plug body and accessible PCB contact locations. Refine the
+saddles to bear on the PCB, with compliant liners and clearance to the glass,
+flex ribbon, pins and components. Print a small slot coupon first. The vendor
+warns that the glass display is fragile; a tight interference fit is unsuitable.
+
+The abstract screen graphic and simplified rear hardware are orientation aids.
+The stand geometry is real OpenSCAD CSG, not an AI-generated product photograph.
+
+## Reproduce
+
+```sh
+uv run python designs/stands/render.py
+```
+
+The script uses `openscad` on PATH or the standard macOS application location.
+Front, rear and stand-only renders use identical cameras across all four concepts.
+The models have also been evaluated through OpenSCAD's full CGAL STL exporter;
+all four report a simple solid. Temporary STLs live in ignored `state/stands/`;
+do not treat successful mesh export as a mechanical fit check.
+
+Use `show_display=false` and `show_cable=false` for stand-only export. The original
+5.7-inch outline is the only supported reference here; the newer panel sizes have
+different mechanical layouts.
