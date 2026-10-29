@@ -18,4 +18,8 @@ Branch: `fix/render-council-review`
 3. [ ] Regenerate validation images and run independent final review.
 4. [ ] Record evidence, publish revisions, and report remaining physical-test limitations.
 
-The renderer and synthetic fixtures are the review target. No credentials or collector changes. Preserve existing 5.7-inch normal output and hardware behavior; if edge-state corrections require changed golden hashes, retain explicit before/after evidence rather than silently replacing baselines.
+The renderer and synthetic fixtures are the review target. No credentials or collector changes. Preserve the approved artwork and hardware behavior. Demonstrated defects on the original 5.7-inch panel may receive targeted corrections; retain explicit before/after evidence and the old golden hashes rather than silently replacing baselines.
+
+## Council execution
+
+At MC's explicit model restriction, the initial Claude tasks were interrupted before synthesis. Their artifacts are excluded. Both review rounds use only `gpt-6-astra` or `gpt-6.1-sol` independent subagents. Round 1 covers every normal image three ways, with the five-state matrix covered across the reviewers. Source PNGs and a frozen 120-frame manifest remain under `state/multi-display/previews/` and `state/council/round-1/manifest.json`.

@@ -5,6 +5,7 @@ Run from the repository root: uv run python -m scripts.render_previews
 
 import argparse
 import base64
+import hashlib
 import html
 import io
 import json
@@ -30,11 +31,12 @@ def main():
     args = parser.parse_args()
     bundle = json.loads(args.fixtures.read_text())
     args.output.mkdir(parents=True, exist_ok=True)
-    records, cards = [], []
+    records, sections = [], []
     for scenario, snapshot in bundle["scenarios"].items():
         if scenario != "normal" and not args.all_states:
             continue
         view = build_view(validate_snapshot(snapshot), bundle["now"])
+        cards = []
         for artwork, title in ARTWORKS.items():
             for profile in PROFILES.values():
                 started = time.monotonic()
@@ -42,24 +44,39 @@ def main():
                 profile.validate_frame(image)
                 filename = f"{scenario}-{artwork}-{profile.name}.png"
                 image.save(args.output / filename)
-                records.append({"file": filename, "seconds": round(time.monotonic() - started, 3)})
-                if scenario == "normal":
-                    thumb = image.convert("RGB")
-                    thumb.thumbnail((300, 224), Image.Resampling.LANCZOS)
-                    buffer = io.BytesIO()
-                    thumb.save(buffer, format="PNG")
-                    encoded = base64.b64encode(buffer.getvalue()).decode()
-                    cards.append(
-                        f'<figure><a href="{filename}">'
-                        f'<img src="data:image/png;base64,{encoded}" '
-                        f'alt="{html.escape(title)} on {profile.name}"></a>'
-                        f"<figcaption>{html.escape(title)} · {profile.name}<br>"
-                        f"{profile.resolution[0]} × {profile.resolution[1]} · "
-                        f"{len(profile.inks)} inks</figcaption></figure>"
-                    )
+                records.append(
+                    {
+                        "file": filename,
+                        "scenario": scenario,
+                        "artwork": artwork,
+                        "profile": profile.name,
+                        "resolution": image.size,
+                        "pixels_sha256": hashlib.sha256(image.tobytes()).hexdigest(),
+                        "palette_sha256": hashlib.sha256(bytes(image.getpalette())).hexdigest(),
+                        "seconds": round(time.monotonic() - started, 3),
+                    }
+                )
+                thumb = image.convert("RGB")
+                thumb.thumbnail((300, 224), Image.Resampling.LANCZOS)
+                buffer = io.BytesIO()
+                thumb.save(buffer, format="PNG")
+                encoded = base64.b64encode(buffer.getvalue()).decode()
+                cards.append(
+                    f'<figure><a href="{filename}">'
+                    f'<img loading="lazy" src="data:image/png;base64,{encoded}" '
+                    f'alt="{html.escape(title)} on {profile.name}, {html.escape(scenario)}"></a>'
+                    f"<figcaption>{html.escape(title)} · {profile.name}<br>"
+                    f"{profile.resolution[0]} × {profile.resolution[1]} · "
+                    f"{len(profile.inks)} inks</figcaption></figure>"
+                )
+        sections.append(
+            f'<section id="{html.escape(scenario)}"><h2>{html.escape(scenario.title())}</h2>'
+            '<div class="grid">' + "".join(cards) + "</div></section>"
+        )
     report = {
         "pillow": __version__,
         "now": bundle["now"],
+        "fixtures_sha256": hashlib.sha256(args.fixtures.read_bytes()).hexdigest(),
         "renders": records,
         "peak_rss_mib": round(
             resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
@@ -73,15 +90,16 @@ def main():
         '<meta name="viewport" content="width=device-width,initial-scale=1">'
         "<title>Inky display previews</title><style>"
         "body{margin:24px;background:#eee9df;color:#201e1a;font:15px system-ui}"
-        "h1{font-size:26px}main{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));"
+        "h1{font-size:26px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));"
         "gap:16px}figure{margin:0;background:white;padding:10px;border:1px solid #c7c1b5}"
         "img{display:block;width:100%;height:auto}figcaption{margin-top:8px;font-size:12px}"
-        "p{max-width:80ch}@media(max-width:750px){main{"
+        "p{max-width:80ch}section{margin-top:32px}@media(max-width:750px){.grid{"
         "grid-template-columns:repeat(2,minmax(0,1fr))}}</style>"
         "<h1>Six artworks · four displays</h1><p>Synthetic readings. "
         "Seven-colour 5.7-inch and six-colour Spectra 6 previews. "
         "Colours illustrate the indexed file, not calibrated physical panels. "
-        "Open a PNG to inspect native pixels.</p><main>" + "".join(cards) + "</main></html>"
+        "Open a PNG to inspect native pixels. report.json records each frame's "
+        "pixel and palette hashes.</p><main>" + "".join(sections) + "</main></html>"
     )
     (args.output / "index.html").write_text(document)
     print(
