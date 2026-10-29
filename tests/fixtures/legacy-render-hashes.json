@@ -1,0 +1,125 @@
+{
+  "pillow": "12.3.0",
+  "hashes": {
+    "normal/01-pop-comic": {
+      "pixels": "666c9281ad293c76372e4a8f6093718cb9ff7316209b3f31b2d22197e81e4004",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "normal/02-budget-kraken": {
+      "pixels": "0625eeec40f11b4314f444bba09b94b0d49cdd7e7b770d0e82da16df34fe0186",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "normal/03-reactor-room": {
+      "pixels": "5a229ee84e829fef5f2a638dc7931953bf7175f06ee783b029cb62b5a412d1d6",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "normal/04-night-market": {
+      "pixels": "a319f85e9097324677255b04ba82977eeafd07bcc55b504b564a8b5b3ae88711",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "normal/05-quota-moth": {
+      "pixels": "9569aca8065ef86a09075ad81541b804e6f6b4e3f19503de8b3aad61c9c22275",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "normal/06-cosmic-pinball": {
+      "pixels": "4897ca572708f43a8067c7bc84576eeca3433282e6d7a728934b513a8c4f5129",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "stale/01-pop-comic": {
+      "pixels": "3938fe1afeab351c3eb2138df9cefbe1d3099e0767ff99a49df79a5caa404676",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "stale/02-budget-kraken": {
+      "pixels": "5fa2ae65b12eba3f82093e2c116863133667d25afd8c111cbbf6cc9b948a07e5",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "stale/03-reactor-room": {
+      "pixels": "eec82f9dea876d9a5a322cbb1dbd84bae358fb532bfcbf0f28b18687aa2067b3",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "stale/04-night-market": {
+      "pixels": "e1dc8288eb3f253cecf809589ad3d01d8d1b85d10e4f3d799b83b7907eb8886a",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "stale/05-quota-moth": {
+      "pixels": "6ef89a090694d67bccda313705acc059f7cf35b258316d2710f2d4daada9e6fa",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "stale/06-cosmic-pinball": {
+      "pixels": "a896641e6fe9a4a7fc8e4e538806ee740d28fd5663a72020e27167fd87f61f15",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "unavailable/01-pop-comic": {
+      "pixels": "5238cb771933863dd2c563e9478d73120de546c8d036bd1324cb710078c28d39",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "unavailable/02-budget-kraken": {
+      "pixels": "2c470dc1407f2ea16fe349ed9adf409daf83c494fe9315b9f4ab9791fc78a910",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "unavailable/03-reactor-room": {
+      "pixels": "d7dac80da9e78c47cd57936c4593ebc0ba00f7cf180de5f38a6bee43349365d9",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "unavailable/04-night-market": {
+      "pixels": "4bf6246ba47eeace1fd67c83ff4a14ae2ec8b99dabbc25f6e6e9f510d570c184",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "unavailable/05-quota-moth": {
+      "pixels": "526f98f2ea5179934996959ab209e6d3c65f421ae7e2586108a1d23ebf6c5c69",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "unavailable/06-cosmic-pinball": {
+      "pixels": "22db87a7f08bc535c3871714a9105c036ada16d8c806f08c6a0a6cab1531d8e2",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "missing/01-pop-comic": {
+      "pixels": "942e34ddc97186967ea249c3c2c4fb6f63ad3c1846b056d79d25202f6b8be343",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "missing/02-budget-kraken": {
+      "pixels": "c755e4734564ede533740f2d4cca82ea4146299eb72fd4a36df62a48be4a1d9a",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "missing/03-reactor-room": {
+      "pixels": "6de93a8703ec047653626275df8cdb8addaedd6015a2fbac8d8ab773bb1ed0ec",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "missing/04-night-market": {
+      "pixels": "01594f0f2f5b1b7c6d8f371b307c92538fbd0483730795a6aa595a0401d0f8b7",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "missing/05-quota-moth": {
+      "pixels": "fdfe8d5f803fd64123f45886989e788d6447b3abced13188ed949fbebe46ae9b",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "missing/06-cosmic-pinball": {
+      "pixels": "fec05c06d224246a6329fac238841f03de74af1d245a66cfd77e73a0a0234065",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "extremes/01-pop-comic": {
+      "pixels": "d02a9f41b89e84923f96c78a2a5fed5ac2b9f2c1c4e6a64a5a0e27a07a344a4e",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "extremes/02-budget-kraken": {
+      "pixels": "62b10e6cd8802c80fecbf1bdf796363bf48301507c61a07c80af809b8e54825b",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "extremes/03-reactor-room": {
+      "pixels": "f25d98a348638a6e06f5a83874c2753b5f16ab5443fc531af9b757d2d51c86ca",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "extremes/04-night-market": {
+      "pixels": "fb6030be86d94ee62caf3c59291d97fb0c7b8767cbf451e583520a55363d3205",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "extremes/05-quota-moth": {
+      "pixels": "8dc05873aad60fe47ba8ca6382d1fa537bc407928c154b41db8082263a2efc08",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    },
+    "extremes/06-cosmic-pinball": {
+      "pixels": "be703b0da25547832212a63f1d22ebb190e9ca4b109fcdc08944003714bc7b51",
+      "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
+    }
+  }
+}
