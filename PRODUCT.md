@@ -26,8 +26,10 @@ A full panel refresh takes about 34 seconds. A/B select previous/next artwork, C
 - Six clean, text-free ImageGen plates preserve the approved artwork and its information-bearing surfaces. Deterministic projective typography inserts live values into those original surfaces.
 - Display frames match the detected profile: the original 600×448 output uses indexes 0–6; Spectra 6 profiles use indexes 0–5 in their required palette order. Artwork remains integrated with the data at native panel resolution.
 - Distinguish session, weekly, scoped-model, reset-credit, source-health, and freshness information.
+- Show the most restrictive model scope with its own reset and a `+N` indicator for additional scopes. Abbreviate long names visibly without truncating the remaining percentage.
+- Report Codex's 5-hour remaining allowance when supplied, alongside its weekly allowance. The compact weekly view shows the weekly reset date; it is not a complete calendar of every window's reset.
 - Subscription usage percentages are not token counts or currency budgets.
-- Missing windows stay missing. Each provider becomes stale after 20 minutes or a collection error, and unavailable after 24 hours; stale state appears in that provider's header. The shared observation time uses the oldest provider observation.
+- Missing windows stay missing. Each provider becomes stale after 20 minutes or a collection error, and unavailable after 24 hours; stale state appears in that provider's header. The shared observation time uses the oldest provider observation, excluding timestamps rejected as invalidly in the future.
 - Passed reset deadlines show `UPDATE PENDING`; the renderer never assumes replenishment without a new observation.
 - Vendor OAuth tokens remain on CLIProxyAPI. Only its management credential is
   installed on the Pi, in root-owned mode-0600 configuration outside the repository.

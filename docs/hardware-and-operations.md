@@ -76,9 +76,10 @@ The renderer preserves the complete composition with proportional scaling and
 white margins. Text is rendered from fonts into the scaled artwork surfaces.
 The 4.0-/7.3-inch screens have side margins; the 13.3-inch ratio is nearly the
 original ratio. Illustrations still originate from 1200×896 plates, so larger
-output does not invent additional illustration detail. Unavailable provider
-headings use two lines on the new profiles for readability. The original profile
-retains the existing pixels and seven-colour conversion.
+output does not invent additional illustration detail. Stale/unavailable provider
+headings use separate identity and health lines on every profile. Targeted visual
+council corrections improve original-size typography while retaining the original
+seven-colour conversion and the approved artwork plates.
 
 Spectra image indices are black/white/yellow/red/blue/green (0–5). The driver
 remaps these to native codes 0/1/2/3/5/6; the project must not remap them twice.
@@ -323,14 +324,20 @@ uv run python -m scripts.render_previews
 # Include stale, unavailable, missing-data and long-label/boundary fixtures:
 uv run python -m scripts.render_previews --all-states
 open state/multi-display/previews/index.html
+# Additional mixed-health, missing-window, scope and clock edge cases:
+uv run python -m scripts.render_previews --all-states \
+  --fixtures tests/fixtures/render-edge-snapshots.json --output state/multi-display/edges
+open state/multi-display/edges/index.html
 
 uv run python -m inky_frame sample /tmp/spectra.png --profile spectra6-4.0
 uv run python -m inky_frame prepare photo.jpg /tmp/prepared.png --profile spectra6-13.3
 ```
 
-The preview command generates a gallery, native PNGs, timings, and peak process
-memory under ignored `state/multi-display/previews/`. Its synthetic snapshots and
-fixed time are in `tests/fixtures/render-snapshots.json`. The ordinary offline
+The preview command generates a gallery for every selected scenario, native PNGs,
+timings, and peak process memory. Its JSON manifest includes per-frame pixel and
+palette hashes plus the fixture hash. The original five scenarios produce 120
+images; the eight additional scenarios produce 192. All data is synthetic and
+times are fixed. The ordinary offline
 commands default to the original 5.7-inch profile. One-shot image pushes always
 prepare for the detected physical panel instead.
 
@@ -348,10 +355,12 @@ image conversion **without constructing GPIO/SPI drivers or refreshing**:
 .venv/bin/python -m scripts.check_driver_palettes
 ```
 
-Legacy regression fixtures compare decoded pixels and palettes for 30 renders.
-The committed golden hashes specify their Pillow version; when another Pillow
-version is used, compare before/after in that environment separately. This was
-also done on the actual Pi's Pillow 11.1.0 before deployment. Successful-frame
+Original-profile regression fixtures compare decoded pixels and palettes for 30
+renders. `reviewed-render-hashes.json` records the corrected typography;
+`legacy-render-hashes.json` preserves the pre-council baseline. The committed
+golden hashes specify their Pillow version; when another Pillow version is used,
+compare before/after in that environment separately. The initial multi-profile
+rollout also did this on the actual Pi's Pillow 11.1.0. Successful-frame
 hashes now include profile, dimensions, mode, and palette, so the migration causes
 one refresh even if the image has not otherwise changed. Selection and snapshots
 retain their existing formats.

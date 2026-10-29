@@ -11,7 +11,7 @@ from inky_frame.profiles import LEGACY, PROFILES
 
 FIXTURES = Path(__file__).parent / "fixtures"
 SNAPSHOTS = json.loads((FIXTURES / "render-snapshots.json").read_text())
-BASELINE = json.loads((FIXTURES / "legacy-render-hashes.json").read_text())
+BASELINE = json.loads((FIXTURES / "reviewed-render-hashes.json").read_text())
 
 
 @pytest.mark.skipif(
@@ -20,7 +20,7 @@ BASELINE = json.loads((FIXTURES / "legacy-render-hashes.json").read_text())
 )
 @pytest.mark.parametrize("scenario", SNAPSHOTS["scenarios"])
 @pytest.mark.parametrize("artwork", ARTWORKS)
-def test_legacy_pixels_and_palette_are_unchanged(artwork, scenario):
+def test_reviewed_original_profile_pixels_and_palette(artwork, scenario):
     image = render(artwork, build_view(SNAPSHOTS["scenarios"][scenario], SNAPSHOTS["now"]))
     hashes = BASELINE["hashes"][f"{scenario}/{artwork}"]
     assert hashlib.sha256(image.tobytes()).hexdigest() == hashes["pixels"]

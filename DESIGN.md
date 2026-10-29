@@ -77,11 +77,13 @@ On the original panel, one seven-slot indexed palette serves every composition. 
 - Provider name, remaining percentage, and window label form each main information surface.
 - Weekly remaining leads when reported; otherwise the most-used reported window supplies the headline.
 - Claude session and scoped-model allowance, provider reset deadlines, and Codex reset credits occupy supporting surfaces.
-- Observation time remains distinct from reset time. All six compositions use the oldest provider observation; Pop Comic splits its date, time, and SGT label across the starburst.
+- When reported alongside weekly usage, Codex's 5-hour remaining value appears in its reset surface; `7D` identifies the weekly deadline. Without a weekly window, the headline and reset surface use the actual reported window.
+- The most restrictive model scope retains its own reset. A `+N` marker signals other reported scopes. Long model names are visibly abbreviated, keeping the percentage intact; the narrow gauge and lantern use separate name/value rows.
+- Observation time remains distinct from reset time. All six compositions use the oldest provider observation, excluding timestamps rejected as future-invalid; Pop Comic splits its date, time, and SGT label across the starburst.
 
 ## Layout
 
-Artwork coordinates retain one 600×448 logical canvas. The original profile preserves its existing pixels. Other profiles uniformly fit the complete plate and its text surfaces into the target, with white margins and no cropping. Small targets retain bounded supersampling; 1600×1200 renders at native size to limit memory. Text is drawn from fonts at the target scale, rather than enlarging a quantized proof. Preserve each approved plate's artwork and surface positions. `render()` in `inky_frame/live.py` owns the exact quadrilaterals:
+Artwork coordinates retain one 600×448 logical canvas. Profiles uniformly fit the complete plate and its text surfaces into the target, with white margins and no cropping. Small targets retain bounded supersampling; 1600×1200 renders at native size to limit memory. Text is drawn from fonts at the target scale, rather than enlarging a quantized proof. Preserve each approved plate's artwork and surface positions. The visual council corrections deliberately refine original-profile typography too; its pre-review golden hashes remain archived separately. `render()` in `inky_frame/live.py` owns the exact quadrilaterals:
 
 | Composition | Information surfaces |
 | --- | --- |
@@ -100,13 +102,13 @@ Depth comes from the artwork's engraving, perspective, halftone, and overlapping
 
 ## Shapes
 
-Preserve the plate's organic coils, curved labels, ribbons, signs, and illustrated borders. Text patches are transparent during composition and project into four-point surfaces; their patch rectangles must not become visible containers. Do not replace the original surfaces with generic cards.
+Preserve the plate's organic coils, curved labels, ribbons, signs, and illustrated borders. Text patches project into four-point surfaces. Most are transparent; Night Market's shutter lettering and lower sign use opaque insets within those existing surfaces so slats and bright texture cannot cut through the letters. Do not replace the original surfaces with detached generic cards.
 
 ## Components
 
 ### Allowance and source state
 
-Each provider has an independent observation and health state. Its header gains `/ STALE` after 20 minutes or a collection error, and `/ UNAVAILABLE` after 24 hours without a valid observation. On the new profiles, unavailable provider headings split into two lines to avoid excessively small labels. Unavailable values display `--` or `NOT REPORTED`; missing windows never become zero usage or full allowance. Passed reset deadlines display `UPDATE PENDING` until a new observation arrives.
+Each provider has an independent observation and health state. Its header gains `STALE` after 20 minutes or a collection error, and `UNAVAILABLE` after 24 hours without a valid observation. All profiles place health on a separate Barlow line, retaining the provider's display face and reserving more space when no percentage is available. Unavailable values display `--` or `NOT REPORTED`; missing windows never become zero usage or full allowance. Passed reset deadlines display `UPDATE PENDING` until a new observation arrives.
 
 ### Physical navigation
 

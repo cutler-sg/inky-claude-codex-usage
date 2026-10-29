@@ -77,6 +77,9 @@ uv run python -m scripts.render_previews
 open state/multi-display/previews/index.html
 ```
 
+The [visual council review](docs/visual-council-review.md) records the typography
+corrections, independent verdicts, and how to reproduce all 312 validation images.
+
 ## The artwork
 
 The project began with twelve illustration studies and evolved into these six

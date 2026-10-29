@@ -26,6 +26,10 @@ ARTWORKS = {
 }
 
 
+def abbreviated(value: str, limit: int) -> str:
+    return value if len(value) <= limit else value[: limit - 1].rstrip() + "…"
+
+
 def reset_label(epoch, now):
     if epoch is None:
         return "NOT REPORTED"
@@ -53,7 +57,27 @@ def build_view(snapshot: dict, now: float) -> dict:
             "remaining": remaining(headline),
             "window": "WEEK LEFT"
             if weekly
-            else (headline["label"].upper() if headline else "NO DATA"),
+            else (
+                "5H LEFT"
+                if headline and headline["label"] == "5-Hour Window"
+                else (
+                    abbreviated(headline["label"].upper(), 18) + " LEFT" if headline else "NO DATA"
+                )
+            ),
+            "has_weekly": weekly is not None,
+            "reset_window": (
+                "WEEK"
+                if weekly
+                else (
+                    "5H"
+                    if headline and headline["label"] == "5-Hour Window"
+                    else (
+                        abbreviated(headline["label"].split(" · ")[-1].upper(), 10)
+                        if headline
+                        else "RESET"
+                    )
+                )
+            ),
             "reset": reset_label(headline["reset_epoch"], now) if headline else "NOT REPORTED",
             "weekly_reset": reset_label(weekly["reset_epoch"], now) if weekly else "NOT REPORTED",
         }
@@ -65,15 +89,22 @@ def build_view(snapshot: dict, now: float) -> dict:
         )
         session = next((w for w in windows if w["label"] == "5-Hour Window"), None)
         view[name]["session"] = remaining(session)
+        view[name]["has_session"] = session is not None
         view[name]["session_reset"] = (
             reset_label(session["reset_epoch"], now) if session else "NOT REPORTED"
         )
         scopes = [w for w in windows if w["label"].startswith("7-Day · ") and w != weekly]
+        scope = max(scopes, key=lambda w: w["used_percent"]) if scopes else None
+        view[name]["scope_name"] = scope["label"].split(" · ", 1)[1].upper() if scope else "SCOPE"
+        view[name]["scope_remaining"] = remaining(scope)
+        view[name]["scope_more"] = len(scopes) - 1 if scopes else 0
+        more = f" +{len(scopes) - 1}" if len(scopes) > 1 else ""
         view[name]["scope"] = (
-            " / ".join(f"{w['label'].split(' · ', 1)[1].upper()} {remaining(w)}" for w in scopes)
-            or "SCOPE NOT REPORTED"
+            f"{abbreviated(view[name]['scope_name'], 12)} {remaining(scope)}{more}"
+            if scope
+            else "SCOPE NOT REPORTED"
         )
-        view[name]["scope_reset"] = reset_label(scopes[0]["reset_epoch"], now) if scopes else ""
+        view[name]["scope_reset"] = reset_label(scope["reset_epoch"], now) if scope else ""
         credits = provider["credits"] if state != "UNAVAILABLE" else None
         view[name]["credits"] = (
             f"{credits['available_count']} BANKED / "
@@ -82,7 +113,9 @@ def build_view(snapshot: dict, now: float) -> dict:
             else "NOT REPORTED"
         )
     observed = [
-        p["observed_at"] for p in snapshot["providers"].values() if p["observed_at"] is not None
+        p["observed_at"]
+        for p in snapshot["providers"].values()
+        if p["observed_at"] is not None and p["observed_at"] <= now + 60
     ]
     view["as_of"] = (
         "AS OF " + datetime.fromtimestamp(min(observed), SGT).strftime("%d %b %H:%M SGT").upper()
@@ -145,23 +178,22 @@ class Canvas:
             self.image = Image.new("RGBA", work_size, "white")
             self.image.alpha_composite(content, self.offset)
 
-    def panel(self, quad, lines, family="BarlowCondensed-SemiBold.ttf"):
-        if self.profile != LEGACY:
-            expanded = []
-            for value, weight, color in lines:
-                if value.endswith(" / UNAVAILABLE"):
-                    name, state = value.split(" / ", 1)
-                    expanded.extend([(name, weight * 0.55, color), (state, weight * 0.45, color)])
-                else:
-                    expanded.append((value, weight, color))
-            lines = expanded
+    def panel(self, quad, lines, family="BarlowCondensed-SemiBold.ttf", *, background=None):
+        expanded = []
+        for value, weight, color in lines:
+            if value.endswith((" / UNAVAILABLE", " / STALE")):
+                name, state = value.split(" / ", 1)
+                expanded.extend([(name, weight, color), (state, weight * 0.8, color)])
+            else:
+                expanded.append((value, min(weight, 35) if value == "--" else weight, color))
+        lines = expanded
         target = [
             (x * self.scale[0] + self.offset[0], y * self.scale[1] + self.offset[1])
             for x, y in quad
         ]
         width = round(max(math.dist(target[0], target[1]), math.dist(target[2], target[3])))
         height = round(max(math.dist(target[0], target[3]), math.dist(target[1], target[2])))
-        patch = Image.new("RGBA", (width, height))
+        patch = Image.new("RGBA", (width, height), background)
         draw = ImageDraw.Draw(patch)
         total = sum(size for _, size, _ in lines)
         y = 0.0
@@ -170,10 +202,16 @@ class Canvas:
             size = max(1, round(row_height * 1.3))
             stroke = max(1, round(min(self.scale))) if color not in ("black", "white") else 0
             while True:
-                font = face(family, size)
+                row_family = (
+                    "BarlowCondensed-SemiBold.ttf" if value in ("STALE", "UNAVAILABLE") else family
+                )
+                font = face(row_family, size)
                 box = draw.textbbox((0, 0), value, font=font, stroke_width=stroke)
+                safe_width = (
+                    width * 0.86 if value in ("CLAUDE", "CODEX", "STALE", "UNAVAILABLE") else width
+                )
                 if (
-                    box[2] - box[0] <= width - 4 and box[3] - box[1] <= row_height - 2
+                    box[2] - box[0] <= safe_width - 4 and box[3] - box[1] <= row_height - 2
                 ) or size <= 2:
                     break
                 size -= 1
@@ -239,10 +277,24 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
     c, x = view["claude"], view["codex"]
     session = f"CLAUDE 5H {c['session']} / {c['session_reset']}"
     scope = " / ".join(value for value in (c["scope"], c["scope_reset"]) if value)
-    cr, xr = f"CLAUDE WEEK / {c['weekly_reset']}", f"CODEX WEEK / {x['weekly_reset']}"
+
+    def reset_details(provider, name):
+        if provider["has_weekly"]:
+            if name == "CODEX" and provider["has_session"]:
+                return f"CODEX 5H {provider['session']}", f"7D {provider['weekly_reset']}"
+            return f"{name} WEEK", provider["weekly_reset"]
+        return f"{name} {provider['reset_window']}", provider["reset"]
+
+    ch, cd = reset_details(c, "CLAUDE")
+    xh, xd = reset_details(x, "CODEX")
+    cr, xr = f"{ch} / {cd}", f"{xh} / {xd}"
     credits = f"CODEX RESETS: {x['credits']}"
     stamp = view["as_of"]
     s = Canvas(artwork, profile)
+    scope_name = abbreviated(c["scope_name"], 7)
+    if c["scope_more"]:
+        scope_name = abbreviated(c["scope_name"], 5) + f" +{c['scope_more']}"
+    scope_rows = [(scope_name, 16, "black"), (c["scope_remaining"], 28, "black")]
     if artwork == "01-pop-comic":
         s.headline([(34, 31), (192, 23), (205, 169), (26, 187)], c, "#df3322")
         s.headline([(459, 39), (578, 32), (585, 178), (448, 190)], x, "#174992")
@@ -270,7 +322,7 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
             "DMSerifDisplay-Regular.ttf",
         )
         s.line([(68, 230), (261, 235), (261, 252), (68, 249)], session)
-        s.line([(91, 274), (258, 274), (258, 290), (91, 290)], scope)
+        s.line([(91, 272), (244, 272), (244, 285), (91, 288)], scope)
         s.line([(111, 311), (265, 317), (265, 335), (111, 329)], cr)
         s.line([(146, 347), (280, 375), (280, 389), (146, 362)], xr)
         s.line([(360, 378), (565, 351), (568, 370), (362, 398)], credits)
@@ -278,15 +330,14 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
     elif artwork == "03-reactor-room":
         s.headline([(111, 42), (257, 70), (258, 195), (101, 167)], c, "#df3322")
         s.headline([(343, 81), (506, 48), (520, 187), (341, 211)], x, "#174992")
-        s.panel(
-            [(24, 317), (104, 319), (106, 377), (23, 375)],
-            [("CLAUDE 5H", 14, "black"), (c["session"], 34, "black")],
-        )
-        s.panel([(183, 345), (244, 346), (244, 395), (182, 391)], [(c["scope"], 26, "black")])
+        s.line([(34, 324), (100, 325), (100, 340), (34, 339)], "CLAUDE 5H")
+        s.line([(35, 345), (85, 346), (85, 373), (34, 372)], c["session"])
+        s.line([(197, 344), (238, 346), (237, 356), (196, 354)], scope_name)
+        s.line([(193, 356), (228, 358), (227, 382), (192, 380)], c["scope_remaining"])
         s.line([(29, 394), (118, 404), (118, 413), (29, 405)], c["session_reset"])
         s.line([(185, 406), (247, 418), (247, 428), (185, 417)], c["scope_reset"])
         s.line([(367, 351), (531, 328), (533, 345), (367, 369)], cr)
-        s.line([(367, 377), (534, 354), (535, 370), (367, 394)], xr)
+        s.line([(367, 377), (534, 354), (535, 370), (367, 394)], xr, "white")
         s.panel(
             [(365, 405), (555, 385), (557, 418), (366, 437)],
             [(credits, 14, "black"), (stamp, 12, "black")],
@@ -305,16 +356,25 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
         s.line([(58, 208), (309, 281), (309, 297), (58, 224)], session, "white")
         s.panel(
             [(34, 261), (76, 263), (75, 333), (33, 334)],
-            [(c["scope"], 28, "black"), (c["scope_reset"], 24, "black")],
+            scope_rows
+            + [(part, 13, "black") for part in (c["scope_reset"] or "NOT REPORTED").split()],
         )
         s.line([(414, 296), (590, 227), (590, 244), (414, 312)], xr)
         s.panel(
-            [(444, 310), (584, 263), (584, 343), (444, 367)],
-            [("CODEX RESETS", 15, "black"), (x["credits"], 19, "black")],
+            [(450, 326), (579, 282), (579, 341), (450, 363)],
+            [("CODEX RESETS", 16, "black")]
+            + [(part, 20, "black") for part in x["credits"].split(" / ")],
+            background="white",
         )
         s.panel(
-            [(482, 382), (589, 361), (589, 396), (482, 412)],
-            [(cr, 15, "white"), (stamp, 13, "white")],
+            [(479, 375), (588, 354), (588, 395), (479, 407)],
+            [
+                (ch, 12, "white"),
+                (cd, 17, "white"),
+                ("AS OF " + view["as_of_date"], 12, "white"),
+                (view["as_of_time"] + " SGT", 17, "white"),
+            ],
+            background="black",
         )
     elif artwork == "05-quota-moth":
         s.headline(
@@ -336,9 +396,9 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
         s.line([(184, 384), (416, 384), (416, 398), (184, 398)], credits)
         s.line([(248, 411), (352, 411), (352, 422), (248, 422)], stamp)
     elif artwork == "06-cosmic-pinball":
-        s.line([(83, 37), (213, 39), (210, 66), (86, 66)], c["name"], family="Bangers-Regular.ttf")
+        s.line([(91, 35), (205, 37), (204, 58), (92, 58)], c["name"], family="Bangers-Regular.ttf")
         s.line(
-            [(394, 38), (522, 38), (517, 65), (398, 65)], x["name"], family="Bangers-Regular.ttf"
+            [(402, 36), (514, 36), (510, 57), (403, 57)], x["name"], family="Bangers-Regular.ttf"
         )
         s.line(
             [(75, 89), (219, 94), (217, 158), (76, 156)],
@@ -364,11 +424,11 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
         )
         s.panel(
             [(128, 308), (212, 327), (210, 342), (132, 330)],
-            [("CLAUDE WEEK", 14, "black"), (c["weekly_reset"], 14, "#174992")],
+            [(ch, 12, "black"), (cd, 18, "black")],
         )
         s.panel(
             [(391, 327), (474, 307), (470, 332), (392, 344)],
-            [("CODEX WEEK", 14, "black"), (x["weekly_reset"], 14, "#174992")],
+            [(xh, 12, "black"), (xd, 18, "black")],
         )
         s.line([(17, 395), (226, 418), (224, 431), (17, 414)], credits, "white")
         s.line([(464, 410), (587, 396), (587, 413), (458, 431)], stamp, "white")
