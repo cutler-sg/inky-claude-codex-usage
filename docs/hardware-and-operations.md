@@ -336,7 +336,7 @@ uv run python -m inky_frame prepare photo.jpg /tmp/prepared.png --profile spectr
 The preview command generates a gallery for every selected scenario, native PNGs,
 timings, and peak process memory. Its JSON manifest includes per-frame pixel and
 palette hashes plus the fixture hash. The original five scenarios produce 120
-images; the seven additional scenarios produce 168. All data is synthetic and
+images; the eight additional scenarios produce 192. All data is synthetic and
 times are fixed. The ordinary offline
 commands default to the original 5.7-inch profile. One-shot image pushes always
 prepare for the detected physical panel instead.
