@@ -29,7 +29,7 @@ plates. Physical e-ink colours differ from these RGB previews.*
 - **Honest about freshness.** Old observations are marked stale; missing data stays
   missing. Collection and button controls run on the Pi, independently of the Mac.
 
-The four buttons on the side of the display choose the artwork:
+The display's four buttons choose the artwork:
 
 | A | B | C | D |
 | --- | --- | --- | --- |
@@ -41,8 +41,20 @@ and the chosen artwork survives a restart.
 ## Make one
 
 The tested hardware is a **Raspberry Pi Zero 2 W** and the original **Pimoroni Inky
-Impression 5.7-inch, seven-colour, 600 × 448** display. This particular panel is
-discontinued; the code checks its identity before driving it.
+Impression 5.7-inch, seven-colour, 600 × 448** display. This panel is discontinued.
+The code also recognizes Pimoroni's current Spectra 6 models, adapting image size,
+colour palette, and button wiring automatically from the display's EEPROM.
+
+| Pimoroni display | Resolution | Colours | Project validation |
+| --- | --- | --- | --- |
+| [Original Inky Impression 5.7-inch](https://shop.pimoroni.com/products/inky-impression-5-7) — discontinued | 600 × 448 | 7 | Tested on the physical device |
+| [Inky Impression 4.0-inch](https://shop.pimoroni.com/products/inky-impression?variant=56039376912763) | 600 × 400 | 6 | Experimental; rendering and driver conversion tested |
+| [Inky Impression 7.3-inch](https://shop.pimoroni.com/products/inky-impression?variant=55186435244411) | 800 × 480 | 6 | Experimental; rendering and driver conversion tested |
+| [Inky Impression 13.3-inch](https://shop.pimoroni.com/products/inky-impression?variant=55186435277179) | 1600 × 1200 | 6 | Experimental; rendering and driver conversion tested |
+
+The current models have not been tested on physical hardware for this project.
+Artwork keeps its proportions, with margins where needed. The original 5.7-inch
+output is preserved. Other legacy seven-colour sizes are not supported.
 
 The Pi collects usage directly from CLIProxyAPI over HTTPS, renders the artwork,
 and drives the display. A systemd timer runs every ten minutes; the Mac is only
@@ -56,6 +68,13 @@ You can try image generation locally without hardware or an account:
 ```sh
 uv sync
 uv run python -m inky_frame sample /tmp/inky-preview.png
+
+# Preview a current six-colour model instead
+uv run python -m inky_frame sample /tmp/inky-spectra.png --profile spectra6-7.3
+
+# Render all six artworks at all four resolutions using synthetic usage
+uv run python -m scripts.render_previews
+open state/multi-display/previews/index.html
 ```
 
 ## The artwork

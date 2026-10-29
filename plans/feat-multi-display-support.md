@@ -1,22 +1,22 @@
 # Adapt the live gallery to additional Inky Impression displays
 
-Status: approved by MC on 2026-10-29; implementation in progress.
+Status: approved by MC on 2026-10-29; completed and verified.
 Branch: `feat/multi-display-support`.
 
 ## Outcome and acceptance criteria
 
-- [ ] Preserve the original 5.7-inch panel's rendered pixels, palette, button mapping,
+- [x] Preserve the original 5.7-inch panel's rendered pixels, palette, button mapping,
   refresh serialization, selection persistence, and usage/staleness behavior.
-- [ ] Detect the original panel and the three current Spectra 6 sizes by EEPROM
+- [x] Detect the original panel and the three current Spectra 6 sizes by EEPROM
   identity, with resolution and driver cross-checks. Reject unknown/mismatched boards.
-- [ ] Produce hardware-free previews for all six artworks at all four resolutions.
-- [ ] Use the appropriate seven- or six-colour palette and verify the vendor's
+- [x] Produce hardware-free previews for all six artworks at all four resolutions.
+- [x] Use the appropriate seven- or six-colour palette and verify the vendor's
   image-to-buffer mapping, including blue/green and the absence of orange on Spectra 6.
-- [ ] Visually review all 24 normal-state previews, plus representative edge states,
+- [x] Visually review all 24 normal-state previews, plus representative edge states,
   at native pixels; preserve information surfaces without cropping or distortion.
-- [ ] Exercise detection and display/gallery behavior with hardware doubles; retain
+- [x] Exercise detection and display/gallery behavior with hardware doubles; retain
   the existing checks and test the real 5.7-inch device only after offline checks pass.
-- [ ] Document the new panels as experimentally supported and rendering-tested;
+- [x] Document the new panels as experimentally supported and rendering-tested;
   physical colour, refresh, and button behavior remain unverified on those panels.
 
 ## Verified facts
@@ -114,41 +114,41 @@ one refresh when migrating the old hash schema; preserve state/selection data.
 
 ## Implementation sequence
 
-1. [ ] **Freeze the original behavior.** Create deterministic sanitized usage
+1. [x] **Freeze the original behavior.** Create deterministic sanitized usage
    fixtures and a fixed timestamp. Capture all six legacy render outputs before
    refactoring, including palette data. Cover normal, stale/unavailable, long
    labels, missing credit/reset information, and allowance boundaries. Compare
    decoded pixels and palettes, not PNG compression bytes. Record Pillow version;
    run before/after comparisons in the same environment.
-2. [ ] **Add profiles and detection.** Implement the small profile table and pure
+2. [x] **Add profiles and detection.** Implement the small profile table and pure
    identity resolver; test all supported EEPROM variants, wrong dimensions,
    absent/unknown identities, and 7.3-inch legacy/Spectra ambiguity. Keep hardware
    imports out of offline rendering. Test the 13.3-inch button map against its
    reserved display pins before GPIO requests.
-3. [ ] **Adapt rendering and image commands.** Thread the profile through
+3. [x] **Adapt rendering and image commands.** Thread the profile through
    `prepare`, `sample`, `Canvas`, and gallery rendering/validation. Preserve default
    call behavior for existing users. Implement aspect-preserving transforms and
    the Spectra palette. Add offline profile selection and deterministic preview
    generation, including photographs, rotation, transparency, and indexed input.
-4. [ ] **Integrate the gallery/display path.** Detect the profile at startup and
+4. [x] **Integrate the gallery/display path.** Detect the profile at startup and
    again in the isolated display worker, select its buttons, check frame dimensions
    and palette, update hashes/status, and report detected hardware in `info`.
    Ensure the one-shot SSH image path prepares for the detected target too. Extend
    deployment's import checks without changing installed library versions.
-5. [ ] **Render, inspect, and correct.** Generate the 24 normal-state images and
+5. [x] **Render, inspect, and correct.** Generate the 24 normal-state images and
    targeted edge-state images under ignored `state/` using synthetic data. Inspect
    a labelled comparison overview and native-pixel crops of headlines, reset
    labels, scope/credit text, and timestamps. Check contrast, legibility, correct
    colours, alignment with illustration surfaces, margins, and clipping. Fix all
    observed issues in one pass, then rerender and confirm. Keep findings and
    representative non-secret previews suitable for review.
-6. [ ] **Validate and document.** Require legacy pixel/palette equality, correct
+6. [x] **Validate and document.** Require legacy pixel/palette equality, correct
    dimensions/allowed colours on all profiles, exact swatch-to-driver mapping, and
    existing lock/retry/coalescing tests to pass. Measure worst-case render time and
    peak memory for 1600×1200; bound intermediate canvases and avoid arbitrary 2×
    supersampling at that size. Update the README/support matrix and operations
    guide to distinguish physical testing from simulated rendering.
-7. [ ] **Controlled 5.7-inch rollout.** Only after the offline evidence passes,
+7. [x] **Controlled 5.7-inch rollout.** Only after the offline evidence passes,
    record the deployed version and back up selection/status, deploy to the existing
    Pi, verify EEPROM/profile, refresh success, unchanged-image skip, and continued
    collection/gallery operation. Preserve its selected artwork; use any temporary
@@ -177,3 +177,35 @@ unowned hardware. Those can be separate follow-ups if justified by evidence.
 - [7.3-inch driver](https://github.com/pimoroni/inky/blob/v2.6.0/inky/inky_e673.py)
 - [13.3-inch driver](https://github.com/pimoroni/inky/blob/v2.6.0/inky/inky_el133uf1.py)
 - [Original UC8159 driver](https://github.com/pimoroni/inky/blob/v2.6.0/inky/inky_uc8159.py)
+
+## Completed verification (2026-10-29)
+
+- 125 tests pass. All 30 committed baseline pixel and palette hashes match on
+  local Pillow 12.3.0. The same 30 before/after renders also match exactly on the
+  Pi's Pillow 11.1.0, using an isolated candidate directory before deployment.
+- Generated 120 synthetic images: six artworks × four profiles × five states.
+  Inspected all 24 normal-state frames in comparison sheets, native small-panel
+  images and large-panel text crops, plus stale/unavailable/missing/boundary views.
+  Split unavailable provider headings on new profiles after the initial review;
+  rerendered the affected previews and confirmed the smaller headings fit better.
+  Normal previews retain aligned text surfaces and complete, uncropped artwork.
+- The actual pinned vendor `set_image()` conversion passed colour-swatch checks
+  for every profile on the Pi, with constructors bypassed and no GPIO/SPI I/O.
+  Confirmed native mappings 0–6 for UC8159 and 0/1/2/3/5/6 for Spectra 6.
+- Rendering every 1600×1200 artwork on the Pi took 14.06–17.47 seconds; peak process
+  RSS was 88.7 MiB after all legacy and large-format renders. Local batch peak was
+  137.1 MiB. No arbitrary 2× large-panel intermediate is allocated.
+- Existing deployed source and selection/status were backed up under
+  `/tmp/inky-profile-audit/` on the Pi. The candidate was tested separately, then
+  the gallery was stopped gracefully before deployment and restarted afterward.
+  Installed vendor dependencies remained at their existing versions.
+- The detected live profile is `impression-5.7`, variant 14, with unchanged button
+  GPIOs. Quota Moth remained selected and completed its refresh at
+  2026-10-29 09:50:55 +08 in 34.43 seconds. Its saved pixels/palette and digest match
+  an independent render of the latest on-device sanitized usage snapshot.
+- Gallery and usage timer are active, both providers are healthy, and the unchanged
+  frame check skips a second physical refresh. No new optical-verification claim
+  is made; the three unowned physical sizes remain experimentally supported.
+- README now links the original discontinued product and the exact product
+  variants for each current size. Hardware, design, product, and plate notes
+  describe profile-dependent behaviour and the limits of software-only evidence.

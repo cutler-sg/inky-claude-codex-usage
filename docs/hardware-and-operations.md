@@ -3,7 +3,8 @@
 [Back to the project showcase](../README.md)
 
 Detailed setup and operating notes for the Raspberry Pi Zero 2 W and original
-600 × 448 seven-colour Inky Impression 5.7. Commands run from the repository
+600 × 448 seven-colour Inky Impression 5.7, with experimental support for current
+Spectra 6 displays. Commands run from the repository
 root unless they explicitly change directory. The inventory records the tested
 device; it is not a list of minimum storage or OS requirements.
 
@@ -37,7 +38,7 @@ The Pi is compatible with the panel's 40-pin header. Its limited RAM favours one
 
 ## Display details
 
-This is the original **5.7-inch ACeP seven-colour panel**, not a newer Spectra 6 or 7.3-inch model. The vendor driver is `inky.inky_uc8159.Inky`; EEPROM variant **14** maps to **600 × 448**. The project checks that identity before driving GPIO and fails on an absent or mismatched EEPROM.
+This is the original **5.7-inch ACeP seven-colour panel**, not a newer Spectra 6 or 7.3-inch model. The vendor driver is `inky.inky_uc8159.Inky`; EEPROM variant **14** maps to **600 × 448**. The project checks the detected identity against its supported profiles before driving GPIO and fails on an absent, unknown, or mismatched EEPROM.
 
 - Palette: black, white, green, blue, red, yellow, orange. Photos are dithered into these colours.
 - Reflective E Ink Gallery Palette 4000; no backlight. Readable in sunlight, with a >170° viewing angle.
@@ -45,6 +46,45 @@ This is the original **5.7-inch ACeP seven-colour panel**, not a newer Spectra 6
 - Board: 125.4 × 99.5 × 9 mm including display/header; visible area: 114.9 × 85.8 mm; pixel pitch: 0.1915 mm.
 - Four side-mounted buttons, used by the [live gallery](#live-gallery-and-buttons).
 - Glass panel: handle the PCB edges; do not press the glass or use overlong mounting screws. Power down before changing the header connection.
+
+### Additional display profiles
+
+The [current Inky Impression range](https://shop.pimoroni.com/products/inky-impression)
+uses six-colour Spectra 6 panels. These profiles are rendering-tested and their
+image conversion is checked against Inky 2.6.0, but they have not been tested on
+physical panels in this project. The inventory above describes the original unit.
+
+| Profile | Resolution | EEPROM variant(s) | Driver | Button C |
+| --- | --- | --- | --- | --- |
+| `impression-5.7` | 600×448 | 14 | UC8159 | GPIO16 |
+| `spectra6-4.0` | 600×400 | 25 | E640 | GPIO16 |
+| `spectra6-7.3` | 800×480 | 22, 26 (AC) | E673 | GPIO16 |
+| `spectra6-13.3` | 1600×1200 | 21, 27 (AC) | EL133UF1 | GPIO25 |
+
+Hardware operations automatically detect the profile from EEPROM and cross-check
+the driver/resolution. A resolution alone is insufficient: the older seven-colour
+800×480 display is a different driver and is deliberately rejected. Preview flags
+cannot force hardware to use a different profile.
+
+The 13.3-inch driver uses GPIO16 and GPIO26 for chip-select signals, so the button
+listener uses GPIO25 for C on that board. Do not copy the original GPIO table to
+other boards. Driver-specific wiring is handled by the pinned vendor library;
+A/B/D remain GPIO5/6/24. Normal vendor refresh mode and the conservative 40-second
+minimum between refresh starts are retained for every size.
+
+The renderer preserves the complete composition with proportional scaling and
+white margins. Text is rendered from fonts into the scaled artwork surfaces.
+The 4.0-/7.3-inch screens have side margins; the 13.3-inch ratio is nearly the
+original ratio. Illustrations still originate from 1200×896 plates, so larger
+output does not invent additional illustration detail. Unavailable provider
+headings use two lines on the new profiles for readability. The original profile
+retains the existing pixels and seven-colour conversion.
+
+Spectra image indices are black/white/yellow/red/blue/green (0–5). The driver
+remaps these to native codes 0/1/2/3/5/6; the project must not remap them twice.
+There is no orange ink on these panels. Digital previews are not calibrated
+predictions of physical colour. Photos use the vendor's normal quantization;
+live gallery lettering uses the project's deterministic indexed conversion.
 
 ### GPIO wiring
 
@@ -273,6 +313,48 @@ open designs/integrated-v2/index.html
 ```
 
 The design renderer intentionally targets this frozen study snapshot. It is not the live collector or a generalized dashboard renderer. `usage-gallery-preview.html` is a generated, ignored T3 preview with local PNG paths; use the committed self-contained `usage-gallery.html` when sharing or opening independently.
+
+## Preview and validate other sizes without hardware
+
+Run from the repository root; no credentials or connected screen are needed:
+
+```sh
+uv run python -m scripts.render_previews
+# Include stale, unavailable, missing-data and long-label/boundary fixtures:
+uv run python -m scripts.render_previews --all-states
+open state/multi-display/previews/index.html
+
+uv run python -m inky_frame sample /tmp/spectra.png --profile spectra6-4.0
+uv run python -m inky_frame prepare photo.jpg /tmp/prepared.png --profile spectra6-13.3
+```
+
+The preview command generates a gallery, native PNGs, timings, and peak process
+memory under ignored `state/multi-display/previews/`. Its synthetic snapshots and
+fixed time are in `tests/fixtures/render-snapshots.json`. The ordinary offline
+commands default to the original 5.7-inch profile. One-shot image pushes always
+prepare for the detected physical panel instead.
+
+For one artwork and a sanitized usage snapshot:
+
+```sh
+uv run python -m inky_frame.gallery render 02-budget-kraken snapshot.json /tmp/kraken.png \
+  --profile spectra6-7.3 --now 1793221200
+```
+
+On a Pi with the pinned vendor dependencies, verify all four drivers' indexed
+image conversion **without constructing GPIO/SPI drivers or refreshing**:
+
+```sh
+.venv/bin/python -m scripts.check_driver_palettes
+```
+
+Legacy regression fixtures compare decoded pixels and palettes for 30 renders.
+The committed golden hashes specify their Pillow version; when another Pillow
+version is used, compare before/after in that environment separately. This was
+also done on the actual Pi's Pillow 11.1.0 before deployment. Successful-frame
+hashes now include profile, dimensions, mode, and palette, so the migration causes
+one refresh even if the image has not otherwise changed. Selection and snapshots
+retain their existing formats.
 
 ## Development
 

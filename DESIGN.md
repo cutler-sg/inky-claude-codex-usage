@@ -35,7 +35,7 @@ The live system preserves these compositions using six clean, text-free ImageGen
 
 **Key characteristics:**
 
-- Exactly 600×448 pixels with seven physical palette indexes (0–6).
+- The original profile is exactly 600×448 with seven palette indexes (0–6). Spectra 6 profiles use six indexes (0–5) at their detected resolution.
 - Full-frame artwork with fixed information-bearing surfaces; text adapts within each surface.
 - Large provider allowance figures, supporting quota/reset information, and visible observation time.
 - Six approved identities in one button-controlled gallery; Budget Kraken is home.
@@ -44,7 +44,7 @@ The live system preserves these compositions using six clean, text-free ImageGen
 
 ## Colors
 
-One seven-slot indexed palette serves every composition. The `ink-*` tokens are the exact vendor RGB palette in index order: black, white, green, blue, red, yellow, orange. The `work-*` tokens are the quantization references used to map artwork to those physical slots. They do not describe calibrated physical colour under desk lighting.
+On the original panel, one seven-slot indexed palette serves every composition. The `ink-*` tokens are the exact vendor RGB palette in index order: black, white, green, blue, red, yellow, orange. The `work-*` tokens are the quantization references used to map artwork to those physical slots. They do not describe calibrated physical colour under desk lighting.
 
 ### Primary
 
@@ -58,7 +58,7 @@ One seven-slot indexed palette serves every composition. The `ink-*` tokens are 
 
 ### Named Rules
 
-**The Seven-Slot Rule.** Final output is a 600×448 `P` image using only indexes 0–6 and the exact vendor palette; `gallery.show_frame()` validates dimensions, indexes, and palette before display. Do not re-quantize an indexed proof on the Pi.
+**The Panel-Palette Rule.** The original output remains a 600×448 `P` image using indexes 0–6. Spectra 6 profiles use black/white/yellow/red/blue/green (0–5) at 600×400, 800×480, or 1600×1200. `gallery.show_frame()` validates the detected profile's dimensions, indexes, and palette before display. The vendor performs Spectra's native index remapping; do not apply it twice. Orange source art is mapped into the available six inks.
 
 **The Neutral-Text Rule.** Before quantization, pixels whose RGB channels differ by at most 28 snap to black or white. This prevents neutral anti-aliasing from becoming coloured fringes. Coloured text has a black stroke before the final palette conversion.
 
@@ -70,7 +70,7 @@ One seven-slot indexed palette serves every composition. The `ink-*` tokens are 
 
 **Supporting labels:** Barlow Condensed SemiBold for session, scope, reset, credit, and observation text across all six.
 
-`Canvas.panel()` renders each text patch at 2×, fits each line to its allocated surface, then projects it into the composition's quadrilateral. Font sizes are fitted per surface rather than governed by a global size scale. The final frame is downsampled and quantized without dithering.
+`Canvas.panel()` renders each original-profile text patch at 2×, fits each line to its allocated surface, then projects it into the composition's quadrilateral. Font sizes are fitted per surface rather than governed by a global size scale. The final frame is downsampled and quantized without dithering.
 
 ### Hierarchy
 
@@ -81,7 +81,7 @@ One seven-slot indexed palette serves every composition. The `ink-*` tokens are 
 
 ## Layout
 
-The panel has one fixed canvas with no responsive breakpoints. Preserve each approved plate's artwork and surface positions. `render()` in `inky_frame/live.py` owns the exact quadrilaterals:
+Artwork coordinates retain one 600×448 logical canvas. The original profile preserves its existing pixels. Other profiles uniformly fit the complete plate and its text surfaces into the target, with white margins and no cropping. Small targets retain bounded supersampling; 1600×1200 renders at native size to limit memory. Text is drawn from fonts at the target scale, rather than enlarging a quantized proof. Preserve each approved plate's artwork and surface positions. `render()` in `inky_frame/live.py` owns the exact quadrilaterals:
 
 | Composition | Information surfaces |
 | --- | --- |
@@ -96,7 +96,7 @@ The original surfaces establish the layout; adding a detached statistics rail wo
 
 ## Elevation & Depth
 
-Depth comes from the artwork's engraving, perspective, halftone, and overlapping forms. Dynamic text conforms to those surfaces. The physical output has seven flat colours; the renderer adds no interface shadows, blur, or translucent panels.
+Depth comes from the artwork's engraving, perspective, halftone, and overlapping forms. Dynamic text conforms to those surfaces. The physical output has seven flat colours on the original panel, or six on Spectra 6; the renderer adds no interface shadows, blur, or translucent panels.
 
 ## Shapes
 
@@ -106,7 +106,7 @@ Preserve the plate's organic coils, curved labels, ribbons, signs, and illustrat
 
 ### Allowance and source state
 
-Each provider has an independent observation and health state. Its header gains `/ STALE` after 20 minutes or a collection error, and `/ UNAVAILABLE` after 24 hours without a valid observation. Unavailable values display `--` or `NOT REPORTED`; missing windows never become zero usage or full allowance. Passed reset deadlines display `UPDATE PENDING` until a new observation arrives.
+Each provider has an independent observation and health state. Its header gains `/ STALE` after 20 minutes or a collection error, and `/ UNAVAILABLE` after 24 hours without a valid observation. On the new profiles, unavailable provider headings split into two lines to avoid excessively small labels. Unavailable values display `--` or `NOT REPORTED`; missing windows never become zero usage or full allowance. Passed reset deadlines display `UPDATE PENDING` until a new observation arrives.
 
 ### Physical navigation
 
@@ -118,7 +118,7 @@ A selects previous, B next, C another random composition, and D Budget Kraken. S
 
 - **Do** preserve the approved artwork and draw live values within its original surfaces.
 - **Do** keep session, weekly, scoped-model, credits, source health, observation time, and reset deadlines semantically distinct.
-- **Do** retain the exact seven-index vendor palette through the display path.
+- **Do** retain the detected profile's indexed palette through the display path.
 - **Do** treat digital and approximate-paper proofs as references rather than calibrated photographs of the panel.
 
 ### Don't:
