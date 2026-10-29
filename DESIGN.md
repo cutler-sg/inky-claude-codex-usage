@@ -94,7 +94,7 @@ Artwork coordinates retain one 600×448 logical canvas. Profiles uniformly fit t
 | Quota Moth | Pale wing markings and botanical ribbons |
 | Cosmic Pinball | Planet scoring islands, name headers, inserts, plaques, and apron strips |
 
-The original surfaces establish the layout; adding a detached statistics rail would repeat the treatment MC rejected. No automatic slideshow is installed.
+The original surfaces establish the layout; adding a detached statistics rail would repeat the treatment MC rejected. Automatic artwork rotation follows data refreshes and freshness changes, with no separate slideshow timer.
 
 ## Elevation & Depth
 
@@ -112,7 +112,7 @@ Each provider has an independent observation and health state. Its header gains 
 
 ### Physical navigation
 
-A selects previous, B next, C another random composition, and D Budget Kraken. Selection persists. The Pi's `inky-gallery.service` debounces presses for 200ms and settles changes for 0.8 seconds. One child performs each refresh; presses during a refresh coalesce into the latest pending selection. Refresh starts remain at least 40 seconds apart, so visible selection changes wait for the panel's slow refresh.
+A selects previous and B next; either locks that artwork while its data keeps updating. C picks another random composition and resumes sequential rotation on data refreshes. D selects and locks Budget Kraken. Rotation is the default; selection and mode persist. The Pi's `inky-gallery.service` debounces presses for 200ms and settles changes for 0.8 seconds. One child performs each refresh; presses and data updates during a refresh coalesce into the latest pending request. Automatic advances are committed when a refresh starts, so repeated polling and same-update retries do not cycle through artwork. Refresh starts remain at least 40 seconds apart.
 
 ## Do's and Don'ts
 
