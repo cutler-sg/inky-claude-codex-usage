@@ -7,7 +7,10 @@ reusable RGB plate. Exact prompts and repository-relative source paths are in `p
 PNG `impeccable:prompt` metadata. Generated with the built-in ImageGen tool.
 
 `inky_frame/live.py` projects deterministic current text into these surfaces and
-exports a 600×448 indexed image using the UC8159's seven colour indexes. The Pi
+exports an indexed image for the detected display profile. The original 600×448
+UC8159 output retains its seven colour indexes; experimental Spectra 6 profiles
+use six indexes at 600×400, 800×480, or 1600×1200, with proportional fitting.
+Text is rasterized for the target; the original illustration detail is 1200×896. The Pi
 receives plates and fonts, not the larger masters. No usage figures are baked
 into these plates. Fresh snapshots and rendered display state are ignored by git.
 

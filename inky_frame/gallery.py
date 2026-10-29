@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import math
 import random
 import signal
 import subprocess
@@ -12,14 +13,14 @@ from pathlib import Path
 from PIL import Image
 
 from . import __main__ as display_cli
-from .live import ARTWORKS, INKS, build_view, render
+from .live import ARTWORKS, build_view, render
+from .profiles import LEGACY, PROFILES, DisplayProfile
 from .usage import atomic_json, load_snapshot, validate_snapshot
 
 ROOT = display_cli.ROOT
 STATE = ROOT / "state"
 GALLERY_STATE = STATE / "gallery"
 HOME = "02-budget-kraken"
-BUTTONS = {5: ("A", "previous"), 6: ("B", "next"), 16: ("C", "random"), 24: ("D", "home")}
 
 
 def log(event: str, **values):
@@ -53,23 +54,19 @@ def choose(action: str) -> str:
     return chosen
 
 
-def show_frame(path: Path):
+def show_frame(path: Path, profile: DisplayProfile | None = None):
     with Image.open(path) as source:
         source.load()
         image = source.copy()
-    expected_palette = [channel for color in INKS for channel in bytes.fromhex(color)]
-    if (
-        image.size != (600, 448)
-        or image.mode != "P"
-        or not set(image.tobytes()) <= set(range(7))
-        or image.getpalette()[:21] != expected_palette
-    ):
-        raise ValueError("Gallery frame must use the exact seven UC8159 colour indexes")
-    display_cli.show(image, 0.5, False)
+    if profile is None:
+        profile, _ = display_cli.read_identity()
+    profile.validate_frame(image)
+    display_cli.show(image, 0.5, False, expected_profile=profile)
 
 
 class Player:
-    def __init__(self):
+    def __init__(self, profile: DisplayProfile = LEGACY):
+        self.profile = profile
         self.process = None
         self.wanted = None
         self.wanted_at = 0.0
@@ -89,12 +86,13 @@ class Player:
                 "refreshing": self.running_artwork if self.process else None,
                 "error": self.error,
                 "updated_at": time.time(),
+                "profile": self.profile.name,
             },
         )
 
     def tick(self, chosen: str, snapshot: dict, now: float, monotonic: float):
         view = build_view(snapshot, now)
-        wanted = json.dumps([chosen, view], sort_keys=True)
+        wanted = json.dumps([self.profile.name, chosen, view], sort_keys=True)
         if wanted != self.wanted:
             self.wanted = wanted
             self.wanted_at = monotonic
@@ -120,11 +118,20 @@ class Player:
         ):
             return
         frame = GALLERY_STATE / "frame.png"
-        render(chosen, view).save(frame)
+        render(chosen, view, self.profile).save(frame)
         self.running = wanted
         self.running_artwork = chosen
         self.process = subprocess.Popen(
-            [sys.executable, "-m", "inky_frame.gallery", "show", str(frame)], cwd=ROOT
+            [
+                sys.executable,
+                "-m",
+                "inky_frame.gallery",
+                "show",
+                str(frame),
+                "--profile",
+                self.profile.name,
+            ],
+            cwd=ROOT,
         )
         self.next_refresh = monotonic + 40
         log("gallery_refresh_started", artwork=chosen)
@@ -144,17 +151,18 @@ def run():
 
     signal.signal(signal.SIGTERM, stop)
     signal.signal(signal.SIGINT, stop)
-    player = Player()
+    profile, _ = display_cli.read_identity()
+    player = Player(profile)
     with display_cli.display_lock(GALLERY_STATE / "service-lock"):
         chip = gpiodevice.find_chip_by_platform()
-        offsets = {chip.line_offset_from_id(pin): action for pin, action in BUTTONS.items()}
+        offsets = {chip.line_offset_from_id(pin): action for pin, action in profile.buttons.items()}
         settings = gpiod.LineSettings(
             direction=Direction.INPUT, bias=Bias.PULL_UP, edge_detection=Edge.FALLING
         )
         with chip.request_lines(
             consumer="inky-gallery-buttons", config=dict.fromkeys(offsets, settings)
         ) as buttons:
-            log("gallery_ready", buttons=BUTTONS, artwork=selection())
+            log("gallery_ready", buttons=profile.buttons, artwork=selection(), profile=profile.name)
             last_press = {}
             last_error = None
             try:
@@ -194,6 +202,13 @@ def main():
     select.add_argument("action", choices=["previous", "next", "random", "home", *ARTWORKS])
     show = commands.add_parser("show")
     show.add_argument("image", type=Path)
+    show.add_argument("--profile", choices=PROFILES)
+    preview = commands.add_parser("render", help="Render a usage fixture without hardware")
+    preview.add_argument("artwork", choices=ARTWORKS)
+    preview.add_argument("snapshot", type=Path)
+    preview.add_argument("output", type=Path)
+    preview.add_argument("--profile", choices=PROFILES, default=LEGACY.name)
+    preview.add_argument("--now", type=float, required=True, help="Fixed Unix timestamp")
     args = parser.parse_args()
     try:
         if args.command == "run":
@@ -209,7 +224,15 @@ def main():
         elif args.command == "select":
             choose(args.action)
         elif args.command == "show":
-            show_frame(args.image)
+            show_frame(args.image, PROFILES[args.profile] if args.profile else None)
+        elif args.command == "render":
+            if not math.isfinite(args.now):
+                raise ValueError("--now must be a finite Unix timestamp")
+            render(
+                args.artwork,
+                build_view(load_snapshot(args.snapshot), args.now),
+                PROFILES[args.profile],
+            ).save(args.output)
         elif args.command == "list":
             print(json.dumps(ARTWORKS, indent=2))
         else:

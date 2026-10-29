@@ -4,7 +4,7 @@
 
 ## Platform
 
-Embedded e-ink: Raspberry Pi Zero 2 W and 600×448 seven-colour Inky Impression 5.7. The design comparison gallery is web-based; the product itself is a static, reflective desk display.
+Embedded e-ink: tested on Raspberry Pi Zero 2 W and 600×448 seven-colour Inky Impression 5.7; experimental profiles for Spectra 6 at 600×400, 800×480, and 1600×1200. The design comparison gallery is web-based; the product itself is a static, reflective desk display.
 
 ## Users
 
@@ -24,14 +24,14 @@ A full panel refresh takes about 34 seconds. A/B select previous/next artwork, C
 
 - MC approved all six integrated-v2 compositions and authorized unattended live implementation. All six are available through the physical buttons; Budget Kraken is home.
 - Six clean, text-free ImageGen plates preserve the approved artwork and its information-bearing surfaces. Deterministic projective typography inserts live values into those original surfaces.
-- Every display frame is exactly 600×448, indexed 0–6 with the exact vendor palette. Artwork remains integrated with the data at native panel resolution.
+- Display frames match the detected profile: the original 600×448 output uses indexes 0–6; Spectra 6 profiles use indexes 0–5 in their required palette order. Artwork remains integrated with the data at native panel resolution.
 - Distinguish session, weekly, scoped-model, reset-credit, source-health, and freshness information.
 - Subscription usage percentages are not token counts or currency budgets.
 - Missing windows stay missing. Each provider becomes stale after 20 minutes or a collection error, and unavailable after 24 hours; stale state appears in that provider's header. The shared observation time uses the oldest provider observation.
 - Passed reset deadlines show `UPDATE PENDING`; the renderer never assumes replenishment without a new observation.
 - Vendor OAuth tokens remain on CLIProxyAPI. Only its management credential is
   installed on the Pi, in root-owned mode-0600 configuration outside the repository.
-- Static artwork and labels must survive the panel's seven-colour palette and small physical dimensions.
+- Static artwork and labels must survive the detected panel's limited colour palette and physical dimensions.
 - MC rejected the first study's understated artwork and separated data/illustration treatment. The approved direction integrates numbers into balloons, tentacle coils, instruments, signs, wing markings, and pinball inserts, inspired by the supplied full-screen comic and engraved octopus photographs.
 
 ## Evidence on Hand
@@ -58,3 +58,7 @@ The original twelve-artwork study and frozen snapshot remain in `designs/`; the 
 ## Remaining Verification
 
 MC's optical check of the live compositions under desk lighting remains outstanding. Composition approval and collection ownership are settled.
+
+The three Spectra 6 sizes have synthetic render and vendor-buffer validation, but
+physical colour, refresh, and button verification require those devices. The
+13.3-inch button C uses GPIO25; other profiles use GPIO16.
