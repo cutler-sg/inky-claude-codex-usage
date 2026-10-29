@@ -6,15 +6,16 @@ from functools import lru_cache
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 
+from .profiles import LEGACY, DisplayProfile
 from .usage import provider_state
 
 ROOT = Path(__file__).resolve().parent.parent
 SGT = ZoneInfo("Asia/Singapore")
 SCALE = 2
-INKS = ["000000", "ffffff", "00ff00", "0000ff", "ff0000", "ffff00", "ff8c00"]
-WORK = ["000000", "ffffff", "16603d", "174992", "df3322", "f2cb19", "eb821b"]
+INKS = list(LEGACY.inks)
+WORK = list(LEGACY.working_inks)
 ARTWORKS = {
     "01-pop-comic": "Pop Comic",
     "02-budget-kraken": "Budget Kraken",
@@ -125,12 +126,39 @@ def perspective(source, target):
 
 
 class Canvas:
-    def __init__(self, artwork):
+    def __init__(self, artwork, profile: DisplayProfile = LEGACY):
+        self.profile = profile
         with Image.open(ROOT / "assets/live" / f"{artwork}-plate.png") as plate:
             self.image = plate.convert("RGBA")
+        self.scale = (SCALE, SCALE)
+        self.offset = (0, 0)
+        if profile != LEGACY:
+            # Small panels retain the existing supersampling budget; large panels
+            # render at native size to bound peak memory on a Zero 2 W.
+            supersample = max(
+                1.0, min(2.0, 1200 / profile.resolution[0], 896 / profile.resolution[1])
+            )
+            work_size = tuple(round(value * supersample) for value in profile.resolution)
+            content = ImageOps.contain(self.image, work_size, Image.Resampling.LANCZOS)
+            self.offset = tuple((a - b) // 2 for a, b in zip(work_size, content.size, strict=True))
+            self.scale = (content.width / 600, content.height / 448)
+            self.image = Image.new("RGBA", work_size, "white")
+            self.image.alpha_composite(content, self.offset)
 
     def panel(self, quad, lines, family="BarlowCondensed-SemiBold.ttf"):
-        target = [(x * SCALE, y * SCALE) for x, y in quad]
+        if self.profile != LEGACY:
+            expanded = []
+            for value, weight, color in lines:
+                if value.endswith(" / UNAVAILABLE"):
+                    name, state = value.split(" / ", 1)
+                    expanded.extend([(name, weight * 0.55, color), (state, weight * 0.45, color)])
+                else:
+                    expanded.append((value, weight, color))
+            lines = expanded
+        target = [
+            (x * self.scale[0] + self.offset[0], y * self.scale[1] + self.offset[1])
+            for x, y in quad
+        ]
         width = round(max(math.dist(target[0], target[1]), math.dist(target[2], target[3])))
         height = round(max(math.dist(target[0], target[3]), math.dist(target[1], target[2])))
         patch = Image.new("RGBA", (width, height))
@@ -140,7 +168,7 @@ class Canvas:
         for value, weight, color in lines:
             row_height = height * weight / total
             size = max(1, round(row_height * 1.3))
-            stroke = SCALE if color not in ("black", "white") else 0
+            stroke = max(1, round(min(self.scale))) if color not in ("black", "white") else 0
             while True:
                 font = face(family, size)
                 box = draw.textbbox((0, 0), value, font=font, stroke_width=stroke)
@@ -186,7 +214,7 @@ class Canvas:
         )
 
     def finish(self):
-        small = self.image.convert("RGB").resize((600, 448), Image.Resampling.LANCZOS)
+        small = self.image.convert("RGB").resize(self.profile.resolution, Image.Resampling.LANCZOS)
         pixels = bytearray(small.tobytes())
         for offset in range(0, len(pixels), 3):
             channels = pixels[offset : offset + 3]
@@ -194,24 +222,27 @@ class Canvas:
                 value = 255 if sum(channels) >= 384 else 0
                 pixels[offset : offset + 3] = bytes((value, value, value))
         proof = Image.new("P", (1, 1))
-        proof.putpalette([c for color in WORK for c in bytes.fromhex(color)] + [0] * 747)
+        proof.putpalette(
+            [c for color in self.profile.working_inks for c in bytes.fromhex(color)]
+            + [0] * (768 - 3 * len(self.profile.inks))
+        )
         result = (
             Image.frombytes("RGB", small.size, bytes(pixels))
             .quantize(palette=proof, dither=Image.Dither.NONE)
-            .point(lambda index: index if index < 7 else 0)
+            .point(lambda index: index if index < len(self.profile.inks) else 0)
         )
-        result.putpalette([c for color in INKS for c in bytes.fromhex(color)] + [0] * 747)
+        result.putpalette(self.profile.palette + [0] * (768 - len(self.profile.palette)))
         return result
 
 
-def render(artwork: str, view: dict) -> Image.Image:
+def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.Image:
     c, x = view["claude"], view["codex"]
     session = f"CLAUDE 5H {c['session']} / {c['session_reset']}"
     scope = " / ".join(value for value in (c["scope"], c["scope_reset"]) if value)
     cr, xr = f"CLAUDE WEEK / {c['weekly_reset']}", f"CODEX WEEK / {x['weekly_reset']}"
     credits = f"CODEX RESETS: {x['credits']}"
     stamp = view["as_of"]
-    s = Canvas(artwork)
+    s = Canvas(artwork, profile)
     if artwork == "01-pop-comic":
         s.headline([(34, 31), (192, 23), (205, 169), (26, 187)], c, "#df3322")
         s.headline([(459, 39), (578, 32), (585, 178), (448, 190)], x, "#174992")

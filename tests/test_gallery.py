@@ -24,7 +24,7 @@ def test_selection_wraps_and_persists(gallery_state):
 
 def test_refresh_coalesces_presses_without_overlapping_workers(gallery_state, monkeypatch):
     monkeypatch.setattr(gallery, "build_view", lambda snapshot, now: snapshot)
-    monkeypatch.setattr(gallery, "render", lambda chosen, view: Mock())
+    monkeypatch.setattr(gallery, "render", lambda chosen, view, profile: Mock())
     workers = []
 
     def start(*args, **kwargs):
@@ -53,7 +53,7 @@ def test_refresh_coalesces_presses_without_overlapping_workers(gallery_state, mo
 
 def test_failed_display_is_retried_without_marking_success(gallery_state, monkeypatch):
     monkeypatch.setattr(gallery, "build_view", lambda snapshot, now: snapshot)
-    monkeypatch.setattr(gallery, "render", lambda chosen, view: Mock())
+    monkeypatch.setattr(gallery, "render", lambda chosen, view, profile: Mock())
     worker = Mock()
     worker.poll.return_value = 1
     popen = Mock(return_value=worker)

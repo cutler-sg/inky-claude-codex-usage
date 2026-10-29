@@ -12,5 +12,5 @@ ssh -4 -o BatchMode=yes "$host" '
     cd /home/pi/inky &&
     python3 -m venv --system-site-packages .venv &&
     .venv/bin/python -m pip install -r requirements-pi.txt &&
-    .venv/bin/python -c "from importlib.metadata import version; from inky.inky_uc8159 import Inky; import gpiod, spidev, smbus2, numpy; from PIL import Image; print({name: version(name) for name in [\"inky\", \"gpiodevice\", \"pillow\", \"numpy\", \"gpiod\", \"spidev\", \"smbus2\"]})"
+    .venv/bin/python -c "from importlib.metadata import version; from inky.auto import auto; import gpiod, spidev, smbus2, numpy; from PIL import Image; print({name: version(name) for name in [\"inky\", \"gpiodevice\", \"pillow\", \"numpy\", \"gpiod\", \"spidev\", \"smbus2\"]})"
 '
