@@ -47,3 +47,19 @@ model and its views. Raised extrusion preview convexity to correctly display
 the hollow shapes without missing faces (no mesh geometry change). Desktop and
 mobile comparisons pass, including rear-view switching and no horizontal overflow.
 Python lint/format pass. The existing half-drum STL is unchanged.
+
+## Public release
+
+- [x] Write a dedicated illustrated stand guide explaining the design directions and OpenSCAD workflow.
+- [x] Add only stand-page links to the root README and document both downloadable STLs.
+- [ ] Validate documentation/assets, scan the branch, and push all stand work.
+- [ ] Create and link the PR, with validation recorded for the authorized merge.
+
+Acceptance: all thirteen designs, 39 previews, editable source, two requested
+STLs and the guide are on GitHub main. The main README stays concise. User has
+explicitly authorized commit, push, PR and merge for this release.
+
+Pre-publication checks: 53 local Markdown links/anchors resolve, all 39 PNGs have
+the expected dimensions and decode successfully, all HTML gallery image targets
+exist, both binary STLs have valid lengths and triangle counts, and renderer
+lint/format and diff whitespace checks pass. No display runtime code changed.

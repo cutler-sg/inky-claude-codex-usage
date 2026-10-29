@@ -1,5 +1,8 @@
 # Minimal desk stand concepts
 
+See the [illustrated stand guide](../../docs/3d-stands.md) for the design directions,
+how we built the models in OpenSCAD, and the remaining physical fit checks.
+
 Thirteen editable OpenSCAD studies for MC's original **5.7-inch Inky Impression** and
 rear-mounted Pi Zero 2 W. Open `stand-concepts.scad` in OpenSCAD and select
 `concept` 1–13 in the Customizer. The default remains the rounded half-drum (6).
@@ -69,8 +72,14 @@ The models have also been evaluated through OpenSCAD's full CGAL STL exporter;
 all thirteen report a simple solid. Temporary STLs live in ignored `state/stands/`;
 do not treat successful mesh export as a mechanical fit check.
 
-The requested half-drum export is available at `stl/06-half-drum.stl`. Its original
-geometry is unchanged by the later studies.
+## Source and downloads
+
+- [Editable OpenSCAD source](stand-concepts.scad)
+- [06 / Half-drum STL](stl/06-half-drum.stl) — 111.97 × 55.82 × 27.82 mm
+- [12 / Teardrop STL](stl/12-teardrop.stl) — 108.00 × 77.00 × 31.58 mm
+
+Both exports contain the stand only and were checked as closed, connected meshes.
+Import them as millimetres. Their geometry is unchanged by the later studies.
 
 Use `show_display=false` and `show_cable=false` for stand-only export. The original
 5.7-inch outline is the only supported reference here; the newer panel sizes have
