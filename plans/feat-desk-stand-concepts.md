@@ -52,8 +52,8 @@ Python lint/format pass. The existing half-drum STL is unchanged.
 
 - [x] Write a dedicated illustrated stand guide explaining the design directions and OpenSCAD workflow.
 - [x] Add only stand-page links to the root README and document both downloadable STLs.
-- [ ] Validate documentation/assets, scan the branch, and push all stand work.
-- [ ] Create and link the PR, with validation recorded for the authorized merge.
+- [x] Validate documentation/assets, scan the branch, and push all stand work.
+- [x] Create and link the PR, with validation recorded for the authorized merge.
 
 Acceptance: all thirteen designs, 39 previews, editable source, two requested
 STLs and the guide are on GitHub main. The main README stays concise. User has
@@ -63,3 +63,8 @@ Pre-publication checks: 53 local Markdown links/anchors resolve, all 39 PNGs hav
 the expected dimensions and decode successfully, all HTML gallery image targets
 exist, both binary STLs have valid lengths and triangle counts, and renderer
 lint/format and diff whitespace checks pass. No display runtime code changed.
+
+Published as [PR #4](https://github.com/cutler-sg/inky-claude-codex-usage/pull/4),
+linked to the working thread. Gitleaks found no secrets in the branch history.
+GitHub reports no configured CI checks; local validation is recorded in the PR.
+The PR's merged status is the release record for the authorized merge to main.
