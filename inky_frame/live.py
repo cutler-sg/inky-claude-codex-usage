@@ -65,6 +65,19 @@ def build_view(snapshot: dict, now: float) -> dict:
                 )
             ),
             "has_weekly": weekly is not None,
+            "reset_window": (
+                "WEEK"
+                if weekly
+                else (
+                    "5H"
+                    if headline and headline["label"] == "5-Hour Window"
+                    else (
+                        abbreviated(headline["label"].split(" · ")[-1].upper(), 10)
+                        if headline
+                        else "RESET"
+                    )
+                )
+            ),
             "reset": reset_label(headline["reset_epoch"], now) if headline else "NOT REPORTED",
             "weekly_reset": reset_label(weekly["reset_epoch"], now) if weekly else "NOT REPORTED",
         }
@@ -270,8 +283,7 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
             if name == "CODEX" and provider["has_session"]:
                 return f"CODEX 5H {provider['session']}", f"7D {provider['weekly_reset']}"
             return f"{name} WEEK", provider["weekly_reset"]
-        window = "5H" if provider["has_session"] else "RESET"
-        return f"{name} {window}", provider["reset"]
+        return f"{name} {provider['reset_window']}", provider["reset"]
 
     ch, cd = reset_details(c, "CLAUDE")
     xh, xd = reset_details(x, "CODEX")
@@ -310,7 +322,7 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
             "DMSerifDisplay-Regular.ttf",
         )
         s.line([(68, 230), (261, 235), (261, 252), (68, 249)], session)
-        s.line([(91, 274), (258, 274), (258, 290), (91, 290)], scope)
+        s.line([(91, 272), (244, 272), (244, 285), (91, 288)], scope)
         s.line([(111, 311), (265, 317), (265, 335), (111, 329)], cr)
         s.line([(146, 347), (280, 375), (280, 389), (146, 362)], xr)
         s.line([(360, 378), (565, 351), (568, 370), (362, 398)], credits)
@@ -318,11 +330,10 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
     elif artwork == "03-reactor-room":
         s.headline([(111, 42), (257, 70), (258, 195), (101, 167)], c, "#df3322")
         s.headline([(343, 81), (506, 48), (520, 187), (341, 211)], x, "#174992")
-        s.panel(
-            [(34, 324), (100, 325), (101, 373), (33, 372)],
-            [("CLAUDE 5H", 14, "black"), (c["session"], 34, "black")],
-        )
-        s.panel([(195, 345), (238, 347), (237, 383), (193, 380)], scope_rows)
+        s.line([(34, 324), (100, 325), (100, 340), (34, 339)], "CLAUDE 5H")
+        s.line([(35, 345), (85, 346), (85, 373), (34, 372)], c["session"])
+        s.line([(197, 344), (238, 346), (237, 356), (196, 354)], scope_name)
+        s.line([(193, 356), (228, 358), (227, 382), (192, 380)], c["scope_remaining"])
         s.line([(29, 394), (118, 404), (118, 413), (29, 405)], c["session_reset"])
         s.line([(185, 406), (247, 418), (247, 428), (185, 417)], c["scope_reset"])
         s.line([(367, 351), (531, 328), (533, 345), (367, 369)], cr)
@@ -385,9 +396,9 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
         s.line([(184, 384), (416, 384), (416, 398), (184, 398)], credits)
         s.line([(248, 411), (352, 411), (352, 422), (248, 422)], stamp)
     elif artwork == "06-cosmic-pinball":
-        s.line([(91, 38), (205, 40), (204, 61), (92, 61)], c["name"], family="Bangers-Regular.ttf")
+        s.line([(91, 35), (205, 37), (204, 58), (92, 58)], c["name"], family="Bangers-Regular.ttf")
         s.line(
-            [(402, 39), (514, 39), (510, 60), (403, 60)], x["name"], family="Bangers-Regular.ttf"
+            [(402, 36), (514, 36), (510, 57), (403, 57)], x["name"], family="Bangers-Regular.ttf"
         )
         s.line(
             [(75, 89), (219, 94), (217, 158), (76, 156)],

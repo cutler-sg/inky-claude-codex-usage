@@ -31,6 +31,17 @@ def test_long_scope_abbreviates_name_without_erasing_percentage():
     assert claude["scope"].endswith("5% +1")
 
 
+@pytest.mark.parametrize("artwork", live.ARTWORKS)
+def test_scope_headline_reset_is_not_mislabeled_as_session(monkeypatch, artwork):
+    monkeypatch.setattr(live, "Canvas", TextCapture)
+    result = view("scope-without-weekly")
+    assert result["claude"]["remaining"] == "5%"
+    assert result["claude"]["reset_window"] == "OPUS"
+    text = live.render(artwork, result)
+    assert "CLAUDE OPUS" in text
+    assert "FRI 05:00" in text
+
+
 def test_future_invalid_observations_do_not_claim_a_future_as_of_time():
     result = view("future-clock")
     assert result["as_of"] == "NO USAGE OBSERVATIONS"
