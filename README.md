@@ -92,6 +92,12 @@ plates, seven-colour proofs, and exact generation prompts are all preserved.
 - [Clean artwork plates used by the live renderer](assets/live/README.md)
 - [Earlier design study and rendering notes](docs/hardware-and-operations.md#usage-display-design-study)
 
+## 3D stands
+
+- [Stand gallery and design directions](docs/3d-stands.md)
+- [How the stands were built in OpenSCAD](docs/3d-stands.md#how-we-built-them-in-openscad)
+- [OpenSCAD source and STL downloads](designs/stands/README.md)
+
 ## License
 
 Project code is [MIT licensed](LICENSE). Fonts retain their OFL licenses, and
