@@ -30,3 +30,20 @@ Completed concepts 5–7 and nine additional renders. Full CGAL exports each rep
 `Simple: yes`, `Volumes: 2`. Inspected all nine views and desktop/mobile gallery
 previews, including rear-view switching. Half-drum (6) is the new default; original
 concepts and renders remain available. No physical fit validation is claimed.
+
+## Six focused alternatives
+
+- [x] Model concepts 8–13: soft delta, loops, capsule, arch, teardrop, and pebbles.
+- [x] Render all views, check full geometry, and correct visual or structural defects.
+- [x] Publish a comparison and document reproducible renders.
+
+Acceptance: six distinct minimalist silhouettes with the same provisional display
+fit; include rounded triangles, solid forms and open forms. Retain concepts 1–7.
+
+Completed eighteen renders and six full CGAL exports, all simple solids. Binary
+STL checks confirmed closed connected meshes and positive volumes. Moved the
+loop windows aft to preserve the support behind each slot; regenerated that
+model and its views. Raised extrusion preview convexity to correctly display
+the hollow shapes without missing faces (no mesh geometry change). Desktop and
+mobile comparisons pass, including rear-view switching and no horizontal overflow.
+Python lint/format pass. The existing half-drum STL is unchanged.

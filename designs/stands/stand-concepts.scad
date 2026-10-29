@@ -1,6 +1,6 @@
 // Inky Impression 5.7 desk stands. Units: mm. Concept geometry, not fit validated.
 // Set show_display=false and show_cable=false to inspect/export the stand alone.
-concept = 6; // [1:Wedge, 2:Twin fins, 3:Open triangle, 4:Pebble cradle, 5:Half-moon feet, 6:Half-drum, 7:Crescent]
+concept = 6; // [1:Wedge, 2:Twin fins, 3:Open triangle, 4:Pebble cradle, 5:Half-moon feet, 6:Half-drum, 7:Crescent, 8:Soft delta, 9:Loops, 10:Capsule, 11:Arch, 12:Teardrop, 13:Pebbles]
 show_display = true;
 show_cable = true;
 lean = 12; // Degrees back from vertical.
@@ -14,7 +14,7 @@ module panel_space() { translate([0,12,seat_height]) rotate([-lean,0,0]) childre
 module side_extrude(width) {
     // Local profile X/Y becomes world Y/Z; extrusion becomes world X.
     multmatrix([[0,0,1,-width/2],[1,0,0,0],[0,1,0,0],[0,0,0,1]])
-        linear_extrude(width) children();
+        linear_extrude(width,convexity=10) children();
 }
 module rounded_base(width,depth,height,r=4) {
     linear_extrude(height) hull()
@@ -121,6 +121,76 @@ module crescent() {
         slot_cut(); ribbon_relief(); cable_cut();
     }
 }
+module soft_triangle() {
+    offset(r=5,$fn=64) offset(delta=-5)
+        polygon([[0,0],[16,38],[76,0]]);
+}
+module delta_feet(open=false) {
+    union() {
+        for(x=[-43,43]) translate([x,0,0]) side_extrude(open ? 12 : 16)
+            difference() {
+                soft_triangle();
+                // Keep a full-height web behind the slot; the window starts aft.
+                if(open) offset(r=2) offset(delta=-2) intersection() {
+                    offset(delta=-6) soft_triangle();
+                    translate([27,0]) square([100,60]);
+                }
+            }
+        translate([0,52,0]) rounded_base(100,12,7,5);
+    }
+}
+module capsule() {
+    union() {
+        // Flat sole and rounded perimeter; the shallow body sits below the image.
+        rounded_base(116,58,14,28);
+        for(x=[-40,40]) translate([x,0,0]) side_extrude(18)
+            hull() {
+                translate([18,16]) circle(9,$fn=64);
+                translate([35,9]) circle(6,$fn=64);
+            }
+    }
+}
+module arch() {
+    side_extrude(104) difference() {
+        offset(r=2) offset(delta=-2) intersection() {
+            translate([38,0]) scale([38,34]) circle(1,$fn=128);
+            square([76,40]);
+        }
+        translate([44,-1]) scale([24,22]) circle(1,$fn=128);
+    }
+}
+module teardrop() {
+    intersection() {
+        linear_extrude(36) hull() {
+            for(x=[-43,43]) translate([x,11]) circle(11,$fn=64);
+            translate([0,65]) circle(12,$fn=64);
+        }
+        side_extrude(120) offset(r=3) offset(delta=-3)
+            polygon([[0,0],[0,18],[20,32],[80,6],[80,0]]);
+    }
+}
+module pebbles() {
+    union() {
+        for(x=[-40,40]) intersection() {
+            translate([x,33,0]) scale([17,33,29]) sphere(1,$fn=96);
+            translate([x-18,0,0]) cube([36,67,32]);
+        }
+        translate([0,49,0]) rounded_base(86,12,7,5);
+    }
+}
+module new_study() {
+    difference() {
+        union() {
+            if(concept==8) delta_feet();
+            if(concept==9) delta_feet(true);
+            if(concept==10) capsule();
+            if(concept==11) arch();
+            if(concept==12) teardrop();
+            if(concept==13) pebbles();
+        }
+        slot_cut(); ribbon_relief(); cable_cut();
+    }
+}
 module stand() {
     difference() {
         union() {
@@ -131,6 +201,7 @@ module stand() {
             if(concept==5) moon_feet();
             if(concept==6) half_drum();
             if(concept==7) crescent();
+            if(concept>=8 && concept<=13) new_study();
         }
         // Keep front lips below the active image; no tall clamp over the glass.
         panel_space() translate([-70,-50,4]) cube([140,50-slot_width/2+0.1,130]);

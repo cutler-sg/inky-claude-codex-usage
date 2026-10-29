@@ -1,10 +1,11 @@
 # Minimal desk stand concepts
 
-Seven editable OpenSCAD studies for MC's original **5.7-inch Inky Impression** and
+Thirteen editable OpenSCAD studies for MC's original **5.7-inch Inky Impression** and
 rear-mounted Pi Zero 2 W. Open `stand-concepts.scad` in OpenSCAD and select
-`concept` 1–7 in the Customizer. The default is now the rounded half-drum (6).
+`concept` 1–13 in the Customizer. The default remains the rounded half-drum (6).
 `index.html` compares the original four; `rounded.html` compares the three rounded
-alternatives requested after that first study. Each has front, rear and stand-only views.
+alternatives requested after that first study. `explorations.html` compares six
+further shapes. Each has front, rear and stand-only views.
 
 | Concept | Footprint (W × D) | Character |
 |---|---|---|
@@ -15,6 +16,12 @@ alternatives requested after that first study. Each has front, rear and stand-on
 | 5. Half-moon feet | ~100 × 68 mm | Semicircular side supports and a rounded rear bridge. |
 | 6. Half-drum | ~112 × 56 mm | Semicircular footprint with a continuous domed back; preferred rounded direction. |
 | 7. Crescent | ~112 × 68 mm | Open semicircular rear rail with half-moon side supports. |
+| 8. Soft delta | ~102 × 62 mm | Rounded triangular feet; compact and straightforward. |
+| 9. Loops | ~100 × 62 mm | Rounded triangular frames with windows behind the slot supports. |
+| 10. Capsule | 116 × 58 mm | Low racetrack plinth with small rear saddles. |
+| 11. Arch | ~104 × 76 mm | A broad curved bridge with an open underside. |
+| 12. Teardrop | ~108 × 77 mm | Rounded triangular footprint tapering to a single rear tip. |
+| 13. Pebbles | ~114 × 66 mm | Two domed oval feet linked by a low rear bar. |
 
 All lean back 12 degrees, seat the board approximately 9 mm above the desk, and
 leave its side buttons exposed. A provisional 36 mm centre relief avoids the
@@ -53,13 +60,17 @@ The stand geometry is real OpenSCAD CSG, not an AI-generated product photograph.
 ```sh
 uv run python designs/stands/render.py
 uv run python designs/stands/render.py --rounded
+uv run python designs/stands/render.py --explorations
 ```
 
 The script uses `openscad` on PATH or the standard macOS application location.
-Front, rear and stand-only renders use identical cameras across all seven concepts.
+Front, rear and stand-only renders use identical cameras across all thirteen concepts.
 The models have also been evaluated through OpenSCAD's full CGAL STL exporter;
-all seven report a simple solid. Temporary STLs live in ignored `state/stands/`;
+all thirteen report a simple solid. Temporary STLs live in ignored `state/stands/`;
 do not treat successful mesh export as a mechanical fit check.
+
+The requested half-drum export is available at `stl/06-half-drum.stl`. Its original
+geometry is unchanged by the later studies.
 
 Use `show_display=false` and `show_cable=false` for stand-only export. The original
 5.7-inch outline is the only supported reference here; the newer panel sizes have
