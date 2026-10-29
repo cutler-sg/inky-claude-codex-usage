@@ -1,8 +1,10 @@
 # Minimal desk stand concepts
 
-Four editable OpenSCAD studies for MC's original **5.7-inch Inky Impression** and
+Seven editable OpenSCAD studies for MC's original **5.7-inch Inky Impression** and
 rear-mounted Pi Zero 2 W. Open `stand-concepts.scad` in OpenSCAD and select
-`concept` 1–4 in the Customizer. `index.html` compares all twelve rendered views.
+`concept` 1–7 in the Customizer. The default is now the rounded half-drum (6).
+`index.html` compares the original four; `rounded.html` compares the three rounded
+alternatives requested after that first study. Each has front, rear and stand-only views.
 
 | Concept | Footprint (W × D) | Character |
 |---|---|---|
@@ -10,6 +12,9 @@ rear-mounted Pi Zero 2 W. Open `stand-concepts.scad` in OpenSCAD and select
 | 2. Twin fins | 100 × 76 mm | Two triangular feet joined at the rear; best starting point. |
 | 3. Open triangle | 94 × 76 mm | Slim triangular frames; lighter visual profile, thinner members. |
 | 4. Pebble cradle | 116 × 66 mm | Rounded low plinth; shallowest footprint and lowest rear support. |
+| 5. Half-moon feet | ~100 × 68 mm | Semicircular side supports and a rounded rear bridge. |
+| 6. Half-drum | ~112 × 56 mm | Semicircular footprint with a continuous domed back; preferred rounded direction. |
+| 7. Crescent | ~112 × 68 mm | Open semicircular rear rail with half-moon side supports. |
 
 All lean back 12 degrees, seat the board approximately 9 mm above the desk, and
 leave its side buttons exposed. A provisional 36 mm centre relief avoids the
@@ -47,12 +52,13 @@ The stand geometry is real OpenSCAD CSG, not an AI-generated product photograph.
 
 ```sh
 uv run python designs/stands/render.py
+uv run python designs/stands/render.py --rounded
 ```
 
 The script uses `openscad` on PATH or the standard macOS application location.
-Front, rear and stand-only renders use identical cameras across all four concepts.
+Front, rear and stand-only renders use identical cameras across all seven concepts.
 The models have also been evaluated through OpenSCAD's full CGAL STL exporter;
-all four report a simple solid. Temporary STLs live in ignored `state/stands/`;
+all seven report a simple solid. Temporary STLs live in ignored `state/stands/`;
 do not treat successful mesh export as a mechanical fit check.
 
 Use `show_display=false` and `show_cable=false` for stand-only export. The original

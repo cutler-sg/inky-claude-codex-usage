@@ -1,5 +1,6 @@
-"""Render the four concept models with the installed OpenSCAD CLI."""
+"""Render the original or rounded concept models with the installed OpenSCAD CLI."""
 
+import argparse
 import shutil
 import subprocess
 from pathlib import Path
@@ -14,8 +15,11 @@ VIEWS = {
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--rounded", action="store_true", help="Render concepts 5–7")
+    args = parser.parse_args()
     (ROOT / "renders").mkdir(exist_ok=True)
-    for concept in range(1, 5):
+    for concept in range(5, 8) if args.rounded else range(1, 5):
         for view, (camera, display, cable) in VIEWS.items():
             subprocess.run(
                 [

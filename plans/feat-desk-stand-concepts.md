@@ -16,3 +16,17 @@ report `Simple: yes`, `Volumes: 2` (one solid plus the exterior). Renderer lint 
 format checks pass. Inline gallery checked at desktop/mobile widths, including
 view switching. Measured fit, cushioning, component clearance and physical
 stability remain deliberately outside this concept study.
+
+## Rounded direction
+
+- [x] Add three studies: half-moon side supports, a domed semicircular back, and an open crescent.
+- [x] Render and inspect all views, including full geometry exports.
+- [x] Present the rounded alternatives and retain the original studies.
+
+Acceptance: visibly curved silhouettes, low front lips, rear cable routing and
+explicitly provisional mechanical fit, using the same display reference.
+
+Completed concepts 5–7 and nine additional renders. Full CGAL exports each report
+`Simple: yes`, `Volumes: 2`. Inspected all nine views and desktop/mobile gallery
+previews, including rear-view switching. Half-drum (6) is the new default; original
+concepts and renders remain available. No physical fit validation is claimed.

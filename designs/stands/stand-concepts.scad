@@ -1,6 +1,6 @@
 // Inky Impression 5.7 desk stands. Units: mm. Concept geometry, not fit validated.
 // Set show_display=false and show_cable=false to inspect/export the stand alone.
-concept = 1; // [1:Wedge, 2:Twin fins, 3:Open triangle, 4:Pebble cradle]
+concept = 6; // [1:Wedge, 2:Twin fins, 3:Open triangle, 4:Pebble cradle, 5:Half-moon feet, 6:Half-drum, 7:Crescent]
 show_display = true;
 show_cable = true;
 lean = 12; // Degrees back from vertical.
@@ -76,6 +76,51 @@ module cradle() {
         slot_cut(); ribbon_relief(); cable_cut();
     }
 }
+module half_moon(width=14) {
+    side_extrude(width) offset(r=2) offset(delta=-2)
+        intersection() {
+            translate([34,0]) circle(34,$fn=128);
+            square([68,40]);
+        }
+}
+module rear_bridge() {
+    translate([0,57,0]) rounded_base(100,11,7,5);
+}
+module moon_feet() {
+    difference() {
+        union() {
+            for(x=[-support_spacing/2,support_spacing/2]) translate([x,0,0]) half_moon();
+            rear_bridge();
+        }
+        slot_cut(); cable_cut();
+    }
+}
+module half_drum() {
+    difference() {
+        // A D-shaped footprint with a continuously domed back.
+        intersection() {
+            translate([0,8,0]) scale([56,56,30]) sphere(1,$fn=128);
+            translate([-60,8,0]) cube([120,60,35]);
+        }
+        slot_cut(); ribbon_relief(); cable_cut();
+    }
+}
+module crescent() {
+    difference() {
+        union() {
+            // Semi-annular back in plan, with rounded half-moon side supports.
+            linear_extrude(7) offset(r=2) offset(delta=-2) intersection() {
+                translate([0,8]) difference() {
+                    circle(56,$fn=128); circle(47,$fn=128);
+                }
+                translate([-60,8]) square([120,60]);
+            }
+            translate([0,4,0]) rounded_base(110,10,5,4);
+            for(x=[-support_spacing/2,support_spacing/2]) translate([x,0,0]) half_moon(12);
+        }
+        slot_cut(); ribbon_relief(); cable_cut();
+    }
+}
 module stand() {
     difference() {
         union() {
@@ -83,6 +128,9 @@ module stand() {
             if(concept==2) twins();
             if(concept==3) triangle();
             if(concept==4) cradle();
+            if(concept==5) moon_feet();
+            if(concept==6) half_drum();
+            if(concept==7) crescent();
         }
         // Keep front lips below the active image; no tall clamp over the glass.
         panel_space() translate([-70,-50,4]) cube([140,50-slot_width/2+0.1,130]);
