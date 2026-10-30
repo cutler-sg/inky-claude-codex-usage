@@ -1,0 +1,32 @@
+[
+  {
+    "id": "01-versus",
+    "artifact": "exec-995814f4-ace2-4984-8d53-f75c1d7400e8.png",
+    "file": "01-versus-mockup.png"
+  },
+  {
+    "id": "02-rooftop",
+    "artifact": "exec-8a52ae43-1ebd-474f-93e5-c5e4777e65a5.png",
+    "file": "02-rooftop-mockup.png"
+  },
+  {
+    "id": "03-market",
+    "artifact": "exec-7759415a-6d1f-4943-9a00-a7e4c0f15402.png",
+    "file": "03-market-mockup.png"
+  },
+  {
+    "id": "04-airbase",
+    "artifact": "exec-a5e22db8-daae-456b-81ca-1b241153e0a8.png",
+    "file": "04-airbase-mockup.png"
+  },
+  {
+    "id": "05-select",
+    "artifact": "exec-672fd993-79eb-4f5a-ae01-97dee6486352.png",
+    "file": "05-select-mockup.png"
+  },
+  {
+    "id": "06-continue",
+    "artifact": "exec-ce259764-cd5b-4cb8-a7ba-e6cc75f6a9db.png",
+    "file": "06-continue-mockup.png"
+  }
+]
