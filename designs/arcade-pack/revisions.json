@@ -1,0 +1,9 @@
+[
+  {
+    "id": "04-airbase",
+    "prompt": "Edit this exact image only to correct the two circular fuel-gauge visualizations so they agree with their adjacent percentages. The LEFT gauge beside CLAUDE 20% must show only ONE FIFTH of its arc filled in red and the remaining FOUR FIFTHS pale cream/empty with a dark outline. The RIGHT gauge beside CODEX 95% must show almost the whole arc filled in green, with only a tiny five-percent pale cream/empty gap. Keep the fuel icons in the centres. Preserve absolutely everything else: all typography and its exact spelling, numbers, reset times, composition, Guile, aircraft, sonic boom, background, colours, size and crop. Do not add any additional numerals, ticks with numerals, arrows, labels or other elements.",
+    "reference": "04-airbase-mockup.png",
+    "artifact": "exec-a0fd99a0-e20f-4c7e-aec7-f7054b04ea99.png",
+    "selected_file": "04-airbase-mockup-v2.png"
+  }
+]
