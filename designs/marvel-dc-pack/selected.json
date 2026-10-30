@@ -1,0 +1,56 @@
+[
+  {
+    "sample": 1,
+    "id": "03-gods-of-thunder",
+    "name": "Gods of Thunder",
+    "pair": "Thor × Wonder Woman",
+    "direction": "Heroic portraits and carved stone balance panels.",
+    "file": "03-gods-of-thunder-mockup.png",
+    "prompt_source": "revised-prompts.json"
+  },
+  {
+    "sample": 2,
+    "id": "04-fourth-wall",
+    "name": "Fourth Wall",
+    "pair": "Deadpool × Harley Quinn",
+    "direction": "Comic banter and oversized speech balloons.",
+    "file": "04-fourth-wall-mockup.png",
+    "prompt_source": "prompts.json"
+  },
+  {
+    "sample": 3,
+    "id": "08-sky-and-sea",
+    "name": "Sky & Sea",
+    "pair": "Storm × Aquaman",
+    "direction": "Clouds and waves divide a mythic elemental print.",
+    "file": "08-sky-and-sea-mockup.png",
+    "prompt_source": "additional-prompts.json"
+  },
+  {
+    "sample": 4,
+    "id": "13-tide-and-tempest",
+    "name": "Tide & Tempest",
+    "pair": "Storm × Aquaman",
+    "direction": "Two elegant comic-cover panels, arranged as a matching diptych.",
+    "file": "13-tide-and-tempest-mockup.png",
+    "prompt_source": "variant-prompts.json"
+  },
+  {
+    "sample": 5,
+    "id": "14-headline-battle",
+    "name": "Headline Battle",
+    "pair": "Daily Bugle × Daily Planet",
+    "direction": "Fictional newspaper front pages make the balances the headlines.",
+    "file": "14-headline-battle-mockup.png",
+    "prompt_source": "environment-prompts.json"
+  },
+  {
+    "sample": 6,
+    "id": "15-twin-skylines",
+    "name": "Twin Skylines",
+    "pair": "Avengers Tower × Gotham",
+    "direction": "Two comic city skylines carry giant illuminated allowance signs.",
+    "file": "15-twin-skylines-mockup.png",
+    "prompt_source": "environment-prompts.json"
+  }
+]

@@ -1,16 +1,18 @@
 # Themed artwork packs
 
 - [x] Preserve the accepted Street Fighter concept set and record the intended theme controls.
-- [?] Generate six Marvel-versus-DC mockups (blocked: the image generator rejected four concepts in both the original and safer revised passes; two completed).
-- [x] Inspect and save the available artwork, exact prompts, data provenance and comparison gallery.
+- [x] Generate six Marvel/DC-inspired mockups: four character compositions and two universe-based environments.
+- [x] Inspect and save all six images, exact prompts, data provenance and comparison gallery.
 
-Acceptance: six distinct superhero crossover concepts; baked-in sample data is
+Acceptance: six distinct Marvel/DC-inspired compositions; baked-in sample data is
 clearly identified; original and Street Fighter sets retained. User clarified:
 finish mockups first, implement and deploy theme switching next. Runtime work is
 not part of this pass. Preserve the untracked Teardrop 3MF.
 
-Completed Gods of Thunder (Thor/Wonder Woman) and Fourth Wall (Deadpool/Harley Quinn).
-Worlds Collide, Rooftop Rivals, Mystic Crossover and Cosmic Collision remain
-blocked. Exact prompts, revised prompts and output moderation request IDs are
-preserved. No further retries or alternative backend were attempted. This is a
-partial concept study; the six-image acceptance criterion is not met.
+The first pass produced Gods of Thunder and Fourth Wall; four other directions
+were blocked by output moderation. After the user requested six completed samples,
+new pairings, alternate compositions and environment studies produced Sky & Sea,
+Tide & Tempest, Headline Battle and Twin Skylines. The final six are listed in
+`designs/marvel-dc-pack/selected.json`. All source prompts and generation outcomes
+are preserved, including rejected concepts that are not part of the selected set.
+No alternate image backend was used. The six-image criterion is now met.

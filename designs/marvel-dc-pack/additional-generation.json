@@ -1,0 +1,90 @@
+[
+  {
+    "id": "07-shield-and-speed",
+    "status": "blocked",
+    "prompt_source": "additional-prompts.json",
+    "attempts": [
+      {
+        "status": "blocked",
+        "request_id": "ddf1b58d-abf1-434f-96b2-4f46fd191db9",
+        "category": "other"
+      }
+    ]
+  },
+  {
+    "id": "08-sky-and-sea",
+    "status": "generated",
+    "file": "08-sky-and-sea-mockup.png",
+    "prompt_source": "additional-prompts.json",
+    "artifact": "exec-d99c4cda-70b8-4edf-8ee4-da5d88774a22.png"
+  },
+  {
+    "id": "09-strength-and-steel",
+    "status": "blocked",
+    "prompt_source": "additional-prompts.json",
+    "attempts": [
+      {
+        "status": "blocked",
+        "request_id": "70626bbe-3703-48d5-af10-37cfaacf19d5",
+        "category": "other"
+      }
+    ]
+  },
+  {
+    "id": "10-wild-cards",
+    "status": "blocked",
+    "prompt_source": "additional-prompts.json",
+    "attempts": [
+      {
+        "status": "blocked",
+        "request_id": "31a75089-8b83-4581-b2a4-04eb9acc7a8b",
+        "category": "other"
+      }
+    ]
+  },
+  {
+    "id": "11-thunder-arena",
+    "status": "blocked",
+    "prompt_source": "variant-prompts.json",
+    "attempts": [
+      {
+        "status": "blocked",
+        "request_id": "bc5a57e5-7a93-47d8-bbdb-08c797b00742",
+        "category": "other"
+      }
+    ]
+  },
+  {
+    "id": "12-comic-pinball",
+    "status": "blocked",
+    "prompt_source": "variant-prompts.json",
+    "attempts": [
+      {
+        "status": "blocked",
+        "request_id": "0c0bf817-85f4-4805-939b-adc333b73bbe",
+        "category": "other"
+      }
+    ]
+  },
+  {
+    "id": "13-tide-and-tempest",
+    "status": "generated",
+    "file": "13-tide-and-tempest-mockup.png",
+    "prompt_source": "variant-prompts.json",
+    "artifact": "exec-e5605d54-0ac6-4f8c-b82d-d3565df7571b.png"
+  },
+  {
+    "id": "14-headline-battle",
+    "status": "generated",
+    "file": "14-headline-battle-mockup.png",
+    "prompt_source": "environment-prompts.json",
+    "artifact": "exec-2505a808-8c0b-49cc-8a85-3f8c23ae5f2d.png"
+  },
+  {
+    "id": "15-twin-skylines",
+    "status": "generated",
+    "file": "15-twin-skylines-mockup.png",
+    "prompt_source": "environment-prompts.json",
+    "artifact": "exec-55ee38dd-784d-4d22-b813-d50b34db1e6a.png"
+  }
+]
