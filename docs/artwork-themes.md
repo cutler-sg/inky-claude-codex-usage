@@ -2,7 +2,7 @@
 
 The user has retained the six Street Fighter concepts as a second theme and
 requested a Marvel-versus-DC concept set next. This is the control scheme for
-the upcoming implementation; it is **not deployed yet**. The current D button
+future implementation; theme switching is **deferred and not deployed**. The current D button
 still selects Budget Kraken.
 
 | Control | Planned behaviour |
@@ -29,4 +29,4 @@ The new sets are concept images with fixed example readings. Before they become
 selectable on the Pi, they need clean plates, real usage overlays, full data-state
 handling and display-profile/palette validation. Fixed mockup readings must not
 be shown as live usage. The user explicitly chose to finish the Marvel/DC mockups
-first and implement theme switching in the next round.
+first and revisit full theme switching separately at a later date.

@@ -60,4 +60,4 @@ No alternate image backend was used.
 The [theme-control direction](../../docs/artwork-themes.md) records the intended
 D-button switch between Original, Street Fighter, and future themes. A/B/C and
 automatic rotation must stay within the selected theme. The user chose to finish
-the artwork mockups first and implement theme switching in the next round.
+the artwork mockups first and revisit full theme switching separately later.
