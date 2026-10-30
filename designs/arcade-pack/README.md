@@ -4,6 +4,9 @@ Six generated fan-art mockups inspired by Capcom's early Street Fighter games.
 The balances are part of the arcade composition: versus lettering, health bars,
 shop signs, aircraft stencils, selection cards and continue-screen windows.
 
+**Retained as the second theme.** See the [planned theme controls](../../docs/artwork-themes.md).
+Live overlays and button D theme switching will follow the artwork studies.
+
 Open [the comparison gallery](index.html) locally to browse all six or switch to
 a 600 CSS-pixel-wide view. The original generated PNGs are preserved at their
 native dimensions; browser scaling is a readability preview, not an exact

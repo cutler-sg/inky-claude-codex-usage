@@ -1,0 +1,88 @@
+[
+  {
+    "id": "01-worlds-collide",
+    "status": "blocked",
+    "attempts": [
+      {
+        "status": "blocked",
+        "request_id": "040be566-f0d5-4876-a95c-4ab47c4cd24d",
+        "category": "other"
+      },
+      {
+        "status": "blocked",
+        "request_id": "4d54ec1b-3c56-49ee-bcc4-36ca42f9e742",
+        "category": "other"
+      }
+    ]
+  },
+  {
+    "id": "02-rooftop-rivals",
+    "status": "blocked",
+    "attempts": [
+      {
+        "status": "blocked",
+        "request_id": "e8d2ea6f-0701-4577-8d6d-dc72c9d28035",
+        "category": "other"
+      },
+      {
+        "status": "blocked",
+        "request_id": "44a1bf4b-70a3-4abe-b830-40102024528b",
+        "category": "other"
+      }
+    ]
+  },
+  {
+    "id": "03-gods-of-thunder",
+    "status": "generated",
+    "file": "03-gods-of-thunder-mockup.png",
+    "prompt_source": "revised-prompts.json",
+    "artifact": "exec-9fc7c88f-98d4-43e9-a30b-e98442d98b25.png",
+    "prior_attempts": [
+      {
+        "status": "blocked",
+        "request_id": "bee9b81f-7620-4fb2-8302-7b7747c9bd7b",
+        "category": "other"
+      }
+    ]
+  },
+  {
+    "id": "04-fourth-wall",
+    "status": "generated",
+    "file": "04-fourth-wall-mockup.png",
+    "prompt_source": "prompts.json",
+    "artifact": "exec-c6ee0f15-ecba-4c33-b79f-393984f02964.png",
+    "prior_attempts": []
+  },
+  {
+    "id": "05-mystic-crossover",
+    "status": "blocked",
+    "attempts": [
+      {
+        "status": "blocked",
+        "request_id": "0e908031-1d3f-4fa3-80f4-df11fb0bb138",
+        "category": "sexual"
+      },
+      {
+        "status": "blocked",
+        "request_id": "e4679d7c-c860-44f3-8fa7-1f5fa5815f27",
+        "category": "other"
+      }
+    ]
+  },
+  {
+    "id": "06-cosmic-collision",
+    "status": "blocked",
+    "attempts": [
+      {
+        "status": "blocked",
+        "request_id": "33663840-a29d-4453-9f80-137b67baf407",
+        "category": "other"
+      },
+      {
+        "status": "blocked",
+        "request_id": "61ce1c47-389a-46a1-ada8-8b5ea1e0168f",
+        "category": "other"
+      }
+    ]
+  }
+]
