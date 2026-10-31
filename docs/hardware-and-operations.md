@@ -226,6 +226,12 @@ last-good data with its error state and causes a nonzero service exit; the next
 timer run retries. HTTP requests have timeouts and size limits, and authenticated
 management requests do not follow redirects.
 
+Claude's 5-hour details appear only when the latest successful response includes
+a session window. Missing or null session limits are hidden in all six artworks;
+a reported zero utilization still means 100% remaining and stays visible. If the
+limit returns, it reappears automatically. Failed fetches preserve last-good
+windows with the existing stale indicator rather than implying a limit was removed.
+
 Pi gallery: `inky-gallery.service`, running as `pi`, enabled for boot. The latest
 sanitized data is `state/usage.json`. Selection/runtime status lives in
 `state/gallery/`; successful display state is `state/status.json` and

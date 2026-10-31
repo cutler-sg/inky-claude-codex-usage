@@ -52,27 +52,27 @@
       "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
     },
     "unavailable/01-pop-comic": {
-      "pixels": "e10934fdc5ee63426b43a809c7ccf5f25bc3a16718fd86fec6a708b5c0fbc7d1",
+      "pixels": "5cf2206e2907f99981e5cbbc6f31503edcf3d8b65efff37815b078c1cfd1dd8d",
       "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
     },
     "unavailable/02-budget-kraken": {
-      "pixels": "a0ed20ecc68885004c69347115b17fbd2de2477d1dd54650cb5c441c3c8c8fc2",
+      "pixels": "004798994832c2e2f05d30ab482464d06f3ee02bbc816b3fbe38a865639ac53d",
       "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
     },
     "unavailable/03-reactor-room": {
-      "pixels": "9d8baf876a27248568a483b6d612de6f1229b200ce0aa6b8910a22f799d68707",
+      "pixels": "3a2576e9268a728d449227394561b8a11dcdc2f4e4c2be6215a3cefa48f5ffb7",
       "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
     },
     "unavailable/04-night-market": {
-      "pixels": "e7647ce9049dbcd1e863dbd249ce5a78f79bd918aeb4d0508643c620f4384e48",
+      "pixels": "69b465bff0d7d6fa1718a54bae362fb9dfbb19749d5b384b50768cb8e5d53c15",
       "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
     },
     "unavailable/05-quota-moth": {
-      "pixels": "d9110c4f3a8e486c44734c09a966a2e3155480ed6f6aca135cef23bbe8c621e3",
+      "pixels": "1580ba1e8b1f969b1c7c20c1482a27d2bfc6c37e5726cdc2b146ef609be0d33c",
       "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
     },
     "unavailable/06-cosmic-pinball": {
-      "pixels": "abd20bd9bcd2d2cfbddca8d6fbe54cf7d35d87b0230d4cc59fe3a1d6d2d9db6a",
+      "pixels": "83e9f296f3e5f234de495c0ea77b4fce90a7923edc42457449a501e42c88a61c",
       "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
     },
     "missing/01-pop-comic": {
@@ -123,5 +123,6 @@
       "pixels": "1a0dbd457353f216a8f616de93861ab07337fb9a8b677b290516c8f4e256734a",
       "palette": "933a4bb45e6b69e255d9e350e371d936cbabf733582a382f7d0f70ab9143b5a2"
     }
-  }
+  },
+  "unavailable_revision": "Claude session fields hidden when no session window exists; reviewed 2026-10-31."
 }
