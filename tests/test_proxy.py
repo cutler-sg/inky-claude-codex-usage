@@ -170,3 +170,41 @@ def test_codex_duration_and_relative_reset(monkeypatch):
     assert result == [{"label": "5-Hour Window", "percent": 2, "reset_epoch": 1000100}]
     with pytest.raises(ValueError, match="duration"):
         proxy.normalize_codex({"rate_limit": {"primary_window": {"used_percent": 2}}})
+
+
+@pytest.mark.parametrize(
+    "weekly_only",
+    [
+        {"seven_day": {"utilization": 20}},
+        {"five_hour": None, "seven_day": {"utilization": 20}},
+        {"five_hour": {"utilization": None}, "seven_day": {"utilization": 20}},
+        {"limits": [{"kind": "weekly_all", "percent": 20}]},
+        {"limits": [{"kind": "session", "percent": None}, {"kind": "weekly_all", "percent": 20}]},
+    ],
+)
+def test_session_disappearance_and_reappearance_replace_last_good_windows(monkeypatch, weekly_only):
+    monkeypatch.setattr(proxy, "get_management_key", lambda: "test-only")
+    monkeypatch.setattr(proxy, "list_auth_indexes", lambda key: ({"claude": "c"}, None))
+    payload = {"five_hour": {"utilization": 0}, "seven_day": {"utilization": 20}}
+
+    def fetch(key, indexes, name, url, headers):
+        return (payload, None) if name == "claude" else (None, "Not configured")
+
+    monkeypatch.setattr(proxy, "fetch_usage", fetch)
+    first = collect()
+    assert first["providers"]["claude"]["windows"][0]["used_percent"] == 0
+    payload = weekly_only
+    second = collect(previous=first)
+    claude = second["providers"]["claude"]
+    assert claude["error"] is None
+    assert [w["label"] for w in claude["windows"]] == ["7-Day · All models"]
+    assert claude["windows"][0]["used_percent"] == 20
+
+    payload = {"limits": [{"kind": "session", "percent": 0}, {"kind": "weekly_all", "percent": 20}]}
+    third = collect(previous=second)
+    assert third["providers"]["claude"]["windows"][0]["label"] == "5-Hour Window"
+    monkeypatch.setattr(proxy, "fetch_usage", lambda *args: (None, "Rate limited"))
+    failed = collect(previous=third)["providers"]["claude"]
+    assert failed["windows"] == third["providers"]["claude"]["windows"]
+    assert failed["observed_at"] == third["providers"]["claude"]["observed_at"]
+    assert failed["error"] == "Rate limited"

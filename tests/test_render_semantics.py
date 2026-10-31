@@ -87,3 +87,25 @@ def test_nonweekly_headline_keeps_its_actual_reset(monkeypatch, artwork):
     assert "40%" in text
     assert "CODEX 5H" in text
     assert "THU 06:00" in text
+
+
+@pytest.mark.parametrize("artwork", live.ARTWORKS)
+@pytest.mark.parametrize("used", [None, 0, 100])
+def test_optional_claude_session_hides_only_unreported_window(monkeypatch, artwork, used):
+    monkeypatch.setattr(live, "Canvas", TextCapture)
+    snapshot = copy.deepcopy(EDGE["scenarios"]["multiple-scopes"])
+    claude = snapshot["providers"]["claude"]
+    claude["windows"] = [w for w in claude["windows"] if w["label"] != "5-Hour Window"]
+    if used is not None:
+        claude["windows"].append(
+            {"label": "5-Hour Window", "used_percent": used, "reset_epoch": EDGE["now"] + 1234}
+        )
+    result = live.build_view(snapshot, EDGE["now"])
+    text = live.render(artwork, result)
+    assert ("CLAUDE 5H" in text) == (used is not None)
+    assert (live.reset_label(EDGE["now"] + 1234, EDGE["now"]) in text) == (used is not None)
+    if used is not None:
+        assert result["claude"]["session"] == f"{100 - used}%"
+    assert "CLAUDE WEEK" in text
+    assert "OPUS" in text
+    assert "CODEX 5H 0%" in text

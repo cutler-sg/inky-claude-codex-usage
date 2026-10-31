@@ -298,7 +298,8 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
     if artwork == "01-pop-comic":
         s.headline([(34, 31), (192, 23), (205, 169), (26, 187)], c, "#df3322")
         s.headline([(459, 39), (578, 32), (585, 178), (448, 190)], x, "#174992")
-        s.line([(19, 242), (212, 230), (210, 251), (16, 264)], session)
+        if c["has_session"]:
+            s.line([(19, 242), (212, 230), (210, 251), (16, 264)], session)
         s.line([(16, 280), (179, 267), (177, 287), (14, 302)], scope)
         s.line([(449, 235), (589, 220), (587, 240), (448, 255)], cr)
         s.line([(450, 266), (591, 250), (589, 269), (448, 285)], xr)
@@ -321,7 +322,8 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
             "#174992",
             "DMSerifDisplay-Regular.ttf",
         )
-        s.line([(68, 230), (261, 235), (261, 252), (68, 249)], session)
+        if c["has_session"]:
+            s.line([(68, 230), (261, 235), (261, 252), (68, 249)], session)
         s.line([(91, 272), (244, 272), (244, 285), (91, 288)], scope)
         s.line([(111, 311), (265, 317), (265, 335), (111, 329)], cr)
         s.line([(146, 347), (280, 375), (280, 389), (146, 362)], xr)
@@ -330,11 +332,13 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
     elif artwork == "03-reactor-room":
         s.headline([(111, 42), (257, 70), (258, 195), (101, 167)], c, "#df3322")
         s.headline([(343, 81), (506, 48), (520, 187), (341, 211)], x, "#174992")
-        s.line([(34, 324), (100, 325), (100, 340), (34, 339)], "CLAUDE 5H")
-        s.line([(35, 345), (85, 346), (85, 373), (34, 372)], c["session"])
+        if c["has_session"]:
+            s.line([(34, 324), (100, 325), (100, 340), (34, 339)], "CLAUDE 5H")
+            s.line([(35, 345), (85, 346), (85, 373), (34, 372)], c["session"])
         s.line([(197, 344), (238, 346), (237, 356), (196, 354)], scope_name)
         s.line([(193, 356), (228, 358), (227, 382), (192, 380)], c["scope_remaining"])
-        s.line([(29, 394), (118, 404), (118, 413), (29, 405)], c["session_reset"])
+        if c["has_session"]:
+            s.line([(29, 394), (118, 404), (118, 413), (29, 405)], c["session_reset"])
         s.line([(185, 406), (247, 418), (247, 428), (185, 417)], c["scope_reset"])
         s.line([(367, 351), (531, 328), (533, 345), (367, 369)], cr)
         s.line([(367, 377), (534, 354), (535, 370), (367, 394)], xr, "white")
@@ -353,7 +357,8 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
             [(x["name"], 28, "white"), (x["remaining"], 76, "#df3322"), (x["window"], 23, "white")],
             "Bangers-Regular.ttf",
         )
-        s.line([(58, 208), (309, 281), (309, 297), (58, 224)], session, "white")
+        if c["has_session"]:
+            s.line([(58, 208), (309, 281), (309, 297), (58, 224)], session, "white")
         s.panel(
             [(34, 261), (76, 263), (75, 333), (33, 334)],
             scope_rows
@@ -389,7 +394,8 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
             "#174992",
             "DMSerifDisplay-Regular.ttf",
         )
-        s.line([(63, 307), (215, 287), (216, 302), (64, 322)], session)
+        if c["has_session"]:
+            s.line([(63, 307), (215, 287), (216, 302), (64, 322)], session)
         s.line([(87, 343), (222, 331), (222, 345), (87, 358)], scope)
         s.line([(383, 288), (535, 309), (535, 322), (383, 302)], cr)
         s.line([(381, 331), (521, 344), (520, 358), (381, 345)], xr)
@@ -414,10 +420,11 @@ def render(artwork: str, view: dict, profile: DisplayProfile = LEGACY) -> Image.
         )
         s.line([(94, 170), (200, 170), (200, 189), (94, 189)], c["window"])
         s.line([(400, 175), (507, 175), (507, 193), (400, 193)], x["window"])
-        s.panel(
-            [(140, 231), (235, 236), (247, 259), (140, 253)],
-            [("CLAUDE 5H " + c["session"], 15, "black"), (c["session_reset"], 12, "black")],
-        )
+        if c["has_session"]:
+            s.panel(
+                [(140, 231), (235, 236), (247, 259), (140, 253)],
+                [("CLAUDE 5H " + c["session"], 15, "black"), (c["session_reset"], 12, "black")],
+            )
         s.panel(
             [(368, 236), (460, 232), (460, 253), (353, 259)],
             [(c["scope"], 15, "black"), (c["scope_reset"], 12, "black")],
